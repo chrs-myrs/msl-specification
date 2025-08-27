@@ -1,0 +1,31 @@
+{
+  "name": "msl-specification",
+  "version": "1.1.0",
+  "description": "Markdown Specification Language - Lightweight specifications that grow with your needs",
+  "keywords": [
+    "markdown",
+    "specification",
+    "requirements",
+    "documentation",
+    "msl"
+  ],
+  "homepage": "https://github.com/chrs-myrs/msl-specification",
+  "bugs": {
+    "url": "https://github.com/chrs-myrs/msl-specification/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrs-myrs/msl-specification.git"
+  },
+  "license": "MIT",
+  "author": "MSL Contributors",
+  "scripts": {
+    "test": "echo \"Tests coming in Phase 2\"",
+    "lint": "python3 tools/cli/msl-lint examples/",
+    "validate": "python3 tools/cli/msl-lint --strict examples/"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

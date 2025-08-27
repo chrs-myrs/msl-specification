@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""MSL Linter - Validate MSL markdown files."""
+
+import sys
+import argparse
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from lib.parser import MSLParser
+from lib.validator import MSLValidator, ValidationIssue
+
+
+def format_issue(file_path: str, issue: ValidationIssue) -> str:
+    """Format a validation issue for output."""
+    location = f"{file_path}"
+    if issue.line:
+        location += f":{issue.line}"
+        if issue.column:
+            location += f":{issue.column}"
+    
+    level_colors = {
+        "error": "\033[91m",    # Red
+        "warning": "\033[93m",  # Yellow
+        "info": "\033[94m"      # Blue
+    }
+    reset = "\033[0m"
+    
+    color = level_colors.get(issue.level, "")
+    return f"{location}: {color}{issue.level}{reset}: {issue.message}"
+
+
+def lint_file(file_path: str, validator: MSLValidator) -> int:
+    """Lint a single file and return error count."""
+    issues = validator.validate_file(file_path)
+    error_count = 0
+    
+    for issue in issues:
+        print(format_issue(file_path, issue))
+        if issue.level == "error":
+            error_count += 1
+            
+    return error_count
+
+
+def lint_directory(directory: str, validator: MSLValidator, pattern: str = "**/*.md") -> int:
+    """Lint all files in a directory and return total error count."""
+    path = Path(directory)
+    if not path.exists():
+        print(f"Error: Directory not found: {directory}", file=sys.stderr)
+        return 1
+        
+    total_errors = 0
+    file_count = 0
+    
+    for file_path in sorted(path.glob(pattern)):
+        if file_path.is_file():
+            file_count += 1
+            errors = lint_file(str(file_path), validator)
+            total_errors += errors
+            
+    if file_count == 0:
+        print(f"No files found matching pattern: {pattern}")
+    else:
+        print(f"\nChecked {file_count} files, found {total_errors} errors")
+        
+    return total_errors
+
+
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description="Validate MSL markdown files",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  msl-lint spec.md                    # Lint a single file
+  msl-lint specs/                     # Lint all .md files in directory
+  msl-lint specs/ --pattern "*.msl"   # Lint files matching pattern
+  msl-lint spec.md --strict           # Enable strict validation
+  msl-lint specs/ --check-ids         # Check for duplicate IDs across files
+        """
+    )
+    
+    parser.add_argument(
+        "path",
+        help="File or directory to lint"
+    )
+    
+    parser.add_argument(
+        "--pattern",
+        default="**/*.md",
+        help="File pattern for directory mode (default: **/*.md)"
+    )
+    
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Enable strict validation"
+    )
+    
+    parser.add_argument(
+        "--check-ids",
+        action="store_true",
+        help="Check for duplicate IDs across all files"
+    )
+    
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Only show errors, not warnings"
+    )
+    
+    args = parser.parse_args()
+    
+    # Create validator
+    validator = MSLValidator(strict=args.strict)
+    
+    # Check if path is file or directory
+    path = Path(args.path)
+    
+    if path.is_file():
+        error_count = lint_file(str(path), validator)
+    elif path.is_dir():
+        error_count = lint_directory(str(path), validator, args.pattern)
+    else:
+        print(f"Error: Path not found: {args.path}", file=sys.stderr)
+        sys.exit(1)
+        
+    # Exit with error count (0 = success, >0 = errors found)
+    sys.exit(min(error_count, 255))
+
+
+if __name__ == "__main__":
+    main()

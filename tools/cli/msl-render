@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""MSL Renderer - Process MSL templates and variables."""
+
+import sys
+import argparse
+import json
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from lib.parser import MSLParser
+
+
+def render_template(content: str, variables: dict) -> str:
+    """Render template with variables using simple substitution."""
+    try:
+        # Try Jinja2 if available
+        import jinja2
+        template = jinja2.Template(content)
+        return template.render(**variables)
+    except ImportError:
+        # Fallback to simple string replacement
+        result = content
+        for key, value in variables.items():
+            result = result.replace(f"${{{key}}}", str(value))
+            result = result.replace(f"${key}", str(value))  # Also support $var syntax
+        return result
+
+
+def render_file(file_path: str, variables: dict = None, output: str = None) -> str:
+    """Render an MSL file with variables."""
+    parser = MSLParser()
+    parsed = parser.parse_file(file_path)
+    
+    # Merge provided variables with file variables
+    file_vars = parsed.get("metadata", {}).get("variables", {})
+    all_vars = {**file_vars, **(variables or {})}
+    
+    # Get raw content for rendering
+    content = parsed["raw_content"]
+    
+    # Render the content
+    rendered = render_template(content, all_vars)
+    
+    # Write to output if specified
+    if output:
+        Path(output).write_text(rendered)
+        return f"Rendered to: {output}"
+    else:
+        return rendered
+
+
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description="Render MSL templates with variables",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  msl-render template.md                         # Render with file variables
+  msl-render template.md -v name=API             # Override variable
+  msl-render template.md -v name=API rate=100    # Multiple variables
+  msl-render template.md --json vars.json        # Variables from JSON
+  msl-render template.md -o output.md            # Write to file
+        """
+    )
+    
+    parser.add_argument(
+        "file",
+        help="MSL file to render"
+    )
+    
+    parser.add_argument(
+        "-v", "--var",
+        action="append",
+        dest="variables",
+        help="Set variable (format: key=value)"
+    )
+    
+    parser.add_argument(
+        "--json",
+        help="Load variables from JSON file"
+    )
+    
+    parser.add_argument(
+        "-o", "--output",
+        help="Output file (default: stdout)"
+    )
+    
+    args = parser.parse_args()
+    
+    # Parse variables
+    variables = {}
+    
+    # Load from JSON if specified
+    if args.json:
+        try:
+            json_vars = json.loads(Path(args.json).read_text())
+            variables.update(json_vars)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Error loading JSON: {e}", file=sys.stderr)
+            sys.exit(1)
+    
+    # Parse command-line variables
+    if args.variables:
+        for var in args.variables:
+            if '=' not in var:
+                print(f"Error: Invalid variable format: {var} (expected key=value)", file=sys.stderr)
+                sys.exit(1)
+            key, value = var.split('=', 1)
+            variables[key] = value
+    
+    # Render the file
+    try:
+        result = render_file(args.file, variables, args.output)
+        if not args.output:
+            print(result)
+        else:
+            print(f"Rendered to: {args.output}")
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
