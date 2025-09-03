@@ -1,19 +1,25 @@
 ---
 id: msl-grammar
-extends: msl-l2-advanced
-tags: [grammar, syntax, validation]
+tags: [grammar, syntax, validation, formalization]
 priority: critical
 status: active
 assignee: msl-core-team
+references:
+  - msl-language: "Complete MSL language definition"
+  - msl-l0-foundation: "Level 0 syntax rules"
+  - msl-l1-structure: "Level 1 syntax rules"  
+  - msl-l2-advanced: "Level 2 syntax rules"
 ---
 
 # MSL Grammar Specification
 
 ## Summary
 
-This specification defines the formal grammar rules for Markdown Specification Language (MSL) using MSL itself. It provides precise syntax requirements, validation patterns, and structural constraints that MSL processors must implement.
+This specification provides the formal grammar definition for Markdown Specification Language (MSL). It describes the syntax rules, validation patterns, and structural constraints for the MSL language defined in `msl-language.md` and its constituent levels.
 
-The grammar specification serves as the authoritative reference for MSL syntax and enables consistent implementation across different tools and platforms.
+This grammar specification serves as the authoritative reference for MSL syntax implementation and enables consistent behavior across different MSL processors and platforms.
+
+**Note:** This specification DESCRIBES the MSL language syntax rather than extending it. It references the MSL language definition to provide formal grammar rules.
 
 ## Requirements
 
