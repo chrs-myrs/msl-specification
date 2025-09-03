@@ -150,6 +150,39 @@ tags: [backend]
 
 📖 **[See detailed comparisons with DOORS, Jira, ReqIF, and more →](docs/why-msl.md)**
 
+## 🎯 MSL Self-Specification Achievement
+
+**MSL is now completely self-specified** - meaning MSL is defined entirely using MSL itself! This validates MSL's expressive completeness and demonstrates its capability to specify complex systems.
+
+### ✅ Bootstrap Complete
+
+MSL successfully defines itself through a layered architecture:
+
+```
+Level 0 Foundation → Level 1 Structure → Level 2 Advanced
+     ↓                    ↓                    ↓
+Grammar Spec → Semantics Spec → Processing Spec → Complete Integration
+```
+
+- **[Level 0](specs/msl-l0-foundation.md)** - Pure markdown foundation
+- **[Level 1](specs/msl-l1-structure.md)** - Adds frontmatter and IDs  
+- **[Level 2](specs/msl-l2-advanced.md)** - Full feature set with inheritance
+- **[Grammar](specs/msl-grammar.md)** - Formal syntax rules
+- **[Semantics](specs/msl-semantics.md)** - Behavioral interpretation  
+- **[Processing](specs/msl-processing.md)** - Tool requirements
+- **[Complete](specs/msl-complete.md)** - Unified MSL specification
+
+### 🔄 Self-Validation
+
+The self-specifications pass validation using MSL's own tools:
+```bash
+msl-lint specs/  # ✅ Checked 7 files, found 0 errors
+```
+
+This proves that MSL is mature enough to specify itself and can handle complex, real-world specification challenges.
+
+**[Explore the Self-Specifications →](specs/)**
+
 ## 💡 Real-World Example
 
 Start with a todo list, evolve into a tracked project:
