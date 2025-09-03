@@ -1,25 +1,32 @@
 ---
 id: msl-semantics
-extends: msl-grammar
-tags: [semantics, behavior, interpretation]
+tags: [semantics, behavior, interpretation, formalization]
 priority: critical
 status: active
 assignee: msl-core-team
+references:
+  - msl-language: "Complete MSL language definition"
+  - msl-grammar: "MSL syntax rules that have semantic meaning"
+  - msl-l0-foundation: "Level 0 semantic behavior"
+  - msl-l1-structure: "Level 1 semantic behavior"
+  - msl-l2-advanced: "Level 2 semantic behavior"
 ---
 
 # MSL Semantics Specification
 
 ## Summary
 
-This specification defines the semantic meaning and behavioral interpretation of MSL constructs. While MSL Grammar defines syntax rules, MSL Semantics defines what MSL elements mean and how they should be processed and interpreted.
+This specification defines the semantic meaning and behavioral interpretation of MSL constructs. It describes what MSL language elements mean and how they should be processed and interpreted, complementing the syntax rules defined in `msl-grammar.md`.
 
-The semantics specification provides the authoritative reference for MSL behavior, enabling consistent interpretation across different tools, platforms, and use cases.
+This semantics specification provides the authoritative reference for MSL behavioral interpretation, enabling consistent semantic processing across different MSL tools, platforms, and use cases.
+
+**Note:** This specification DESCRIBES the behavioral meaning of MSL constructs rather than extending them. It references the MSL language definition and grammar to provide semantic interpretation rules.
 
 ## Requirements
 
 ### Core Semantic Principles
 
-- REQ-001: [!] [INHERIT] All MSL Grammar syntax rules must be semantically meaningful
+- REQ-001: [!] All MSL syntax constructs defined in `msl-grammar.md` must have well-defined semantic meaning
 - REQ-002: [!] MSL documents represent executable specifications with testable requirements
 - REQ-003: [!] MSL specifications define "what" systems must do, not "how" to implement
 - REQ-004: [!] MSL constructs must have unambiguous semantic interpretation
@@ -43,28 +50,28 @@ The semantics specification provides the authoritative reference for MSL behavio
 
 ### Inheritance Semantics
 
-- REQ-301: [!] [OVERRIDE] `extends` relationship creates parent-child semantic dependency
-- REQ-302: [!] [NEW] Child documents inherit parent's complete requirement set by default
-- REQ-303: [!] [NEW] Child requirements with matching parent REQ-IDs replace parent requirements
-- REQ-304: [NEW] `[INHERIT]` marker preserves parent requirement unchanged in child context
-- REQ-305: [NEW] `[OVERRIDE]` marker explicitly replaces parent requirement with new content
-- REQ-306: [NEW] `[NEW]` marker adds requirement not present in parent specification
-- REQ-307: [NEW] Requirements without inheritance markers inherit parent when REQ-IDs match
+- REQ-301: [!] `extends` relationship creates parent-child semantic dependency
+- REQ-302: [!] Child documents inherit parent's complete requirement set by default
+- REQ-303: [!] Child requirements with matching parent REQ-IDs replace parent requirements
+- REQ-304: `[INHERIT]` marker preserves parent requirement unchanged in child context
+- REQ-305: `[OVERRIDE]` marker explicitly replaces parent requirement with new content
+- REQ-306: `[NEW]` marker adds requirement not present in parent specification
+- REQ-307: Requirements without inheritance markers inherit parent when REQ-IDs match
 - REQ-308: [#validation] Inheritance chain creates acyclic directed graph of dependencies
 
 ### Marker Semantics
 
-- REQ-401: [!] [OVERRIDE] Quick markers modify semantic meaning of individual requirements
-- REQ-402: [!] [NEW] Priority markers indicate urgency and implementation order
-- REQ-403: [!] [NEW] `[!]` marker indicates critical priority requiring immediate attention
-- REQ-404: [NEW] `[?]` marker indicates uncertainty requiring clarification or research
-- REQ-405: [NEW] Status markers track requirement lifecycle and completion state
-- REQ-406: [NEW] `[x]` marker indicates requirement satisfaction and implementation completion
-- REQ-407: [NEW] `[ ]` marker indicates pending requirement awaiting implementation
-- REQ-408: [NEW] Assignment markers create responsibility relationships
-- REQ-409: [NEW] `[@user]` marker assigns requirement ownership to specific individual or team
-- REQ-410: [NEW] Tag markers enable requirement categorization and filtering
-- REQ-411: [NEW] `[#tag]` marker associates requirement with semantic category or feature set
+- REQ-401: [!] Quick markers modify semantic meaning of individual requirements
+- REQ-402: [!] Priority markers indicate urgency and implementation order
+- REQ-403: [!] `[!]` marker indicates critical priority requiring immediate attention
+- REQ-404: `[?]` marker indicates uncertainty requiring clarification or research
+- REQ-405: Status markers track requirement lifecycle and completion state
+- REQ-406: `[x]` marker indicates requirement satisfaction and implementation completion
+- REQ-407: `[ ]` marker indicates pending requirement awaiting implementation
+- REQ-408: Assignment markers create responsibility relationships
+- REQ-409: `[@user]` marker assigns requirement ownership to specific individual or team
+- REQ-410: Tag markers enable requirement categorization and filtering
+- REQ-411: `[#tag]` marker associates requirement with semantic category or feature set
 
 ### Template Semantics
 
