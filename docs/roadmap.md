@@ -14,6 +14,18 @@ MSL will become the industry standard for human-AI collaboration in software dev
 
 ## Release Schedule
 
+### Version 1.2.1 - Released (Metaspec Governance)
+**Released:** January 2025  
+**Theme:** Specification Governance Foundation
+
+#### Delivered Features
+- **Metaspec Governance Proposal** - New `governed-by` frontmatter field for explicit specification compliance
+- **CONFORMS-TO Relationship** - Distinct from inheritance (IS-A) and templates (DEFINES)
+- **Validation Foundation** - Enables automated compliance checking against metaspec requirements
+- **Composition Support** - Multiple metaspecs can govern a single specification
+
+See [docs/proposals/metaspec-governance.md](proposals/metaspec-governance.md) for details.
+
 ### Version 1.3.0 - Q2 2024 (AI Enhancement)
 **Target Date:** April 2024  
 **Theme:** Superior AI Integration
@@ -122,6 +134,7 @@ Based on community feedback, these features are highly requested:
 - Voice-to-specification transcription
 - Specification animation/visualization
 - Cross-specification dependency analysis
+- Metaspec governance (Proposed in v1.2.1, implementation planned)
 
 ## Contributing to the Roadmap
 
