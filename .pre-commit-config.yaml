@@ -1,0 +1,16 @@
+# Pre-commit configuration for MSL Specification project
+repos:
+  # MSL Linting for markdown files with MSL frontmatter
+  - repo: local
+    hooks:
+      - id: msl-lint
+        name: MSL Linter
+        entry: ./tools/hooks/pre-commit-msl-check.sh
+        language: system
+        files: '\.md$'
+        # Only run on files that contain MSL frontmatter or [MSL] marker
+        # This prevents running on regular markdown files
+        stages: [commit]
+        pass_filenames: true
+        verbose: true
+        description: "Validate MSL specifications for compliance"
