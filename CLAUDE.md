@@ -3,6 +3,34 @@
 ## Project Overview
 This repository contains the MSL (Markdown Specification Language) specification and its ecosystem. MSL is a progressive enhancement of markdown for writing formal specifications with requirements traceability, inheritance, and validation capabilities.
 
+## ⚠️ CRITICAL: Inheritance Rules
+
+**NEVER use `extends` unless there's a true "is-a" relationship!**
+
+Before using `extends: parent-spec`, ask:
+1. Is this spec truly a specialized type of the parent?
+2. Can I naturally say "X IS A Y"?
+3. Would ALL parent requirements apply to this child?
+
+**Common Mistakes to Avoid:**
+- ❌ DON'T: `extends: msl-l2-advanced` (unless creating a new MSL level)
+- ❌ DON'T: `extends: msl-docs-root` (doc specs are peers, not subtypes)
+- ❌ DON'T: Use extends for organizational hierarchy
+
+**Correct Patterns:**
+- ✅ DO: Use `msl: L1` or `msl: L2` to declare which MSL features you use
+- ✅ DO: Use `references:` for non-inheritance relationships
+- ✅ DO: Leave out `extends` entirely (most specs don't need it)
+
+**Valid Inheritance Examples:**
+```yaml
+# Valid: auth-api IS A rest-api
+extends: rest-api
+
+# Invalid: docs are not a type of language spec
+extends: msl-l2-advanced  # WRONG!
+```
+
 ## Project Structure
 ```
 msl-specification/
