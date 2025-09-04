@@ -32,6 +32,7 @@ This specification defines requirements for the MSL project README, which serves
 - REQ-103: [NEW] Must differentiate from alternatives (YAML, JSON, etc.)
 - REQ-104: [NEW] Must highlight key benefits: progressive, git-friendly, tool-optional
 - REQ-105: [NEW] Must include comparison table with other solutions
+- REQ-106: [!] [NEW] Must highlight self-referential architecture as proof of power
 
 ### Progressive Complexity Demonstration
 

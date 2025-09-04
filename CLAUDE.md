@@ -114,6 +114,15 @@ All MSL specifications should:
 2. **Validation is recursive**: Validators are specified in MSL
 3. **Quality matters**: All core specs score 88-95/100
 4. **Keep it simple**: Use lowest MSL level that meets needs
+5. **MSL uses metaspecs**: Core specs are governed by metaspecs written in MSL
+
+## Specification-Documentation Sync Requirements
+**IMPORTANT**: When updating MSL, always keep these in sync:
+- **Documentation specs** (`specs/documentation/*.md`) ↔️ **Actual docs** (`docs/*.md`)
+- **Agent specs** (`specs/applications/msl-validation-agent.md`) ↔️ **Agent definitions** (`.claude/agents/*.md`)  
+- **Tools spec** (`specs/applications/msl-tools-spec.md`) ↔️ **Tool implementations** (`tools/`)
+
+When modifying any of these, update both the specification and implementation together to maintain consistency.
 
 ## Development Workflow
 1. Write/modify specification

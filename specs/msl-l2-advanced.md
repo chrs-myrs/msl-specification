@@ -2,6 +2,7 @@
 msl: L2
 id: msl-l2-advanced
 extends: msl-l1-structure
+governed-by: [msl-core-metaspec, msl-language-metaspec]
 tags: [specification, level-2, advanced, complete]
 priority: high
 status: active

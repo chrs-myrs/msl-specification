@@ -1,3 +1,10 @@
+---
+msl: L0
+id: msl-l0-foundation
+governed-by: [msl-core-metaspec, msl-language-metaspec]
+tags: [specification, level-0, foundation]
+---
+
 # MSL Level 0: Foundation [MSL]
 
 ## Summary

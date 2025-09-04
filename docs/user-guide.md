@@ -10,16 +10,19 @@
 4. [Structuring Requirements](#structuring-requirements)
 5. [Using Inheritance](#using-inheritance)
 6. [Templates and Variables](#templates-and-variables)
-7. [Markers and Annotations](#markers-and-annotations)
-8. [Validation and Quality](#validation-and-quality)
-9. [Best Practices](#best-practices)
-10. [Common Patterns](#common-patterns)
-11. [Troubleshooting](#troubleshooting)
-12. [Quick Reference](#quick-reference)
+7. [Metaspecs and Governance](#metaspecs-and-governance)
+8. [Markers and Annotations](#markers-and-annotations)
+9. [Validation and Quality](#validation-and-quality)
+10. [Best Practices](#best-practices)
+11. [Common Patterns](#common-patterns)
+12. [Troubleshooting](#troubleshooting)
+13. [Quick Reference](#quick-reference)
 
 ## Introduction
 
 MSL (Markdown Specification Language) lets you write specifications that are both human-friendly and machine-processable. This guide covers everything from basic markdown specs to advanced inheritance patterns.
+
+> **🔮 Fun Fact:** MSL is so powerful that it specifies itself! The core MSL language specifications are written in MSL, governed by MSL metaspecs, and validated by MSL tools. This self-referential architecture proves MSL can handle any complexity level.
 
 ### Prerequisites
 
@@ -49,8 +52,9 @@ Choose your path based on your goals:
 1. Complete Intermediate Path
 2. [Using Inheritance](#using-inheritance)
 3. [Templates and Variables](#templates-and-variables)
-4. All best practices and patterns
-5. [Troubleshooting](#troubleshooting) deep dive
+4. [Metaspecs and Governance](#metaspecs-and-governance)
+5. All best practices and patterns
+6. [Troubleshooting](#troubleshooting) deep dive
 
 ## Writing Your First Specification
 
@@ -468,6 +472,99 @@ variables:
 - REQ-002: Host in {{region}} region
 - REQ-003: Set logging to {{log_level}} level
 ```
+
+## Metaspecs and Governance
+
+### Understanding Metaspecs
+
+Metaspecs are specifications that govern other specifications. They define structural requirements, quality standards, and validation rules that specifications must follow.
+
+> **The MSL Bootstrap:** MSL demonstrates its power by using metaspecs to govern its own core specifications. The language literally defines and validates itself!
+
+### The Three Relationship Types
+
+MSL supports three distinct relationships:
+
+| Relationship | Keyword | Meaning | Example |
+|-------------|---------|---------|---------|
+| **Inheritance** | `extends` | IS-A relationship | "Admin API IS-A REST API" |
+| **Governance** | `governed-by` | CONFORMS-TO relationship | "Payment API CONFORMS-TO PCI standards" |
+| **Template** | `type: template` | DEFINES pattern | "REST template DEFINES API pattern" |
+
+### Creating a Metaspec
+
+```markdown
+---
+id: rest-api-metaspec
+type: metaspec
+version: 1.0.0
+---
+
+# REST API Metaspec
+
+## Structural Requirements
+- MUST have ## Endpoints section
+- MUST have ## Authentication section
+- MUST have ## Error Handling section
+- MUST include rate limiting specifications
+
+## Quality Requirements
+- ALL endpoints MUST have examples
+- ALL errors MUST have descriptions
+- Authentication MUST specify token lifetime
+```
+
+### Using Governance
+
+Specifications declare their governance:
+
+```markdown
+---
+id: user-api
+governed-by: rest-api-metaspec
+---
+
+# User API
+
+[Must now conform to REST API metaspec requirements]
+```
+
+### Multiple Governance
+
+Specifications can be governed by multiple metaspecs:
+
+```markdown
+---
+id: payment-api
+governed-by: [rest-api-metaspec, pci-compliance-metaspec, security-metaspec]
+---
+```
+
+### Governance vs Inheritance
+
+**Use `extends` when:**
+- Creating a specialized version
+- Adding features to existing spec
+- Following IS-A relationship
+
+**Use `governed-by` when:**
+- Ensuring compliance with standards
+- Following architectural patterns
+- Meeting quality requirements
+
+### Self-Referential Example
+
+MSL's own core specifications demonstrate this:
+
+```markdown
+---
+id: msl-l2-advanced
+extends: msl-l1-structure        # IS-A Level 1 spec with more features
+governed-by: [msl-core-metaspec, msl-language-metaspec]  # CONFORMS-TO standards
+---
+```
+
+For complete metaspec documentation, see [Metaspec Patterns](patterns/metaspec-patterns.md).
 
 ## Markers and Annotations
 

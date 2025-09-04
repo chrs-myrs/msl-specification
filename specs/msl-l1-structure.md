@@ -2,6 +2,7 @@
 msl: L1
 id: msl-l1-structure
 extends: msl-l0-foundation
+governed-by: [msl-core-metaspec, msl-language-metaspec]
 tags: [specification, level-1]
 ---
 

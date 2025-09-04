@@ -33,6 +33,9 @@ In the age of AI assistants, the bottleneck isn't writing code—it's communicat
 - **✅ Validated**: Catch AI hallucinations before they become bugs  
 - **💾 Persistent Context**: Specifications survive session boundaries
 - **🚀 10x Productivity**: Stop prompt engineering, start specifying
+- **🔮 Self-Validating**: MSL is powerful enough to specify itself
+
+> **Fun fact:** The MSL language specification is written in MSL and validated by MSL. We eat our own dog food!
 
 [**→ Learn Why MSL is Essential for AI Development**](docs/why-msl.md)
 
@@ -148,6 +151,12 @@ Compliance team: Write security specifications
 - Start with Level 0
 - Add complexity only when needed
 - AI helps write specifications
+
+### 🔮 Self-Referential Architecture
+- **MSL is specified in MSL itself** - proving its power
+- Core specifications governed by metaspecs written in MSL
+- Self-validating system using its own features
+- [Learn about MSL's meta architecture →](docs/patterns/metaspec-patterns.md)
 
 ## Documentation
 

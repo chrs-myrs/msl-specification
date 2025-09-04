@@ -24,6 +24,7 @@ This specification defines requirements for the "Why MSL" documentation that art
 - REQ-003: [!] [NEW] Must show before/after comparison for each problem
 - REQ-004: [NEW] Must quantify benefits: time saved, errors reduced, adoption increased
 - REQ-005: [NEW] Must include ≥3 testimonials or case studies
+- REQ-006: [!] [NEW] Must explain self-referential architecture as proof of capability
 
 ### Target Audience
 

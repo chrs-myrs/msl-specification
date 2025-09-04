@@ -35,6 +35,8 @@ This specification defines requirements for comprehensive MSL user documentation
 - REQ-104: [NEW] Must explain validation and quality metrics
 - REQ-105: [NEW] Must cover template usage and variables
 - REQ-106: [NEW] Must explain markers and their semantics
+- REQ-107: [!] [NEW] Must explain metaspecs and governance relationships
+- REQ-108: [NEW] Must highlight self-referential architecture in introduction
 
 ### Best Practices
 
