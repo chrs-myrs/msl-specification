@@ -1,79 +1,89 @@
-# MSL Level 0: Foundation Specification
+# MSL Level 0: Foundation [MSL]
 
 ## Summary
 
-This specification defines the minimal structural requirements for Markdown Specification Language (MSL) documents using only pure markdown. MSL Level 0 forms the foundation upon which higher levels build additional features.
-
-MSL Level 0 requires no special tools, frontmatter, or complex syntax. Any markdown processor can render these specifications, making them universally accessible and human-readable.
+MSL Level 0 is the foundation of Markdown Specification Language. It's simply markdown with a requirements section. No special tools needed, no complex syntax to learn. If you can write markdown, you can write MSL Level 0.
 
 ## Requirements
 
-### Document Structure
+### Core Structure
 
-- MSL documents must have a title as the first heading level 1
-- Title must use hash syntax with single hash and space
-- Document title should describe the system, feature, or component being specified
-- Title must be followed by at least one section
+- Documents should have a title using a level-1 markdown heading
+- Documents should include a "Requirements" section with a level-2 heading  
+- Requirements should be listed using markdown bullet points (dashes)
+- Each requirement should describe a specific capability, constraint, or behavior of the system
+- Requirements should be testable - specific enough to determine unambiguously whether they are satisfied
+- Documents remain valid markdown files viewable in any markdown reader
+- Documents with empty Requirements sections are not valid MSL specifications
+- Nested requirements using indentation are permitted but not required
 
-### Requirements Section
+### Optional Identification
 
-- MSL documents must contain exactly one section titled "Requirements"
-- Requirements section must use heading level 2 syntax  
-- Requirements section heading must be exactly "## Requirements"
-- Requirements section must contain at least one requirement
+- Documents should include `[MSL]` in their title for explicit identification
+- Documents should include a link to the MSL specification repository
+- These identification methods are encouraged but optional - a Requirements section is sufficient for L0
 
-### Requirement Format
+## Examples
 
-- Requirements must be written as markdown list items
-- List items must use dash syntax with space after dash
-- Each requirement must be a single list item
-- Requirements should be clear, testable, and specific
-- Requirements may contain sub-items using indented list syntax
+### Minimal MSL Level 0 Document
 
-### Content Guidelines  
+```markdown
+# Login System
 
-- Requirements should avoid implementation details when possible
-- Requirements should focus on what the system must do, not how
-- Requirements may reference other requirements within the same document
-- Requirements should be written in present tense
-- Requirements should use "must", "should", or "may" to indicate necessity level
+## Requirements
+- Users can log in with email and password
+- Sessions expire after 30 minutes of inactivity
+- Failed login attempts lock account after 5 tries
+```
 
-### Optional Sections
+### With Title Identification
 
-- Documents may include additional sections beyond Requirements
-- Common optional sections include Summary, Notes, Examples
-- Optional sections must use heading level 2 or lower
-- Optional sections may appear before or after Requirements section
-- Custom sections are permitted for domain-specific needs
+```markdown
+# Login System [MSL]
 
-### File Format
+## Requirements
+- Users can log in with email and password
+- Sessions expire after 30 minutes of inactivity
+- Failed login attempts lock account after 5 tries
+```
 
-- MSL documents must use markdown file extension (.md)
-- Documents must be valid markdown that renders in standard processors
-- Documents should use UTF-8 encoding
-- Line endings may be Unix (LF) or Windows (CRLF)
-- Filenames should be descriptive and use kebab-case when possible
+### With MSL Link
 
-### Markdown Compatibility
+```markdown
+# Shopping Cart Feature
 
-- MSL Level 0 must be compatible with CommonMark specification
-- Documents must render correctly in GitHub-flavored markdown
-- Documents should avoid markdown extensions that break compatibility
-- Code blocks, tables, and other markdown features may be used in content
-- Links and references follow standard markdown syntax
+## Summary
+Basic shopping cart functionality for e-commerce site.
 
-### Processing Expectations
+## Requirements
+- Users can add items to cart
+- Users can remove items from cart
+- Cart calculates total including tax
+- Cart persists across browser sessions
 
-- MSL Level 0 documents can be processed by any markdown renderer
-- Document structure can be extracted using standard markdown parsers
-- Requirements can be identified by finding "## Requirements" section
-- List items under Requirements section represent individual requirements
-- No special MSL processing tools are required for Level 0
+## Notes
+Specified using [MSL](https://github.com/chrs-myrs/msl-specification)
+```
+
+### With Both Identifiers
+
+```markdown
+# Payment Processing [MSL]
+
+## Requirements
+- Process credit card payments securely
+- Support refunds within 30 days
+- Generate receipts for all transactions
+
+---
+*Specification format: [MSL Level 0](https://github.com/chrs-myrs/msl-specification)*
+```
 
 ## Notes
 
-MSL Level 0 provides the foundation for more advanced MSL features. This specification itself demonstrates MSL Level 0 compliance by using only standard markdown syntax.
+This specification defines MSL Level 0 using MSL Level 0 format itself. The beauty of Level 0 is its simplicity - it's just markdown with requirements. No tooling required, no syntax to memorize, just write what your system needs to do.
 
-The key insight of MSL Level 0 is that useful specifications can be written with minimal syntax while remaining completely compatible with existing markdown tools and workflows.
+Level 0 documents can be enhanced with Level 1 features (IDs, frontmatter) or Level 2 features (markers, templates) when needed, but they work perfectly well as simple markdown files.
 
-Higher MSL levels build upon this foundation by adding structured metadata, requirement IDs, inheritance, and other advanced features, but all MSL documents must remain valid Level 0 documents at their core.
+---
+*Specification format: [MSL Level 0](https://github.com/chrs-myrs/msl-specification)*

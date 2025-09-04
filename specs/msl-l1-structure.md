@@ -1,116 +1,122 @@
 ---
+msl: L1
 id: msl-l1-structure
 extends: msl-l0-foundation
 tags: [specification, level-1]
 ---
 
-# MSL Level 1: Structured Specification
+# MSL Level 1: Structured Specifications [MSL]
 
 ## Summary
 
-MSL Level 1 extends MSL Level 0 by adding YAML frontmatter and structured requirement identifiers. This level enables document referencing, requirement tracking, and basic inheritance while maintaining full compatibility with Level 0.
-
-Level 1 specifications can be processed by markdown renderers (ignoring frontmatter) or by MSL-aware tools that understand metadata and inheritance.
+MSL Level 1 extends Level 0 by adding optional structure through YAML frontmatter and requirement IDs. These features enable document referencing, requirement tracking, and basic inheritance while maintaining full backward compatibility. Everything new in Level 1 is optional - plain Level 0 documents are valid Level 1.
 
 ## Requirements
 
-### Level 0 Inheritance
+### Foundation Requirements
 
-- REQ-001: [INHERIT] All MSL Level 0 document structure requirements
-- REQ-002: [INHERIT] Requirements section format and content guidelines
-- REQ-003: [INHERIT] Markdown compatibility and processing expectations
+- Documents inherit all Level 0 requirements (title, requirements section, markdown compatibility)
+- Documents without Level 1 features remain valid Level 1 specifications
+- Level 1 processors should handle Level 0 documents transparently
 
-### YAML Frontmatter
+### Frontmatter Features
 
-- REQ-101: MSL Level 1 documents should include YAML frontmatter block
-- REQ-102: Frontmatter must begin and end with three dashes on separate lines
-- REQ-103: Frontmatter must contain valid YAML syntax
-- REQ-104: Frontmatter must be placed at the beginning of the document
-- REQ-105: Documents without frontmatter are valid Level 0 and should be processed accordingly
-
-### Document Identification
-
-- REQ-201: Frontmatter should include an "id" field with unique identifier
-- REQ-202: Document ID must be a string using kebab-case format
-- REQ-203: Document ID must be unique within the specification set
-- REQ-204: When no ID is specified, filename without extension becomes implicit ID
-- REQ-205: IDs enable referencing documents from other MSL specifications
+- Documents may include YAML frontmatter between triple-dash delimiters at the start
+- Frontmatter may contain an `id` field to uniquely identify the document
+- Frontmatter may contain an `extends` field to inherit from another specification
+- Frontmatter may contain a `tags` field with an array of classification strings
+- Frontmatter may contain `status` (draft, active, complete, deprecated) and `priority` (low, medium, high, critical) fields
+- Documents without frontmatter are processed as standard Level 0 specifications
 
 ### Requirement Identifiers
 
-- REQ-301: Requirements may include explicit identifiers using REQ-NNN format
-- REQ-302: Requirement IDs must be unique within a single document
-- REQ-303: Requirement IDs should use sequential numbering starting from 001
-- REQ-304: Requirement ID must be followed by colon and space before requirement text
-- REQ-305: Requirements without explicit IDs are valid but cannot be referenced externally
+- Requirements may begin with `REQ-NNN:` format for unique identification
+- REQ-IDs enable precise requirement referencing within and across documents
+- REQ-IDs must be unique within a single document - processors should warn about duplicates
+- Requirements without REQ-IDs are valid but cannot be externally referenced
+- REQ-ID numbers suggest logical grouping but don't enforce order
+- Duplicate REQ-IDs should generate warnings but not prevent processing
 
 ### Basic Inheritance
 
-- REQ-401: Frontmatter may include "extends" field referencing parent document ID
-- REQ-402: Child documents inherit all requirements from parent documents
-- REQ-403: Child documents may add new requirements not present in parent
-- REQ-404: Inheritance creates a parent-child relationship between specifications
-- REQ-405: Circular inheritance references are invalid and must be rejected
+- Documents with `extends` field inherit all requirements from the parent document
+- Child documents may add new requirements not in the parent
+- Child requirements with matching REQ-IDs replace parent requirements
+- Inheritance creates reusable specification hierarchies
 
-### Metadata Fields
+### Processing Conventions
 
-- REQ-501: Frontmatter may include "tags" field as array of classification strings
-- REQ-502: Frontmatter may include "status" field indicating document lifecycle stage
-- REQ-503: Valid status values include draft, active, complete, deprecated
-- REQ-504: Frontmatter may include custom fields for organizational needs
-- REQ-505: Unknown frontmatter fields should be preserved but ignored by MSL processors
+- Tools should parse YAML frontmatter when present to extract metadata
+- Tools should build requirement indices using REQ-IDs for cross-referencing
+- Tools should resolve inheritance chains depth-first from parent to child
+- Tools must warn about duplicate REQ-IDs within a document
+- Tools must warn about references to non-existent parent documents
+- Tools must treat malformed YAML frontmatter as body content and process as Level 0
+- Circular inheritance references must be detected and reported as errors
 
-### Processing Requirements
+### Identification Methods
 
-- REQ-601: MSL Level 1 processors must parse YAML frontmatter
-- REQ-602: Processors must extract document ID from frontmatter or filename
-- REQ-603: Processors must identify requirements with explicit REQ-NNN identifiers
-- REQ-604: Processors must validate requirement ID uniqueness within documents
-- REQ-605: Processors should provide warnings for missing or malformed IDs
-- REQ-606: Level 1 processors must maintain backward compatibility with Level 0
-
-### Validation Rules
-
-- REQ-701: Documents with malformed YAML frontmatter should be treated as Level 0
-- REQ-702: Duplicate requirement IDs within a document must be flagged as errors
-- REQ-703: References to non-existent parent documents must be flagged as errors
-- REQ-704: Processors should validate that inherited requirements exist in parent
-- REQ-705: Documents must remain valid when frontmatter is stripped
+- Level 1 documents inherit L0's encouraged identification methods (`[MSL]` in title, MSL repository link)
+- Presence of YAML frontmatter itself serves as Level 1 identification
+- Frontmatter should include `msl: L1` field for explicit level identification
+- Documents are implicitly identified by frontmatter + Requirements section combination
 
 ## Examples
 
-### Minimal Level 1 Document
+### Simple Level 1 Document
 
 ```markdown
 ---
-id: example-spec
+msl: L1
+id: user-authentication
+tags: [security, backend]
+status: active
 ---
 
-# Example Specification
+# User Authentication [MSL]
 
 ## Requirements
-- REQ-001: System must handle user input
-- REQ-002: System must provide feedback
+- REQ-001: Support email/password authentication
+- REQ-002: Implement OAuth2 for third-party login
+- REQ-003: Provide password reset via email
 ```
 
 ### Document with Inheritance
 
 ```markdown
 ---
-id: child-spec
-extends: parent-spec
-tags: [feature, backend]
+id: admin-authentication
+extends: user-authentication
 ---
 
-# Child Specification
+# Admin Authentication
 
 ## Requirements
-- REQ-001: New requirement specific to child
-- REQ-002: Another child-specific requirement
+- REQ-001: Support email/password with 2FA required
+- REQ-004: Require hardware key for sensitive operations
+- REQ-005: Log all authentication attempts
+```
+
+### Minimal Frontmatter
+
+```markdown
+---
+id: payment-processing
+---
+
+# Payment Processing
+
+## Requirements
+- Process credit card payments
+- Support refunds within 30 days
+- Generate receipts for all transactions
 ```
 
 ## Notes
 
-MSL Level 1 provides the structured foundation needed for requirement management while preserving the simplicity and accessibility of Level 0. The addition of frontmatter and IDs enables tooling support without compromising human readability.
+Level 1 provides just enough structure for teams that need requirement tracking and document relationships. The YAML frontmatter is ignored by standard markdown viewers, maintaining universal readability while enabling tool support.
 
-Level 1 specifications can be processed by standard markdown tools (which ignore frontmatter) or by MSL-aware processors that understand inheritance and provide additional validation and processing capabilities.
+All Level 1 features are optional enhancements. Use what helps your workflow, ignore what doesn't. When you need more advanced features like markers and templates, Level 2 is waiting.
+
+---
+*Specification format: [MSL Level 1](https://github.com/chrs-myrs/msl-specification)*
