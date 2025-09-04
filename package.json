@@ -1,13 +1,19 @@
 {
   "name": "msl-specification",
-  "version": "1.1.0",
-  "description": "Markdown Specification Language - Lightweight specifications that grow with your needs",
+  "version": "1.2.0",
+  "description": "Markdown Specification Language - Bridge human intent and AI implementation",
   "keywords": [
     "markdown",
     "specification",
     "requirements",
     "documentation",
-    "msl"
+    "msl",
+    "ai",
+    "llm",
+    "claude",
+    "chatgpt",
+    "ai-development",
+    "human-ai-collaboration"
   ],
   "homepage": "https://github.com/chrs-myrs/msl-specification",
   "bugs": {
