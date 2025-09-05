@@ -5,8 +5,8 @@
 ## 30-Second Quickstart
 
 ```bash
-# Install MSL
-npm install -g msl-tools
+# MSL is a specification language - no installation needed!
+# Just write markdown with requirements:
 
 # Create your first specification
 echo '# Login Feature
@@ -195,25 +195,19 @@ Processes entire specification suites, identifies patterns, generates reports.
 
 [**→ Claude Code Agent Documentation**](docs/tools.md#claude-code-agents)
 
-## Installation
+## Using MSL
 
-### Quick Install
-```bash
-npm install -g msl-tools
+MSL is just enhanced markdown - no installation needed! Write your specifications anywhere using the patterns shown in the examples above.
+
+```markdown
+# Your Project Specification
+
+## Requirements
+- REQ-001: Clear requirement statement
+- REQ-002: Another requirement
 ```
 
-### Add to Project
-```bash
-npm install --save-dev msl-tools
-
-# Add to package.json
-{
-  "scripts": {
-    "validate": "msl-validate ./specs",
-    "spec-check": "msl-validate --min-score 85"
-  }
-}
-```
+That's it! Give your MSL specifications to AI assistants like Claude for implementation.
 
 ### CI/CD Integration
 ```yaml

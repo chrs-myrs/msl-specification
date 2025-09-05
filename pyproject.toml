@@ -3,34 +3,19 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "msl-tools"
-version = "0.1.0"
-description = "Tools for working with Markdown Specification Language (MSL)"
+name = "msl-specification"
+version = "1.5.0"
+description = "Markdown Specification Language - A specification format, not a package"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "MSL Contributors"},
 ]
-maintainers = [
-    {name = "MSL Contributors"},
-]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Documentation",
-    "Topic :: Text Processing :: Markup :: Markdown",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-]
-keywords = ["markdown", "specification", "documentation", "requirements"]
+keywords = ["specification", "markdown", "documentation", "requirements"]
 requires-python = ">=3.8"
+# Minimal dependencies for optional tools only
 dependencies = [
-    "PyYAML>=6.0",
+    "PyYAML>=6.0",  # For parsing frontmatter in validation tools
 ]
 
 [project.optional-dependencies]
@@ -39,10 +24,12 @@ render = [
 ]
 dev = [
     "pytest>=7.0",
+    "pytest-timeout>=2.0",
     "pytest-cov>=4.0",
     "black>=23.0",
     "flake8>=6.0",
     "mypy>=1.0",
+    "pre-commit>=3.0",
 ]
 
 [project.urls]
@@ -51,9 +38,8 @@ Documentation = "https://github.com/chrs-myrs/msl-specification/tree/master/docs
 Issues = "https://github.com/chrs-myrs/msl-specification/issues"
 Repository = "https://github.com/chrs-myrs/msl-specification"
 
-[project.scripts]
-msl-lint = "tools.cli.msl_lint:main"
-msl-render = "tools.cli.msl_render:main"
+# Note: Tools are optional - MSL is a specification, not software to install
+# Run tools directly: python3 tools/cli/msl-lint.py
 
 [tool.setuptools]
 packages = ["tools", "tools.lib", "tools.cli"]
@@ -62,10 +48,11 @@ packages = ["tools", "tools.lib", "tools.cli"]
 msl = ["schemas/*.json", "schemas/*.yaml"]
 
 [tool.pytest.ini_options]
-testpaths = ["tools/tests"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
 
 [tool.black]
 line-length = 100

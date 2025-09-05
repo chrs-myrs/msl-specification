@@ -27,7 +27,7 @@
   - [x] msl-batch-validator agent
 
 ### Version Updates
-- [ ] Update version in package.json to 1.2.0
+- [ ] Update version in pyproject.toml to 1.2.0
 - [ ] Update version in README.md badges
 - [ ] Update version in specs
 - [ ] Tag release in git

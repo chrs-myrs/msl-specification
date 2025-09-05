@@ -1,7 +1,14 @@
 # MSL Specification Project - Claude Code Instructions
 
 ## Project Overview
-This repository contains the MSL (Markdown Specification Language) specification and its ecosystem. MSL is a progressive enhancement of markdown for writing formal specifications with requirements traceability, inheritance, and validation capabilities.
+This repository contains the MSL (Markdown Specification Language) specification. MSL is a specification format/language - NOT a software package to be installed. It's a way of writing markdown that both humans and AI can understand. The repository includes:
+
+1. **The MSL specification itself** (in `/specs/`) - defines the language
+2. **Documentation** (in `/docs/`) - how to use MSL
+3. **Optional validation tools** (in `/tools/`) - helpers for checking MSL files
+4. **Examples** (in `/examples/`) - sample MSL documents
+
+**Important:** Users don't "install" MSL - they just write markdown following MSL conventions.
 
 ## ⚠️ CRITICAL: Inheritance Rules
 
@@ -136,3 +143,4 @@ When modifying any of these, update both the specification and implementation to
 - Core Specs: `/specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md`
 - Standards: `/specs/standards/msl-usage-standards.md`
 - Tools: `/specs/applications/msl-tools-spec.md`
+- Run the pre-push completeness checker prior to any git push
