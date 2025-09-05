@@ -57,6 +57,9 @@ This specification serves as the implementation guide for MSL toolchain develope
 
 - REQ-401: [!] [@msl-tools] Processors must extract REQ-XXX identifiers and requirement text
 - REQ-402: [!] [@msl-tools] Processors must parse and interpret quick markers correctly
+- REQ-402.1: [NEW] Processors must support composite markers with pipe-separated components (v1.4.0+)
+- REQ-402.2: [NEW] Processors must parse key:value pairs within composite markers for metrics and metadata
+- REQ-402.3: [NEW] Processors must validate marker combinations for consistency (e.g., not both blocked and complete)
 - REQ-403: [@msl-tools] Processors must validate REQ-ID uniqueness within documents
 - REQ-404: [@msl-tools] Processors must support nested requirement lists with proper indentation
 - REQ-405: [@msl-tools] Processors must preserve requirement text formatting and markdown syntax

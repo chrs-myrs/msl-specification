@@ -568,50 +568,152 @@ For complete metaspec documentation, see [Metaspec Patterns](patterns/metaspec-p
 
 ## Markers and Annotations
 
-### Priority Markers
+### Simple Markers (v1.0+)
+
+#### Priority Markers
 
 Indicate requirement importance:
 
 ```markdown
 ## Requirements
 - REQ-001: [!] Critical security requirement
-- REQ-002: [!!] Blocker - must have for launch
+- REQ-002: [!!] Urgent blocker - must have for launch
 - REQ-003: Standard priority (no marker)
-- REQ-004: [?] Nice to have, optional feature
+- REQ-004: [~] Low priority, nice to have
+- REQ-005: [?] Uncertain, needs clarification
 ```
 
-### Assignment Markers
+#### Assignment Markers
 
 Track responsibility:
 
 ```markdown
 ## Requirements
-- REQ-001: [@backend] API endpoint implementation
-- REQ-002: [@frontend] UI component development
-- REQ-003: [@qa] Test case creation
-- REQ-004: [@devops] Deployment configuration
+- REQ-001: [@alice] API endpoint implementation
+- REQ-002: [@bob] UI component development
+- REQ-003: [@team-qa] Test case creation
+- REQ-004: [@role:architect] System design
 ```
 
-### Status Markers
+#### Status Markers
 
 Track implementation state:
 
 ```markdown
 ## Requirements
-- REQ-001: [✓] Completed requirement
-- REQ-002: [⚠] In progress with issues
-- REQ-003: [✗] Blocked by dependencies
-- REQ-004: [→] Deferred to next release
+- REQ-001: [x] Completed requirement
+- REQ-002: [ ] Pending requirement
+- REQ-003: [?] Uncertain status
 ```
 
-### Tag Markers
+#### Tag Markers
 
 Categorize requirements:
 
 ```markdown
 ## Requirements
 - REQ-001: [#security] Encryption requirement
-- REQ-002: [#performance] [#critical] Response time requirement
+- REQ-002: [#performance] Response time requirement
+```
+
+### Composite Markers (v1.4.0+)
+
+Composite markers allow multiple metadata elements in a single bracket, separated by pipes (`|`).
+
+#### Basic Composite Syntax
+
+```markdown
+## Requirements
+- REQ-001: [!|security|@team-security] Critical security vulnerability fix
+- REQ-002: [blocked|external|vendor:acme] Third-party dependency
+- REQ-003: [mvp|tested|deployed] Core feature ready for production
+```
+
+#### Priority and Status Combinations
+
+```markdown
+## Requirements
+- REQ-001: [!!|blocked] Urgent but blocked by dependencies
+- REQ-002: [~|review] Low priority item in review
+- REQ-003: [!|testing|sprint:15] Critical feature in testing for sprint 15
+```
+
+#### Progress and Metrics
+
+Track quantitative data with key:value pairs:
+
+```markdown
+## Requirements
+- REQ-001: [stage:implementation|progress:60%] Core module development
+- REQ-002: [stage:testing|coverage:85%|confidence:high] Validation logic
+- REQ-003: [estimate:5d|actual:7d|variance:+2d] Complex migration task
+- REQ-004: [sprint:15|milestone:v1.0|phase:2] Feature for release
+```
+
+#### Dependencies and Relationships
+
+Express requirement relationships:
+
+```markdown
+## Requirements
+- REQ-001: Core authentication module
+- REQ-002: [depends:REQ-001] User profile management
+- REQ-003: [blocks:REQ-004,REQ-005] Database migration
+- REQ-004: [after:REQ-003|parallel:REQ-005] UI component
+- REQ-005: [after:REQ-003|parallel:REQ-004] API endpoint
+```
+
+#### Gap Detection
+
+Identify missing pieces:
+
+```markdown
+## Requirements
+- REQ-001: [gap:test] Payment processing - needs test coverage
+- REQ-002: [gap:doc] Complex algorithm - needs documentation
+- REQ-003: [gap:implementation] Planned feature - not yet built
+- REQ-004: [gap:review:security] Encryption - needs security review
+```
+
+#### Complex Real-World Examples
+
+```markdown
+## Requirements
+- REQ-001: [!|security|stage:implementation|progress:75%] Payment encryption module
+  - Critical security feature currently being implemented
+  
+- REQ-002: [mvp|depends:REQ-001|estimate:3d|@team-backend] Payment processing
+  - MVP feature dependent on encryption, estimated 3 days
+  
+- REQ-003: [blocked|external|vendor:stripe|eta:2025-Q1] Stripe webhook integration
+  - Blocked by external vendor, expected Q1 2025
+  
+- REQ-004: [stage:deployed:prod|version:v1.2.0|confidence:high] User authentication
+  - Deployed to production in v1.2.0 with high confidence
+```
+
+### Marker Categories Reference
+
+| Category | Purpose | Examples |
+|----------|---------|----------|
+| **Priority** | Importance level | `!` (critical), `!!` (urgent), `~` (low) |
+| **Status** | Current state | `blocked`, `testing`, `review`, `complete` |
+| **Assignment** | Ownership | `@user`, `@team-name`, `@role:architect` |
+| **Stage** | Lifecycle phase | `stage:design`, `stage:testing`, `stage:deployed:env` |
+| **Metrics** | Quantitative data | `progress:60%`, `coverage:85%`, `estimate:5d` |
+| **Dependencies** | Relationships | `depends:REQ-X`, `blocks:REQ-Y`, `after:REQ-Z` |
+| **Gaps** | Missing pieces | `gap:test`, `gap:doc`, `gap:implementation` |
+| **Categories** | Classification | `security`, `performance`, `ui`, `api` |
+| **Flags** | Boolean markers | `mvp`, `tested`, `deployed`, `external` |
+
+### Validation Rules
+
+Composite markers are validated for:
+- **Progress/Coverage**: Must be 0-100%
+- **Confidence**: Must be high/medium/low
+- **Stage**: Must be valid lifecycle stage
+- **Dependencies**: Must reference valid requirement IDs
+- **Conflicts**: Cannot be both blocked and complete
 - REQ-003: [#ux] [#accessibility] Screen reader support
 - REQ-004: [#compliance] [#gdpr] Data retention policy
 ```

@@ -1,7 +1,7 @@
 ---
 msl: L2
 id: msl-usage-standards
-extends: msl-l2-advanced
+references: [msl-l2-advanced]
 tags: [standards, best-practices, quality, architecture]
 priority: critical
 status: active

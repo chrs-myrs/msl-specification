@@ -26,90 +26,97 @@ MSL will become the industry standard for human-AI collaboration in software dev
 
 See [docs/proposals/metaspec-governance.md](proposals/metaspec-governance.md) for details.
 
-### Version 1.3.0 - Q2 2024 (AI Enhancement)
-**Target Date:** April 2024  
-**Theme:** Superior AI Integration
+### Version 1.3.0 - Q1 2025 (Foundation Complete)
+**Target Date:** February 2025  
+**Theme:** Core Tools & Validation
 
 #### Committed Features
-| Feature | Priority | Effort | Assignee | Description |
-|---------|----------|--------|----------|-------------|
-| AI Prompt Templates | High | Large | @ai-team | Pre-built prompts for common patterns |
-| Context Optimization | High | Medium | @core-team | Minimize tokens while maximizing clarity |
-| Multi-AI Validation | High | Large | @validation-team | Test specs across ChatGPT, Claude, Gemini |
-| Spec-to-Test Generation | High | Medium | @tools-team | Generate test suites from specifications |
-| AI Readiness Scoring v2 | Medium | Small | @validation-team | Enhanced AI compatibility checks |
+| Feature | Priority | Effort | Status | Description |
+|---------|----------|--------|--------|-------------|
+| Python Package | High | 2w | In Progress | PyPI distribution of tools |
+| Comprehensive Test Suite | High | 2w | In Progress | Full test coverage |
+| JSON Schema Validation | High | 1w | In Progress | Schema-based validation |
+| Pre-commit Hooks | High | Done | ✅ | MSL linting on commit |
 
-#### Tentative Features
-- Real-time AI assistance in editors
-- Specification debugging with AI
-- Cross-AI compatibility reports
-
-### Version 1.4.0 - Q3 2024 (Enterprise Scale)
-**Target Date:** July 2024  
-**Theme:** Production-Ready for Large Teams
+### Version 1.4.0 - Q1 2025 (Quick Wins)
+**Target Date:** March 2025  
+**Theme:** Enhanced Expressiveness
 
 #### Committed Features
-| Feature | Priority | Effort | Assignee | Description |
-|---------|----------|--------|----------|-------------|
-| Specification Versioning | High | Large | @core-team | Git-like branching for specs |
-| Access Control | High | Medium | @security-team | Role-based specification permissions |
-| Audit Logging | High | Medium | @compliance-team | Complete change history tracking |
-| Enterprise Templates | Medium | Large | @patterns-team | Industry-specific templates |
-| Performance Optimization | High | Medium | @perf-team | Handle 10,000+ specifications |
+| Feature | Priority | Effort | Description |
+|---------|----------|--------|-------------|
+| **Hierarchical Requirements** | Critical | 2w | Nested requirements with parent-child relationships |
+| **Composite Markers** | High | 1w | Rich metadata with `[priority\|status\|@owner]` syntax |
+| **Validation Rules Config** | High | 2w | Project-specific `.mslrc` validation configuration |
 
-#### Tentative Features
-- Specification merge conflict resolution
-- Automated specification reviews
-- Compliance reporting (SOC2, ISO)
+#### Technical Details
+- **Hierarchical**: `REQ-001.1`, `REQ-001.2` for sub-requirements
+- **Composite**: Multiple markers in single brackets separated by pipes
+- **Validation**: Custom rules, severity levels, project standards
 
-### Version 2.0.0 - Q4 2024 (Next Generation)
-**Target Date:** October 2024  
-**Theme:** MSL Reimagined for AI-First Development
+### Version 1.5.0 - Q2 2025 (LiveSync Core)
+**Target Date:** May 2025  
+**Theme:** Bidirectional Code Synchronization
 
 #### Committed Features
-| Feature | Priority | Effort | Assignee | Description |
-|---------|----------|--------|----------|-------------|
-| MSL Level 3 | High | XLarge | @lang-team | Advanced features for complex systems |
-| Native AI Integration | High | XLarge | @ai-team | Built-in AI assistant support |
-| Visual Specification Editor | Medium | Large | @ui-team | Drag-drop specification builder |
-| Specification Marketplace | Medium | Large | @community-team | Share/sell specification templates |
-| Breaking Changes | High | Medium | @core-team | Remove deprecated features |
+| Feature | Priority | Effort | Description |
+|---------|----------|--------|-------------|
+| **Bidirectional Code Links** | Critical | 4w | `[↔ src/auth.js:45-67]` live sync |
+| **Lifecycle Stage Markers** | High | 2w | `[stage:design]`, `[stage:testing]` tracking |
+| **Gap Detection** | High | 3w | `[gap:test]`, `[gap:doc]` automatic detection |
 
-#### Breaking Changes
-- Remove `inherits` keyword (use `extends`)
-- Remove XML export support
-- Require Node.js 16+
-- New validation scoring algorithm
+#### LiveSync Architecture
+- **Forward Sync**: Spec → Code generation and updates
+- **Backward Sync**: Code → Spec extraction and updates
+- **Conflict Resolution**: Automated and manual merge strategies
+- **Real-time Monitoring**: Continuous consistency checking
 
-## Long-Term Vision (2025-2026)
+### Version 1.6.0 - Q3 2025 (Enterprise Ready)
+**Target Date:** August 2025  
+**Theme:** Team Collaboration & Advanced Features
 
-### 2025 Goals
-- **IDE Integration** - First-class support in VS Code, IntelliJ, Vim
-- **AI Training** - MSL-specific fine-tuning for major models
-- **Industry Standards** - Work with standards bodies for adoption
-- **Academic Curriculum** - MSL in computer science programs
-- **1 Million Developers** - Active MSL users worldwide
+#### Committed Features
+| Feature | Priority | Effort | Description |
+|---------|----------|--------|-------------|
+| **Dependency Markers** | High | 2w | `[depends:REQ-001]`, `[blocks:REQ-002]` |
+| **Review Workflow** | High | 3w | `[review:pending]`, approval tracking |
+| **Typed Template Variables** | Medium | 3w | Schema-validated template parameters |
+| **Inline Metadata** | Medium | 1w | Rich nested metadata under requirements |
 
-### 2026 Goals
-- **Self-Evolving Specifications** - AI suggests spec improvements
-- **Cross-Language Support** - Generate specs from any programming language
-- **Regulation Compliance** - Built-in support for GDPR, CCPA, etc.
-- **AI Governance** - Control AI behavior through specifications
-- **10 Million Developers** - MSL as default for AI development
+#### Enterprise Features
+- **Dependency Graph**: Critical path analysis, bottleneck detection
+- **Review States**: pending, approved, changes-requested, blocked
+- **Template Types**: string, number, boolean, array, object with validation
+- **Metadata Schema**: Estimate, risk, complexity, stakeholders
 
-## Current Development (Q1 2024)
+## Long-Term Vision (Q4 2025 and Beyond)
+
+### Q4 2025 Goals
+- **IDE Integration** - VS Code extension with LiveSync
+- **AI Training** - MSL-aware AI models
+- **Visual Editor** - Web-based specification builder
+- **Tool Ecosystem** - Rich CLI, API, and library support
+
+### 2026 Goals  
+- **Industry Standard** - MSL as the de facto spec language
+- **Full LiveSync Platform** - Complete bidirectional development
+- **AI Co-Development** - Specifications guide AI implementation
+- **Enterprise Scale** - Support for 10,000+ spec projects
+- **Global Adoption** - 100,000+ active developers
+
+## Current Development (Q1 2025)
 
 ### In Progress
-- [ ] Documentation rewrite (90% complete)
-- [ ] Claude Code agent improvements (75% complete)
-- [ ] Tutorial expansion (80% complete)
-- [ ] Context7 MCP optimization (60% complete)
+- [ ] Python package for PyPI (80% complete)
+- [ ] Comprehensive test suite (70% complete) 
+- [ ] JSON Schema validation (60% complete)
+- [x] Pre-commit hooks (complete)
 
 ### Recently Completed
-- [x] AI-first positioning
-- [x] Comprehensive validation improvements
-- [x] Inheritance rule clarification
-- [x] Template system enhancements
+- [x] MSL v1.2.1 with metaspec governance
+- [x] Documentation restructure
+- [x] Claude Code agents
+- [x] Core validation tools
 
 ## Community Priorities
 
@@ -203,8 +210,8 @@ Support MSL development:
 
 ---
 
-**Updated:** 2024-01-15  
-**Next Review:** 2024-04-01  
+**Updated:** 2025-01-04  
+**Next Review:** 2025-02-01  
 **Maintainer:** MSL Core Team
 
 *This roadmap is subject to change based on community feedback and technical discoveries.*

@@ -131,6 +131,10 @@ class MSLValidator:
                     "warning",
                     f"Empty requirement at position {i + 1}"
                 ))
+            
+            # Validate composite markers
+            if req.get("markers") or req.get("metrics"):
+                issues.extend(self._validate_composite_markers(req, i))
                 
         # Check for sequential IDs (optional)
         if self.strict:
@@ -143,6 +147,117 @@ class MSLValidator:
                     "Requirement IDs are not sequential"
                 ))
                 
+        return issues
+    
+    def _validate_composite_markers(self, requirement: Dict[str, Any], index: int) -> List[ValidationIssue]:
+        """Validate composite markers for consistency and correctness."""
+        issues = []
+        req_id = requirement.get("id", f"requirement {index + 1}")
+        
+        # Check for conflicting status markers
+        status = requirement.get("status")
+        markers = requirement.get("markers", {})
+        
+        if status == "blocked" and status == "complete":
+            issues.append(ValidationIssue(
+                "error",
+                f"Conflicting status in {req_id}: cannot be both blocked and complete"
+            ))
+        
+        # Validate metrics values
+        metrics = requirement.get("metrics", {})
+        
+        # Validate progress percentage
+        if "progress" in metrics:
+            progress_str = metrics["progress"]
+            if progress_str.endswith('%'):
+                try:
+                    progress = int(progress_str[:-1])
+                    if not 0 <= progress <= 100:
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Progress in {req_id} should be between 0-100%: {progress_str}"
+                        ))
+                except ValueError:
+                    issues.append(ValidationIssue(
+                        "warning",
+                        f"Invalid progress format in {req_id}: {progress_str}"
+                    ))
+        
+        # Validate coverage percentage
+        if "coverage" in metrics:
+            coverage_str = metrics["coverage"]
+            if coverage_str.endswith('%'):
+                try:
+                    coverage = int(coverage_str[:-1])
+                    if not 0 <= coverage <= 100:
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Coverage in {req_id} should be between 0-100%: {coverage_str}"
+                        ))
+                except ValueError:
+                    issues.append(ValidationIssue(
+                        "warning",
+                        f"Invalid coverage format in {req_id}: {coverage_str}"
+                    ))
+        
+        # Validate confidence levels
+        if "confidence" in metrics:
+            valid_confidence = ["high", "medium", "low"]
+            if metrics["confidence"] not in valid_confidence:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Invalid confidence in {req_id}: {metrics['confidence']}. Valid values: {', '.join(valid_confidence)}"
+                ))
+        
+        # Validate stage transitions
+        if "stage" in markers:
+            valid_stages = ["design", "implementation", "testing", "review", "deployed", "deprecated"]
+            stage = markers["stage"]
+            
+            # Handle deployed:env format
+            if stage.startswith("deployed:"):
+                base_stage = "deployed"
+            else:
+                base_stage = stage
+                
+            if base_stage not in valid_stages:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Invalid stage in {req_id}: {stage}. Valid stages: {', '.join(valid_stages)}"
+                ))
+        
+        # Validate gap types
+        if "gap" in markers:
+            valid_gaps = ["test", "doc", "implementation", "review", "spec", "performance"]
+            gap = markers["gap"]
+            
+            # Handle gap:subtype format
+            if ':' in gap:
+                gap_type = gap.split(':')[0]
+            else:
+                gap_type = gap
+                
+            if gap_type not in valid_gaps:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Invalid gap type in {req_id}: {gap}. Valid types: {', '.join(valid_gaps)}"
+                ))
+        
+        # Validate dependencies reference existing requirements
+        if self.strict:
+            for dep_type in ["depends", "blocks", "after", "parallel"]:
+                if dep_type in markers:
+                    dep_value = markers[dep_type]
+                    # Split comma-separated dependencies
+                    deps = [d.strip() for d in dep_value.split(',')]
+                    for dep in deps:
+                        if not self.req_id_pattern.match(dep):
+                            issues.append(ValidationIssue(
+                                "warning",
+                                f"Invalid dependency format in {req_id} [{dep_type}]: {dep}"
+                            ))
+        
         return issues
     
     def _check_parent_exists(self, parent_id: str) -> bool:

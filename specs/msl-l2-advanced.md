@@ -37,6 +37,13 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-107: Markers must be placed before requirement text and REQ-ID when present
 - REQ-107a: When markers conflict, inline markers override frontmatter defaults
 
+### Composite Markers (v1.4.0+)
+
+- REQ-108: [NEW] Requirements may use composite markers with pipe-separated components `[component1|component2|key:value]`
+- REQ-109: [NEW] Composite markers support key:value pairs for metrics like `progress:60%` and `coverage:85%`
+- REQ-110: [NEW] Composite markers enable rich metadata including stages, dependencies, and gaps
+- REQ-111: [NEW] Processors must validate composite marker consistency and value ranges
+
 ### Advanced Inheritance
 
 - REQ-201: [NEW] Child documents must support explicit inheritance control markers

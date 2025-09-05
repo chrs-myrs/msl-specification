@@ -154,7 +154,10 @@ class MSLParser:
             "tags": [],
             "assignee": None,
             "inheritance": "inherit",
-            "original_text": line
+            "original_text": line,
+            "markers": {},  # For composite markers
+            "categories": [],  # For categorization markers
+            "metrics": {}  # For metric markers
         }
         
         # Check for REQ-XXX ID
@@ -178,28 +181,136 @@ class MSLParser:
             line = line.replace("[INHERIT]", "").strip()
             requirement["text"] = line
             
-        # Check for quick markers
+        # Check for markers (both simple and composite)
         if line.startswith('['):
-            marker_match = re.match(r'^\[([\!\?\@\#a-z]|x|\s)\]\s*(.+)$', line)
+            # Extract marker content between brackets
+            marker_match = re.match(r'^\[([^\]]+)\]\s*(.+)$', line)
             if marker_match:
-                marker = marker_match.group(1)
+                marker_content = marker_match.group(1)
                 text = marker_match.group(2)
                 requirement["text"] = text
                 
-                if marker == '!':
-                    requirement["priority"] = "critical"
-                elif marker == '?':
-                    requirement["status"] = "uncertain"
-                elif marker == 'x':
-                    requirement["status"] = "complete"
-                elif marker == ' ':
-                    requirement["status"] = "pending"
-                elif marker.startswith('@'):
-                    requirement["assignee"] = marker[1:]
-                elif marker.startswith('#'):
-                    requirement["tags"].append(marker[1:])
+                # Parse markers (check for composite or key:value)
+                if '|' in marker_content or ':' in marker_content:
+                    self._parse_composite_markers(marker_content, requirement)
+                else:
+                    # Handle simple markers for backward compatibility
+                    self._parse_simple_marker(marker_content, requirement)
                     
         return requirement
+    
+    def _parse_simple_marker(self, marker: str, requirement: Dict[str, Any]):
+        """Parse a simple single marker."""
+        if marker == '!':
+            requirement["priority"] = "critical"
+        elif marker == '!!':
+            requirement["priority"] = "urgent"
+        elif marker == '~':
+            requirement["priority"] = "low"
+        elif marker == '?':
+            requirement["status"] = "uncertain"
+        elif marker == 'x':
+            requirement["status"] = "complete"
+        elif marker == ' ':
+            requirement["status"] = "pending"
+        elif marker.startswith('@'):
+            # Handle @user or @team-name
+            requirement["assignee"] = marker[1:]
+        elif marker.startswith('#'):
+            requirement["tags"].append(marker[1:])
+        else:
+            # Store as a general marker
+            requirement["markers"][marker] = True
+    
+    def _parse_composite_markers(self, marker_content: str, requirement: Dict[str, Any]):
+        """Parse composite markers separated by pipes."""
+        components = marker_content.split('|')
+        
+        for component in components:
+            component = component.strip()
+            
+            # Skip empty components
+            if not component:
+                continue
+                
+            # Check for key:value pairs
+            if ':' in component:
+                key, value = component.split(':', 1)
+                key = key.strip()
+                value = value.strip()
+                
+                # Handle specific key types
+                if key in ['estimate', 'actual', 'variance']:
+                    requirement["metrics"][key] = value
+                elif key == 'progress':
+                    requirement["metrics"]["progress"] = value
+                elif key == 'coverage':
+                    requirement["metrics"]["coverage"] = value
+                elif key == 'confidence':
+                    requirement["metrics"]["confidence"] = value
+                elif key == 'sprint':
+                    requirement["markers"]["sprint"] = value
+                elif key == 'phase':
+                    requirement["markers"]["phase"] = value
+                elif key == 'milestone':
+                    requirement["markers"]["milestone"] = value
+                elif key == 'vendor':
+                    requirement["markers"]["vendor"] = value
+                elif key == 'eta':
+                    requirement["markers"]["eta"] = value
+                elif key == 'deployed':
+                    requirement["status"] = f"deployed:{value}"
+                elif key == 'stage':
+                    requirement["markers"]["stage"] = value
+                elif key == 'gap':
+                    requirement["markers"]["gap"] = value
+                elif key == 'review':
+                    requirement["markers"]["review"] = value
+                elif key == 'depends':
+                    requirement["markers"]["depends"] = value
+                elif key == 'blocks':
+                    requirement["markers"]["blocks"] = value
+                elif key == 'after':
+                    requirement["markers"]["after"] = value
+                elif key == 'parallel':
+                    requirement["markers"]["parallel"] = value
+                else:
+                    # Store generic key:value
+                    requirement["markers"][key] = value
+            else:
+                # Handle non key:value components
+                if component in ['!', '!!', '~']:
+                    # Priority markers
+                    if component == '!':
+                        requirement["priority"] = "critical"
+                    elif component == '!!':
+                        requirement["priority"] = "urgent"
+                    elif component == '~':
+                        requirement["priority"] = "low"
+                elif component.startswith('@'):
+                    # Assignment markers
+                    assignee = component[1:]
+                    if assignee.startswith('team-'):
+                        requirement["assignee"] = assignee
+                    elif assignee.startswith('role:'):
+                        requirement["assignee"] = assignee
+                    else:
+                        requirement["assignee"] = assignee
+                elif component.startswith('#'):
+                    # Tag markers
+                    requirement["tags"].append(component[1:])
+                elif component in ['blocked', 'testing', 'review', 'complete', 'pending']:
+                    # Status markers
+                    requirement["status"] = component
+                elif component in ['security', 'performance', 'ui', 'api', 'database']:
+                    # Category markers
+                    requirement["categories"].append(component)
+                elif component in ['mvp', 'tested', 'deployed', 'external']:
+                    # Boolean flag markers
+                    requirement["markers"][component] = True
+                else:
+                    # Store as generic marker
+                    requirement["markers"][component] = True
 
 
 class MSLLevel:

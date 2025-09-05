@@ -1,13 +1,13 @@
 ---
 msl: L2
 id: msl-extension-standards
-extends: msl-l2-advanced
 version: 1.0.0
 tags: [standards, extensions, design, architecture]
 priority: high
 status: active
 assignee: msl-core-team
 references:
+  - msl-l2-advanced: "Uses MSL Level 2 features"
   - msl-usage-standards: "Core MSL quality and usage guidelines (REQ-601-609 for documentation, REQ-201-209 for architecture)"
   - msl-validation-agent: "Automated quality validation (REQ-501-505)"
 ---
