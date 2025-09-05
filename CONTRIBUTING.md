@@ -26,6 +26,49 @@ Thank you for your interest in contributing to the Markdown Specification Langua
 - Discuss improvements in GitHub Discussions
 - Submit spec changes via pull requests
 
+## Development Setup (For Contributors Only)
+
+### Prerequisites
+
+- Python 3.8+ (for running validation tools and tests)
+- Git
+
+### Setting Up Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/chrs-myrs/msl-specification.git
+cd msl-specification
+
+# Install development dependencies (for contributors only)
+pip install -r requirements-dev.txt
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_parser.py
+
+# Tests also run automatically before commits via pre-commit
+```
+
+### Using Validation Tools Locally
+
+```bash
+# Validate MSL files (usually not needed by users)
+python3 tools/cli/msl-lint.py specs/
+
+# Run with strict validation
+python3 tools/cli/msl-lint.py --strict specs/
+```
+
 ## Getting Started
 
 1. **Fork the repository** on GitHub
