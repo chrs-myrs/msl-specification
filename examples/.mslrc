@@ -1,0 +1,46 @@
+# MSL Validation Configuration Example
+# Place this file as .mslrc in your project root
+
+# ID Format Rules
+require_ids: true
+id_format: "^REQ-\\d{3}$"  # Require REQ-NNN format
+id_sequence_check: false    # Don't require sequential IDs
+
+# Content Rules
+require_markers:
+  - priority      # Every requirement must have priority
+  - owner         # Every requirement must have an owner
+forbid_markers:
+  - deprecated    # Don't allow deprecated markers
+  - obsolete      # Don't allow obsolete markers
+
+# Hierarchy Rules
+max_depth: 4         # Maximum nesting depth for hierarchical requirements
+min_requirements: 5  # Minimum number of requirements per document
+max_requirements: 100 # Maximum number of requirements per document
+
+# Link Validation
+require_code_links: false  # Don't require code links
+validate_file_paths: true  # Check that linked files exist
+check_dead_links: false    # Don't check for broken links (expensive)
+
+# Review Rules
+require_review:
+  - security        # Security requirements need review
+  - performance     # Performance requirements need review
+review_timeout_days: 7  # Reviews expire after 7 days
+
+# Custom Validators
+custom_validators:
+  - security_keywords_check      # Check for security keywords
+  - api_consistency_check        # Validate API requirements
+  - performance_requirements_check # Check performance criteria
+  - testability_check            # Ensure requirements are testable
+
+# Severity Overrides
+severity_overrides:
+  security_keywords_check: error  # Treat security issues as errors
+  testability_check: warning       # Testability issues are warnings
+
+# Strict Mode
+strict: false  # Don't enforce all strict validation rules

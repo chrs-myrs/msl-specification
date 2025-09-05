@@ -3,6 +3,7 @@
 import re
 from typing import List, Dict, Any, Optional
 from pathlib import Path
+from .config import ValidationConfig, CustomValidators
 
 
 class ValidationIssue:
@@ -26,9 +27,16 @@ class ValidationIssue:
 class MSLValidator:
     """Validate MSL documents."""
     
-    def __init__(self, strict: bool = False):
+    def __init__(self, strict: bool = False, config: Optional[ValidationConfig] = None):
         self.strict = strict
-        self.req_id_pattern = re.compile(r'^REQ-\d+$')
+        self.config = config or ValidationConfig.find_config()
+        
+        # Merge strict mode into config
+        if self.strict:
+            self.config.strict = True
+            
+        # Compile ID patterns from config
+        self.req_id_pattern = re.compile(self.config.id_format)
         self.hierarchical_req_id_pattern = re.compile(r'^REQ-\d+(?:\.\d+)*$')
         
     def validate(self, parsed: Dict[str, Any]) -> List[ValidationIssue]:
@@ -105,20 +113,43 @@ class MSLValidator:
         return issues
     
     def _validate_requirements(self, requirements: List[Dict[str, Any]]) -> List[ValidationIssue]:
-        """Validate requirements list."""
+        """Validate requirements list with configuration rules."""
         issues = []
         seen_ids = {}
+        
+        # Check minimum requirements count
+        if self.config.min_requirements > 0 and len(requirements) < self.config.min_requirements:
+            issues.append(ValidationIssue(
+                "warning",
+                f"Document has {len(requirements)} requirements, minimum required: {self.config.min_requirements}"
+            ))
+        
+        # Check maximum requirements count
+        if len(requirements) > self.config.max_requirements:
+            issues.append(ValidationIssue(
+                "warning",
+                f"Document has {len(requirements)} requirements, maximum allowed: {self.config.max_requirements}"
+            ))
         
         for i, req in enumerate(requirements):
             # Check for duplicate IDs
             if req.get("id"):
-                # Accept both flat and hierarchical IDs
-                if not (self.req_id_pattern.match(req["id"]) or 
-                        self.hierarchical_req_id_pattern.match(req["id"])):
-                    issues.append(ValidationIssue(
-                        "warning",
-                        f"Invalid requirement ID format: {req['id']}. Expected REQ-XXX or REQ-XXX.Y.Z"
-                    ))
+                # Use configured pattern or fall back to standard patterns
+                if self.config.id_format != r"^REQ-\d+(?:\.\d+)*$":
+                    # Custom ID format configured
+                    if not self.req_id_pattern.match(req["id"]):
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Invalid requirement ID format: {req['id']}. Expected pattern: {self.config.id_format}"
+                        ))
+                else:
+                    # Default: accept both flat and hierarchical IDs
+                    if not (self.req_id_pattern.match(req["id"]) or 
+                            self.hierarchical_req_id_pattern.match(req["id"])):
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Invalid requirement ID format: {req['id']}. Expected REQ-XXX or REQ-XXX.Y.Z"
+                        ))
                     
                 if req["id"] in seen_ids:
                     issues.append(ValidationIssue(
@@ -142,6 +173,43 @@ class MSLValidator:
             # Validate hierarchical structure
             if req.get("children"):
                 issues.extend(self._validate_hierarchy(req, i))
+            
+            # Check required markers
+            if self.config.require_markers:
+                req_markers = set(req.get("markers", {}).keys())
+                req_markers.update(req.get("categories", []))
+                if req.get("priority") != "medium":
+                    req_markers.add("priority")
+                if req.get("assignee"):
+                    req_markers.add("assignee")
+                    
+                missing_markers = set(self.config.require_markers) - req_markers
+                if missing_markers:
+                    issues.append(ValidationIssue(
+                        "warning",
+                        f"Requirement {req.get('id', i+1)} missing required markers: {', '.join(missing_markers)}"
+                    ))
+            
+            # Check forbidden markers
+            if self.config.forbid_markers:
+                for forbidden in self.config.forbid_markers:
+                    if forbidden in req.get("markers", {}) or forbidden in req.get("categories", []):
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Requirement {req.get('id', i+1)} uses forbidden marker: {forbidden}"
+                        ))
+            
+            # Run custom validators
+            for validator_name in self.config.custom_validators:
+                validator = CustomValidators.get(validator_name)
+                if validator:
+                    issue_msg = validator(req)
+                    if issue_msg:
+                        severity = self.config.severity_overrides.get(validator_name, "warning")
+                        issues.append(ValidationIssue(
+                            severity,
+                            f"[{validator_name}] {req.get('id', f'requirement {i+1}')}: {issue_msg}"
+                        ))
                 
         # Check for sequential IDs (optional)
         if self.strict:

@@ -347,6 +347,244 @@ Use subsections for logical grouping:
 
 ### Performance
 - REQ-300: Login completes within 2 seconds
+- REQ-301: Page load time under 3 seconds on 3G
+- REQ-302: API responses within 200ms for cached data
+```
+
+## Validation Configuration (v1.4.0+)
+
+Customize MSL validation rules for your project using configuration files or frontmatter.
+
+### Configuration Methods
+
+#### 1. Project Configuration File (.mslrc)
+
+Create a `.mslrc` file in your project root to define validation rules:
+
+```yaml
+# MSL Validation Configuration
+# Place this file as .mslrc in your project root
+
+# ID Format Rules
+require_ids: true
+id_format: "^REQ-\\d{3}$"  # Require REQ-NNN format
+id_sequence_check: false    # Don't require sequential IDs
+
+# Content Rules
+require_markers:
+  - priority      # Every requirement must have priority
+  - owner         # Every requirement must have an owner
+forbid_markers:
+  - deprecated    # Don't allow deprecated markers
+  - obsolete      # Don't allow obsolete markers
+
+# Hierarchy Rules
+max_depth: 4         # Maximum nesting depth for hierarchical requirements
+min_requirements: 5  # Minimum number of requirements per document
+max_requirements: 100 # Maximum number of requirements per document
+
+# Link Validation
+require_code_links: false  # Don't require code links
+validate_file_paths: true  # Check that linked files exist
+check_dead_links: false    # Don't check for broken links (expensive)
+
+# Custom Validators
+custom_validators:
+  - security_keywords_check      # Check for security keywords
+  - api_consistency_check        # Validate API requirements
+  - performance_requirements_check # Check performance criteria
+  - testability_check            # Ensure requirements are testable
+
+# Severity Overrides
+severity_overrides:
+  security_keywords_check: error  # Treat security issues as errors
+  testability_check: warning       # Testability issues are warnings
+
+# Strict Mode
+strict: false  # Don't enforce all strict validation rules
+```
+
+#### 2. Document-Level Configuration (Frontmatter)
+
+Override validation rules for a specific document:
+
+```yaml
+---
+msl: L1
+id: auth-spec
+validation:
+  require_ids: true
+  id_format: "^AUTH-\\d{4}$"
+  min_requirements: 10
+  require_markers: [priority, security]
+  custom_validators: [security_keywords_check]
+---
+
+# Authentication Specification [MSL]
+```
+
+### Built-in Custom Validators
+
+MSL includes several pre-configured validators:
+
+#### security_keywords_check
+Ensures security-related requirements are properly marked:
+- Detects keywords: password, encryption, authentication, token, etc.
+- Warns if security keywords found without `[security]` category
+
+#### api_consistency_check
+Validates API requirements follow RESTful conventions:
+- Checks endpoints specify HTTP methods (GET, POST, PUT, DELETE)
+- Ensures API requirements follow consistent patterns
+
+#### performance_requirements_check
+Ensures performance requirements have measurable criteria:
+- Detects performance keywords: latency, throughput, response time
+- Requires numeric metrics (e.g., "less than 200ms", "99.9% uptime")
+
+#### testability_check
+Identifies requirements with vague, untestable language:
+- Flags words like: should, might, possibly, user-friendly, intuitive
+- Encourages specific, measurable requirements
+
+### Configuration Examples
+
+#### Example 1: API Project Configuration
+
+```yaml
+# .mslrc for REST API project
+require_ids: true
+id_format: "^API-\\d{3}$"
+require_markers:
+  - method        # HTTP method
+  - endpoint      # API endpoint
+  - response      # Expected response
+custom_validators:
+  - api_consistency_check
+  - performance_requirements_check
+```
+
+#### Example 2: Security-Critical Project
+
+```yaml
+# .mslrc for security-focused project
+require_ids: true
+require_markers:
+  - security
+  - review_status
+  - threat_model
+forbid_markers:
+  - draft
+  - untested
+custom_validators:
+  - security_keywords_check
+  - testability_check
+severity_overrides:
+  security_keywords_check: error
+strict: true
+```
+
+#### Example 3: Agile Development Project
+
+```yaml
+# .mslrc for agile project
+require_markers:
+  - priority
+  - sprint
+  - assignee
+  - estimate
+max_requirements: 20  # Keep specs focused
+custom_validators:
+  - testability_check
+```
+
+### Configuration Priority
+
+Configuration is loaded in this order (later overrides earlier):
+1. Default MSL settings
+2. Home directory `~/.mslrc`
+3. Project root `.mslrc`
+4. Parent directories `.mslrc` (searched upward)
+5. Document frontmatter `validation:` section
+
+### Writing Custom Validators
+
+Create custom validators in Python:
+
+```python
+from lib.config import CustomValidators
+
+@CustomValidators.register("domain_specific_check")
+def check_domain_requirements(requirement):
+    """Validate domain-specific requirements."""
+    text = requirement.get('text', '').lower()
+    
+    # Your validation logic here
+    if 'domain_term' in text and 'required_marker' not in requirement.get('markers', {}):
+        return "Domain term found without required marker"
+    
+    return None  # Return None if validation passes
+```
+
+### Validation Commands
+
+```bash
+# Validate with project config
+./msl-lint specs/my-spec.md
+
+# Override config options
+./msl-lint --require-ids --min-requirements 10 specs/
+
+# Use specific config file
+./msl-lint --config custom.mslrc specs/
+```
+
+### Best Practices
+
+1. **Start Simple**: Begin with minimal configuration, add rules as needed
+2. **Team Agreement**: Discuss and agree on validation rules as a team
+3. **Progressive Enhancement**: Stricter rules for production specs
+4. **Document Rules**: Comment your `.mslrc` to explain why rules exist
+5. **Version Control**: Commit `.mslrc` to ensure consistent validation
+
+### Common Patterns
+
+#### Progressive Validation
+Different rules for different stages:
+
+```yaml
+# .mslrc.draft - Initial development
+min_requirements: 1
+require_ids: false
+
+# .mslrc.review - Code review stage
+min_requirements: 5
+require_ids: true
+custom_validators: [testability_check]
+
+# .mslrc.production - Production requirements
+min_requirements: 10
+require_ids: true
+id_sequence_check: true
+strict: true
+```
+
+#### Component-Specific Rules
+Different validation for different components:
+
+```yaml
+# frontend/.mslrc
+require_markers: [ui_component, accessibility]
+custom_validators: [ui_consistency_check]
+
+# backend/.mslrc
+require_markers: [api_endpoint, database]
+custom_validators: [api_consistency_check, performance_requirements_check]
+
+# infrastructure/.mslrc
+require_markers: [resource, cost_estimate]
+custom_validators: [cost_validation_check]
+```
 - REQ-301: System supports 1000 concurrent users
 - REQ-302: Database queries execute within 100ms
 ```
