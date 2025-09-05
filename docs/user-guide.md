@@ -248,6 +248,71 @@ Every requirement should be:
 - **Clear**: Unambiguous meaning
 - **Measurable**: Pass/fail criteria
 
+### Hierarchical Requirements (v1.4.0+)
+
+Use indentation to create parent-child requirement relationships for better organization:
+
+#### Indentation-Based Hierarchy
+
+```markdown
+## Requirements
+- REQ-001: Authentication system
+  - REQ-001.1: Login with email/password
+  - REQ-001.2: OAuth integration
+    - REQ-001.2.1: Google OAuth
+    - REQ-001.2.2: GitHub OAuth
+    - REQ-001.2.3: Facebook OAuth
+  - REQ-001.3: Session management
+    - REQ-001.3.1: JWT token generation
+    - REQ-001.3.2: Token refresh mechanism
+    - REQ-001.3.3: Session timeout handling
+```
+
+#### Dot Notation IDs
+
+Sub-requirements use dot notation to show their relationship:
+- `REQ-001` - Parent requirement
+- `REQ-001.1` - First child
+- `REQ-001.2` - Second child
+- `REQ-001.2.1` - First grandchild of second child
+
+#### Auto-Generated IDs
+
+If you omit IDs, they're generated based on the parent:
+
+```markdown
+## Requirements
+- REQ-001: User management
+  - Email validation          # Becomes REQ-001.1
+  - Password requirements     # Becomes REQ-001.2
+    - Minimum 8 characters    # Becomes REQ-001.2.1
+    - Special character       # Becomes REQ-001.2.2
+```
+
+#### Combining with Composite Markers
+
+Hierarchical requirements work seamlessly with composite markers:
+
+```markdown
+## Requirements
+- REQ-001: [!|mvp] E-commerce platform
+  - REQ-001.1: [stage:implementation|progress:75%] Product catalog
+    - REQ-001.1.1: [@backend] Database schema
+    - REQ-001.1.2: [@frontend] Product display
+  - REQ-001.2: [blocked|depends:REQ-001.1] Shopping cart
+    - REQ-001.2.1: [gap:test] Add to cart
+    - REQ-001.2.2: [estimate:3d] Update quantity
+  - REQ-001.3: [stage:design] Checkout process
+```
+
+#### Best Practices
+
+1. **Limit Depth**: Keep hierarchy to 4 levels maximum
+2. **Consistent IDs**: Use dot notation consistently
+3. **Logical Grouping**: Group related requirements under parents
+4. **Clear Parents**: Parent requirements should be high-level features
+5. **Atomic Children**: Child requirements should be specific and testable
+
 **Example: Well-Structured Requirements**
 ```markdown
 ## Requirements

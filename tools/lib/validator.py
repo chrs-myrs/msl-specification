@@ -29,6 +29,7 @@ class MSLValidator:
     def __init__(self, strict: bool = False):
         self.strict = strict
         self.req_id_pattern = re.compile(r'^REQ-\d+$')
+        self.hierarchical_req_id_pattern = re.compile(r'^REQ-\d+(?:\.\d+)*$')
         
     def validate(self, parsed: Dict[str, Any]) -> List[ValidationIssue]:
         """Validate a parsed MSL document."""
@@ -111,10 +112,12 @@ class MSLValidator:
         for i, req in enumerate(requirements):
             # Check for duplicate IDs
             if req.get("id"):
-                if not self.req_id_pattern.match(req["id"]):
+                # Accept both flat and hierarchical IDs
+                if not (self.req_id_pattern.match(req["id"]) or 
+                        self.hierarchical_req_id_pattern.match(req["id"])):
                     issues.append(ValidationIssue(
                         "warning",
-                        f"Invalid requirement ID format: {req['id']}. Expected REQ-XXX"
+                        f"Invalid requirement ID format: {req['id']}. Expected REQ-XXX or REQ-XXX.Y.Z"
                     ))
                     
                 if req["id"] in seen_ids:
@@ -135,6 +138,10 @@ class MSLValidator:
             # Validate composite markers
             if req.get("markers") or req.get("metrics"):
                 issues.extend(self._validate_composite_markers(req, i))
+            
+            # Validate hierarchical structure
+            if req.get("children"):
+                issues.extend(self._validate_hierarchy(req, i))
                 
         # Check for sequential IDs (optional)
         if self.strict:
@@ -257,6 +264,60 @@ class MSLValidator:
                                 "warning",
                                 f"Invalid dependency format in {req_id} [{dep_type}]: {dep}"
                             ))
+        
+        return issues
+    
+    def _validate_hierarchy(self, requirement: Dict[str, Any], index: int) -> List[ValidationIssue]:
+        """Validate hierarchical requirement structure."""
+        issues = []
+        req_id = requirement.get("id", f"requirement {index + 1}")
+        
+        # Check depth limit (default max 4 levels)
+        max_depth = 4
+        
+        def check_depth(req: Dict[str, Any], current_depth: int = 0) -> int:
+            if current_depth > max_depth:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Requirement hierarchy exceeds recommended depth of {max_depth} levels at {req.get('id', 'unknown')}"
+                ))
+                return current_depth
+            
+            max_child_depth = current_depth
+            for child in req.get("children", []):
+                child_depth = check_depth(child, current_depth + 1)
+                max_child_depth = max(max_child_depth, child_depth)
+            
+            return max_child_depth
+        
+        check_depth(requirement)
+        
+        # Validate parent-child ID consistency
+        parent_id = requirement.get("id")
+        if parent_id:
+            for i, child in enumerate(requirement.get("children", [])):
+                child_id = child.get("id")
+                if child_id:
+                    # Check if child ID follows parent.N pattern
+                    expected_prefix = f"{parent_id}."
+                    if not child_id.startswith(expected_prefix):
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Child requirement {child_id} doesn't follow parent ID pattern {expected_prefix}N"
+                        ))
+                    
+                    # Check for duplicate child IDs
+                    child_ids = [c.get("id") for c in requirement.get("children", []) if c.get("id")]
+                    if child_ids.count(child_id) > 1:
+                        issues.append(ValidationIssue(
+                            "error",
+                            f"Duplicate child ID {child_id} under parent {parent_id}"
+                        ))
+        
+        # Validate child requirements recursively
+        for child in requirement.get("children", []):
+            if child.get("children"):
+                issues.extend(self._validate_hierarchy(child, index))
         
         return issues
     

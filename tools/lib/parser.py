@@ -11,6 +11,7 @@ class MSLParser:
     
     def __init__(self):
         self.req_pattern = re.compile(r'^-\s*(REQ-\d+:)?\s*(.+)$', re.MULTILINE)
+        self.hierarchical_req_pattern = re.compile(r'^(REQ-\d+(?:\.\d+)*):?\s*(.+)$')
         self.marker_pattern = re.compile(r'^\[([\!\?\@\#]|x|\s)\]\s*(.+)$')
         
     def parse_file(self, file_path: str) -> Dict[str, Any]:
@@ -126,18 +127,57 @@ class MSLParser:
         return sections
     
     def _parse_requirements(self, content: str) -> List[Dict[str, Any]]:
-        """Parse requirements section into structured list."""
+        """Parse requirements section into structured list with hierarchy support."""
         requirements = []
         lines = content.split('\n')
+        current_parent = None
+        parent_stack = []  # Stack to track parent requirements at each level
         
-        for line in lines:
-            line = line.strip()
-            if not line or not line.startswith('-'):
+        for line_num, line in enumerate(lines):
+            # Check indentation level (count leading spaces)
+            indent_level = len(line) - len(line.lstrip())
+            line_content = line.strip()
+            
+            if not line_content or not line_content.startswith('-'):
+                continue
+            
+            # Parse the requirement
+            req = self._parse_requirement_line(line_content)
+            if not req:
                 continue
                 
-            req = self._parse_requirement_line(line)
-            if req:
+            # Determine hierarchy based on indentation (2 spaces per level)
+            depth = indent_level // 2
+            req["depth"] = depth
+            req["parent_id"] = None
+            req["children"] = []
+            
+            # Handle hierarchical structure
+            if depth == 0:
+                # Top-level requirement
                 requirements.append(req)
+                parent_stack = [req]  # Reset stack with this as root
+                current_parent = req
+            else:
+                # Sub-requirement - find appropriate parent
+                while len(parent_stack) > depth:
+                    parent_stack.pop()
+                    
+                if parent_stack:
+                    parent = parent_stack[-1]
+                    req["parent_id"] = parent.get("id")
+                    
+                    # Auto-generate hierarchical ID if not provided
+                    if not req.get("id") and parent.get("id"):
+                        parent_child_count = len(parent["children"]) + 1
+                        req["id"] = f"{parent['id']}.{parent_child_count}"
+                    
+                    parent["children"].append(req)
+                    parent_stack.append(req)
+                else:
+                    # Orphaned sub-requirement, add as top-level
+                    requirements.append(req)
+                    parent_stack = [req]
                 
         return requirements
     
@@ -160,12 +200,20 @@ class MSLParser:
             "metrics": {}  # For metric markers
         }
         
-        # Check for REQ-XXX ID
-        id_match = re.match(r'^(REQ-\d+):\s*(.+)$', line)
+        # Check for REQ-XXX ID (including hierarchical dot notation)
+        id_match = re.match(r'^(REQ-\d+(?:\.\d+)*):\s*(.+)$', line)
         if id_match:
             requirement["id"] = id_match.group(1)
             line = id_match.group(2)
             requirement["text"] = line
+            
+            # Extract hierarchy info from dot notation
+            if '.' in requirement["id"]:
+                parts = requirement["id"].split('.')
+                requirement["parent_ref"] = '.'.join(parts[:-1])
+                requirement["hierarchy_level"] = len(parts) - 1
+            else:
+                requirement["hierarchy_level"] = 0
         
         # Check for inheritance markers
         if line.startswith("[OVERRIDE]") or line.lower().startswith("modified:"):

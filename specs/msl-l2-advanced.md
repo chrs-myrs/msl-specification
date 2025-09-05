@@ -44,6 +44,15 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-110: [NEW] Composite markers enable rich metadata including stages, dependencies, and gaps
 - REQ-111: [NEW] Processors must validate composite marker consistency and value ranges
 
+### Hierarchical Requirements (v1.4.0+)
+
+- REQ-112: [NEW] Requirements may be organized hierarchically using indentation (2 spaces per level)
+- REQ-113: [NEW] Sub-requirements use dot notation IDs like `REQ-001.1`, `REQ-001.2.3`
+- REQ-114: [NEW] Parent-child relationships are preserved in the document structure
+- REQ-115: [NEW] Processors must auto-generate hierarchical IDs when omitted
+- REQ-116: [NEW] Maximum recommended hierarchy depth is 4 levels
+- REQ-117: [NEW] All markers and metadata apply independently at each hierarchy level
+
 ### Advanced Inheritance
 
 - REQ-201: [NEW] Child documents must support explicit inheritance control markers
