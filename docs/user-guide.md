@@ -8,21 +8,35 @@
 2. [Writing Your First Specification](#writing-your-first-specification)
 3. [Understanding MSL Levels](#understanding-msl-levels)
 4. [Structuring Requirements](#structuring-requirements)
-5. [Using Inheritance](#using-inheritance)
-6. [Templates and Variables](#templates-and-variables)
-7. [Metaspecs and Governance](#metaspecs-and-governance)
+5. [Project Organization](#project-organization)
+6. [Tool and Script Integration](#tool-and-script-integration)
+7. [Using Inheritance](#using-inheritance)
 8. [Markers and Annotations](#markers-and-annotations)
 9. [Validation and Quality](#validation-and-quality)
 10. [Best Practices](#best-practices)
 11. [Common Patterns](#common-patterns)
 12. [Troubleshooting](#troubleshooting)
 13. [Quick Reference](#quick-reference)
+14. [Advanced Topics](#advanced-topics)
 
 ## Introduction
 
 MSL (Markdown Specification Language) lets you write specifications that are both human-friendly and machine-processable. This guide covers everything from basic markdown specs to advanced inheritance patterns.
 
-> **🔮 Fun Fact:** MSL is so powerful that it specifies itself! The core MSL language specifications are written in MSL, governed by MSL metaspecs, and validated by MSL tools. This self-referential architecture proves MSL can handle any complexity level.
+> **💡 Key Insight:** 99% of users just need regular specifications. MSL is simple markdown with a Requirements section. Start there, add complexity only when needed.
+
+### Quick Setup for AI-Assisted Development
+
+If you're using Claude or other AI assistants with MCP support, add this to your personal configuration (e.g., in your CLAUDE.md or user-level memory):
+
+```markdown
+## My Development Preferences
+- When I mention MSL, refer to https://github.com/chrs-myrs/msl-specification via context7 MCP
+- Use MSL format for specifications: markdown with a ## Requirements section
+- Keep specs alongside implementations (e.g., script.py and script-spec.md)
+```
+
+This enables you to simply say "write an MSL spec for this" in any project, and your AI assistant will know exactly what you mean.
 
 ### Prerequisites
 
@@ -35,18 +49,17 @@ MSL (Markdown Specification Language) lets you write specifications that are bot
 
 Choose your path based on your goals:
 
-#### 🚀 Beginner Path (2 hours)
+#### 🚀 Quick Start (30 minutes)
 1. [Writing Your First Specification](#writing-your-first-specification)
-2. [Understanding MSL Levels](#understanding-msl-levels) (Level 0 only)
-3. [Structuring Requirements](#structuring-requirements) (Basic section)
-4. [Best Practices](#best-practices) (Top 5 only)
+2. [Project Organization](#project-organization)
+3. [Tool and Script Integration](#tool-and-script-integration)
 
-#### 💼 Intermediate Path (4 hours)
-1. Complete Beginner Path
-2. [Understanding MSL Levels](#understanding-msl-levels) (All levels)
+#### 📋 Full Guide (2 hours)
+1. Complete Quick Start
+2. [Understanding MSL Levels](#understanding-msl-levels)
 3. [Markers and Annotations](#markers-and-annotations)
 4. [Validation and Quality](#validation-and-quality)
-5. [Common Patterns](#common-patterns)
+5. [Best Practices](#best-practices)
 
 #### 🎯 Advanced Path (8 hours)
 1. Complete Intermediate Path
@@ -875,6 +888,138 @@ Use clear markers for requirement changes:
 - REQ-050: [REMOVED] No longer applicable
 ```
 
+## Project Organization
+
+### Recommended Project Structure
+
+Most projects benefit from a simple, consistent structure:
+
+```
+/your-project/
+├── specs/                 # All your MSL specifications
+│   ├── api/              # API specifications
+│   ├── components/       # Component specifications
+│   └── features/         # Feature specifications
+├── src/                  # Implementation code
+├── tests/                # Test files
+└── scripts/              # Utility scripts with their specs
+```
+
+### Key Principles
+
+1. **Keep specs close to code** - Specifications live in the same repository as implementation
+2. **Mirror your architecture** - Organize specs like you organize code
+3. **Start simple** - Don't over-organize until you need to
+4. **One spec per component** - Each major component gets its own specification
+
+### Example: Script with Specification
+
+When creating scripts, keep the spec alongside:
+
+```
+scripts/
+├── data-migration.py           # The implementation
+└── data-migration-spec.md      # The MSL specification
+```
+
+The spec defines WHAT the script does:
+```markdown
+# Data Migration Script [MSL]
+
+## Requirements
+- REQ-001: Migrate user data from old to new schema
+- REQ-002: Validate data integrity during migration
+- REQ-003: Support rollback on error
+```
+
+The implementation shows HOW it's done (in `data-migration.py`).
+
+## Tool and Script Integration
+
+### Specification-First Development
+
+1. **Write the spec first** - Define WHAT before HOW
+2. **Link code to requirements** - Use comments to reference requirements
+3. **Keep them in sync** - Update spec when requirements change
+
+### Code-to-Spec Linking
+
+Link your implementation to requirements using comments:
+
+**Python:**
+```python
+# MSL: REQ-001
+def migrate_users(old_db, new_db):
+    """Migrate user data from old to new schema."""
+    # Implementation here
+```
+
+**JavaScript:**
+```javascript
+// MSL: REQ-002
+function validateData(data) {
+    // Validates data integrity
+    return isValid(data);
+}
+```
+
+### Practical Example: API Development
+
+1. **Create the specification** (`specs/api/payment-api.md`):
+```markdown
+# Payment API [MSL]
+
+## Requirements
+- REQ-001: Process credit card payments
+- REQ-002: Support refunds within 30 days
+- REQ-003: Return transaction ID on success
+```
+
+2. **Implement with references** (`src/payment-api.js`):
+```javascript
+// MSL: REQ-001
+async function processPayment(card, amount) {
+    // Implementation
+    return { transactionId: "..." };  // MSL: REQ-003
+}
+
+// MSL: REQ-002
+async function refundPayment(transactionId) {
+    // Check 30-day window and process refund
+}
+```
+
+3. **Validate alignment** - Ensure all requirements are implemented
+
+### Common Patterns
+
+**Pattern 1: Microservice Specifications**
+```
+services/
+├── user-service/
+│   ├── spec.md          # Service specification
+│   ├── src/             # Implementation
+│   └── tests/           # Tests reference spec requirements
+```
+
+**Pattern 2: Tool Specifications**
+```
+tools/
+├── validator/
+│   ├── validator-spec.md    # What the tool should do
+│   ├── validator.py         # How it does it
+│   └── test_validator.py    # Tests against spec
+```
+
+**Pattern 3: Feature Specifications**
+```
+features/
+├── authentication/
+│   ├── auth-spec.md         # Feature requirements
+│   ├── implementation/      # Code that meets requirements
+│   └── docs/               # User documentation
+```
+
 ## Templates and Variables
 
 ### Creating Reusable Templates
@@ -948,99 +1093,6 @@ variables:
 - REQ-002: Host in {{region}} region
 - REQ-003: Set logging to {{log_level}} level
 ```
-
-## Metaspecs and Governance
-
-### Understanding Metaspecs
-
-Metaspecs are specifications that govern other specifications. They define structural requirements, quality standards, and validation rules that specifications must follow.
-
-> **The MSL Bootstrap:** MSL demonstrates its power by using metaspecs to govern its own core specifications. The language literally defines and validates itself!
-
-### The Three Relationship Types
-
-MSL supports three distinct relationships:
-
-| Relationship | Keyword | Meaning | Example |
-|-------------|---------|---------|---------|
-| **Inheritance** | `extends` | IS-A relationship | "Admin API IS-A REST API" |
-| **Governance** | `governed-by` | CONFORMS-TO relationship | "Payment API CONFORMS-TO PCI standards" |
-| **Template** | `type: template` | DEFINES pattern | "REST template DEFINES API pattern" |
-
-### Creating a Metaspec
-
-```markdown
----
-id: rest-api-metaspec
-type: metaspec
-version: 1.0.0
----
-
-# REST API Metaspec
-
-## Structural Requirements
-- MUST have ## Endpoints section
-- MUST have ## Authentication section
-- MUST have ## Error Handling section
-- MUST include rate limiting specifications
-
-## Quality Requirements
-- ALL endpoints MUST have examples
-- ALL errors MUST have descriptions
-- Authentication MUST specify token lifetime
-```
-
-### Using Governance
-
-Specifications declare their governance:
-
-```markdown
----
-id: user-api
-governed-by: rest-api-metaspec
----
-
-# User API
-
-[Must now conform to REST API metaspec requirements]
-```
-
-### Multiple Governance
-
-Specifications can be governed by multiple metaspecs:
-
-```markdown
----
-id: payment-api
-governed-by: [rest-api-metaspec, pci-compliance-metaspec, security-metaspec]
----
-```
-
-### Governance vs Inheritance
-
-**Use `extends` when:**
-- Creating a specialized version
-- Adding features to existing spec
-- Following IS-A relationship
-
-**Use `governed-by` when:**
-- Ensuring compliance with standards
-- Following architectural patterns
-- Meeting quality requirements
-
-### Self-Referential Example
-
-MSL's own core specifications demonstrate this:
-
-```markdown
----
-id: msl-l2-advanced
-extends: msl-l1-structure        # IS-A Level 1 spec with more features
-governed-by: [msl-core-metaspec, msl-language-metaspec]  # CONFORMS-TO standards
----
-```
-
-For complete metaspec documentation, see [Metaspec Patterns](patterns/metaspec-patterns.md).
 
 ## Markers and Annotations
 
@@ -1755,6 +1807,48 @@ Before using `extends`:
 - **Testability**: Whether requirement has clear pass/fail criteria
 - **Validation**: Quality checking of specifications
 - **Variable**: Placeholder for template customization
+
+## Advanced Topics
+
+> **Note:** Most users won't need these advanced concepts. They're here for completeness and special use cases.
+
+### Metaspecs and Governance
+
+**Metaspecs** are specifications that govern other specifications - think of them as "specs for specs". They're rarely needed unless you're:
+- Building a framework that needs consistent documentation structure
+- Enforcing organizational standards across many teams
+- Creating reusable specification templates
+
+**99% of users should use regular specifications instead.**
+
+#### The Three Relationship Types
+
+| Relationship | Keyword | Meaning | When to Use |
+|-------------|---------|---------|------------|
+| **Inheritance** | `extends` | IS-A relationship | Specializing an existing spec |
+| **Governance** | `governed-by` | CONFORMS-TO relationship | Following standards |
+| **Template** | `type: template` | DEFINES pattern | Creating reusable patterns |
+
+#### Simple Governance Example
+
+```markdown
+---
+id: payment-api
+governed-by: pci-compliance-standards  # Must follow PCI rules
+---
+```
+
+#### When You Might Need Metaspecs
+
+- **Large organizations**: Enforcing consistent documentation across teams
+- **Compliance requirements**: Ensuring specs meet regulatory standards
+- **Framework development**: Defining structure for plugin specifications
+
+For detailed metaspec documentation, see the [MSL specification repository](https://github.com/chrs-myrs/msl-specification/tree/master/specs/standards).
+
+### Self-Referential Architecture
+
+MSL uses itself to specify itself - the language specifications are written in MSL, validated by MSL tools, and governed by MSL metaspecs. This proves MSL can handle any level of complexity, but **you don't need this complexity for normal use**.
 
 ---
 
