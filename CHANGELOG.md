@@ -5,6 +5,54 @@ All notable changes to the MSL Specification will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Testing Framework**: Comprehensive pytest-based testing infrastructure
+  - Pytest configuration with markers for test organization
+  - Shared fixtures via conftest.py for common test setup
+  - Test runner script for simplified execution
+  - Requirements-dev.txt for development dependencies
+  - MSL specifications for all new scripts
+
+### Changed
+- Migrated all test files from standalone execution to pytest
+- Updated pre-commit configuration for MSL linting
+
+## [1.5.0] - 2025-09-05 (Preview)
+
+### Added
+- **Bidirectional Code Links**: Enhanced traceability between specs and implementation
+  - Forward links (→): Spec points to code implementation
+  - Backward links (←): Code references spec requirement
+  - Bidirectional links (↔): Both spec and code reference each other
+  - Line number ranges support for precise code location
+  - Integration with composite markers for rich metadata
+  - Code scanner for automatic reverse link generation
+
+## [1.4.0] - 2025-09-05
+
+### Added
+- **Composite Markers**: Rich metadata in requirement markers
+  - Multiple attributes in single marker using pipe separation
+  - Support for metrics (progress:75%, coverage:85%)
+  - Dependency relationships (depends:REQ-001, blocks:REQ-002)
+  - Project management fields (sprint:15, milestone:v1.0)
+  - Backward compatible with simple markers
+
+- **Hierarchical Requirements**: Nested requirement structures
+  - Parent-child relationships with indentation
+  - Automatic ID generation for sub-requirements (REQ-001.1, REQ-001.1.1)
+  - Depth validation and consistency checking
+  - Preserves markers and metadata through hierarchy
+
+- **Validation Configuration**: Customizable validation rules
+  - .mslrc configuration files for project-specific rules
+  - Custom validators for domain-specific requirements
+  - ID format patterns and naming conventions
+  - Required/forbidden marker enforcement
+  - Min/max requirement counts
+
 ## [1.2.1] - 2025-09-05
 
 ### Added

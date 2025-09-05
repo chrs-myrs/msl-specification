@@ -35,9 +35,9 @@ def test_simple_composite_markers(msl_parser):
     assert reqs[2]["markers"]["deployed"] == True
 
 
-def test_metrics_markers():
+def test_metrics_markers(msl_parser):
     """Test parsing metrics in composite markers."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Test Spec
 ## Requirements
@@ -65,9 +65,9 @@ def test_metrics_markers():
     
 
 
-def test_priority_status_combinations():
+def test_priority_status_combinations(msl_parser):
     """Test various priority and status combinations."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Test Spec
 ## Requirements
@@ -91,9 +91,9 @@ def test_priority_status_combinations():
     
 
 
-def test_dependency_markers():
+def test_dependency_markers(msl_parser):
     """Test dependency relationship markers."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Test Spec
 ## Requirements
@@ -116,9 +116,10 @@ def test_dependency_markers():
     
 
 
-def test_validation_of_composite_markers():
+def test_validation_of_composite_markers(msl_parser, msl_validator):
     """Test validation rules for composite markers."""
-    parser = MSLParser()
+    parser = msl_parser
+    from lib.validator import MSLValidator
     validator = MSLValidator(strict=True)
     
     content = """# Test Spec
@@ -143,9 +144,9 @@ def test_validation_of_composite_markers():
     
 
 
-def test_backward_compatibility():
+def test_backward_compatibility(msl_parser):
     """Test that simple markers still work."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Test Spec
 ## Requirements
@@ -165,9 +166,9 @@ def test_backward_compatibility():
     
 
 
-def test_complex_real_world_example():
+def test_complex_real_world_example(msl_parser):
     """Test a complex real-world scenario."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Payment System
 ## Requirements
