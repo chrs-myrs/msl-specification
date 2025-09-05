@@ -477,7 +477,7 @@ extends: parent-specification-id
 2. Child inherits all parent requirements
 3. Child can override specific requirements
 4. Child can add new requirements
-5. Maximum 3 levels deep
+5. Maximum 3 levels deep (practical limit: beyond 2-3 levels, abstraction becomes philosophy rather than engineering)
 
 **Valid Example:**
 ```yaml
