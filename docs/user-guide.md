@@ -868,24 +868,114 @@ extends: app-core
 - REQ-012: [NEW] Apple Pay integration
 ```
 
-### Override and Extension Semantics
+### Real-World Example: How MSL Specifies Itself
 
-Use clear markers for requirement changes:
+MSL uses inheritance to build progressively complex levels. Here's the actual inheritance chain:
 
 ```markdown
+# msl-l0-foundation.md (Base - No inheritance)
+---
+msl: L0
+id: msl-l0-foundation
+---
 ## Requirements
+- REQ-001: Documents must be valid CommonMark markdown
+- REQ-002: Must contain ## Requirements section
+# ... 8 more basic requirements
 
-# Overriding parent requirements
-- REQ-001: [OVERRIDE] New behavior replaces parent's REQ-001
-- REQ-001: [override] Alternative syntax (lowercase)
+# msl-l1-structure.md (Inherits from L0)
+---
+msl: L1
+id: msl-l1-structure
+extends: msl-l0-foundation  # IS-A Level 0 spec
+---
+## Requirements
+- REQ-001: [INHERIT] All Level 0 markdown requirements
+- REQ-101: [NEW] Support YAML frontmatter for metadata
+- REQ-102: [NEW] Requirement IDs in format REQ-NNN
+# ... 15 additional requirements
 
-# Adding new requirements
-- REQ-100: [NEW] Additional requirement not in parent
-- REQ-100: [new] Alternative syntax (lowercase)
+# msl-l2-advanced.md (Inherits from L1)
+---
+msl: L2
+id: msl-l2-advanced
+extends: msl-l1-structure  # IS-A Level 1 spec
+governed-by: [msl-core-metaspec, msl-language-metaspec]
+---
+## Requirements
+- REQ-001: [INHERIT] All MSL Level 1 structured specification requirements
+- REQ-101: [NEW|!] Requirements may include quick markers
+- REQ-108: [NEW] Support composite markers with pipe-separation
+# ... 98 total requirements across all categories
+```
 
-# Deprecating requirements
-- REQ-050: [DEPRECATED] Will be removed in v2.0
-- REQ-050: [REMOVED] No longer applicable
+### REQ-ID Numbering Strategies
+
+MSL demonstrates three numbering approaches:
+
+#### 1. Category-Based Numbering (MSL L2 uses this)
+```markdown
+## Requirements
+### Core Language (001-099)
+- REQ-001: [INHERIT] Level 1 requirements
+- REQ-002: Core parsing rules
+
+### Quick Markers (100-199)
+- REQ-101: Priority markers with [!]
+- REQ-102: Status markers [x] [ ] [?]
+
+### Templates (200-299)  
+- REQ-201: Template variable substitution
+- REQ-202: Variable validation rules
+```
+
+#### 2. Hierarchical Numbering (For sub-requirements)
+```markdown
+- REQ-001: Main authentication requirement
+  - REQ-001.1: Username/password authentication
+  - REQ-001.2: Two-factor authentication
+    - REQ-001.2.1: SMS-based 2FA
+    - REQ-001.2.2: App-based 2FA
+```
+
+#### 3. Continuation Numbering (Simple inheritance)
+```markdown
+# Parent has REQ-001 through REQ-050
+# Child continues from REQ-051
+- REQ-051: [NEW] First new requirement in child
+- REQ-052: [NEW] Second new requirement
+```
+
+### Inheritance Markers Explained
+
+| Marker | Purpose | MSL Usage Example |
+|--------|---------|-------------------|
+| `[INHERIT]` | Keep parent requirement as-is | L2 inherits all L1 requirements |
+| `[OVERRIDE]` | Replace parent requirement | L2 overrides L1's validation rules |
+| `[NEW]` | Add requirement not in parent | L2 adds markers, templates, etc. |
+| `[DEPRECATED]` | Mark for future removal | Old syntax being phased out |
+| `[REMOVED]` | Was in parent, now gone | Removed experimental features |
+
+### Anti-Patterns to Avoid
+
+❌ **Deep Inheritance Chains**
+```markdown
+# AVOID: More than 3 levels
+A extends B extends C extends D extends E
+```
+
+❌ **Cross-Domain Inheritance**
+```markdown
+# WRONG: API spec extending database spec
+id: payment-api
+extends: user-database  # APIs aren't databases!
+```
+
+❌ **Circular Dependencies**
+```markdown
+# ERROR: A extends B, B extends A
+id: spec-a
+extends: spec-b  # Creates infinite loop
 ```
 
 ## Project Organization
@@ -1566,6 +1656,161 @@ tags: [configuration, deployment]
 - REQ-022: RATE_LIMIT default 100 req/min
 ```
 
+## Common Pitfalls to Avoid
+
+### 1. The Over-Specification Trap
+
+**What goes wrong:** Including implementation details instead of requirements.
+
+❌ **Bad Specification:**
+```markdown
+- REQ-001: System uses PostgreSQL 14.2 with connection pooling set to 100
+- REQ-002: Authentication implemented using bcrypt with 12 rounds
+- REQ-003: Frontend uses React 18.2.0 with Material-UI components
+```
+
+✅ **Good Specification:**
+```markdown
+- REQ-001: System must persist data with ACID compliance
+- REQ-002: Passwords must be cryptographically hashed
+- REQ-003: User interface must be responsive across devices
+```
+
+**Why it matters:** Specifications define WHAT, not HOW. Implementation details belong in code, not specs.
+
+### 2. Confusing Meta-Specs with Regular Specs
+
+**What goes wrong:** Creating meta-specifications for specific tools or features.
+
+❌ **Wrong Approach:**
+```markdown
+# database-migration-tool-metaspec.md
+type: metaspec  # WRONG! This is a specific tool, not a class
+```
+
+✅ **Correct Approach:**
+```markdown
+# database-migration-tool-spec.md
+type: specification  # RIGHT! Specific tool gets regular spec
+```
+
+**Rule:** Meta-specs are for document templates, not tool specifications.
+
+### 3. Misusing Inheritance
+
+**What goes wrong:** Using `extends` for organizational grouping instead of true IS-A relationships.
+
+❌ **Incorrect:**
+```markdown
+id: login-feature
+extends: authentication-module  # Features aren't modules
+```
+
+✅ **Correct:**
+```markdown
+id: oauth-login
+extends: basic-login  # OAuth login IS-A type of login
+```
+
+### 4. Inconsistent Requirement IDs
+
+**What goes wrong:** Mixing ID formats within a specification.
+
+❌ **Inconsistent:**
+```markdown
+- REQ-1: First requirement
+- REQ-002: Second requirement  
+- REQUIREMENT-3: Third requirement
+- Req04: Fourth requirement
+```
+
+✅ **Consistent:**
+```markdown
+- REQ-001: First requirement
+- REQ-002: Second requirement
+- REQ-003: Third requirement
+- REQ-004: Fourth requirement
+```
+
+### 5. Untestable Requirements
+
+**What goes wrong:** Vague language that can't be verified.
+
+❌ **Untestable:**
+```markdown
+- REQ-001: System should be fast
+- REQ-002: Interface must be user-friendly
+- REQ-003: Performance should be good
+```
+
+✅ **Testable:**
+```markdown
+- REQ-001: API responses must complete within 200ms for 95% of requests
+- REQ-002: Interface must pass WCAG 2.1 Level AA accessibility standards
+- REQ-003: System must handle 1000 concurrent users without degradation
+```
+
+### 6. Circular Dependencies
+
+**What goes wrong:** Creating inheritance loops.
+
+❌ **Creates Infinite Loop:**
+```markdown
+# spec-a.md
+extends: spec-b
+
+# spec-b.md
+extends: spec-a  # ERROR: Circular dependency!
+```
+
+**Detection:** Use validation tools that check for circular dependencies.
+
+### 7. Marker Inconsistency
+
+**What goes wrong:** Using markers differently across requirements.
+
+❌ **Inconsistent Usage:**
+```markdown
+- REQ-001: [!] Critical feature
+- REQ-002: High priority feature  # Missing [!] marker
+- REQ-003: [CRITICAL] Another feature  # Wrong marker format
+```
+
+✅ **Consistent:**
+```markdown
+- REQ-001: [!] Critical authentication feature
+- REQ-002: [!] Critical authorization feature
+- REQ-003: [@alice] Standard feature assigned to Alice
+```
+
+### 8. Missing Context in Child Specs
+
+**What goes wrong:** Child specs that don't explain their relationship to parent.
+
+❌ **No Context:**
+```markdown
+extends: base-spec
+# No explanation of what this adds/changes
+```
+
+✅ **Clear Context:**
+```markdown
+extends: base-api-spec
+# Extends base API with authentication and rate limiting
+```
+
+### Quick Validation Checklist
+
+Before finalizing your specification:
+- [ ] All requirements use consistent ID format
+- [ ] No implementation details in requirements
+- [ ] All requirements are testable
+- [ ] Inheritance uses true IS-A relationships
+- [ ] No circular dependencies
+- [ ] Markers used consistently
+- [ ] Meta-specs only for document templates
+- [ ] Context provided for inheritance
+
 ## Troubleshooting
 
 ### Common Issues and Solutions
@@ -1736,6 +1981,16 @@ extends: parent-spec
 | Templates | ❌ | ❌ | ✅ |
 | Variables | ❌ | ❌ | ✅ |
 
+### Inheritance Markers
+
+| Marker | Purpose | When to Use | Example |
+|--------|---------|-------------|---------|
+| `[INHERIT]` | Keep parent req as-is | Explicitly show inheritance | `REQ-001: [INHERIT] All L1 requirements` |
+| `[OVERRIDE]` | Replace parent req | Change parent behavior | `REQ-001: [OVERRIDE] 100GB storage` |
+| `[NEW]` | Add new req | Extend parent spec | `REQ-100: [NEW] OAuth support` |
+| `[DEPRECATED]` | Mark for removal | Phase out feature | `REQ-050: [DEPRECATED] Legacy API` |
+| `[REMOVED]` | No longer applies | Document removal | `REQ-050: [REMOVED] Old auth method` |
+
 ### Common Markers
 
 | Marker | Meaning | Example |
@@ -1743,9 +1998,10 @@ extends: parent-spec
 | `[!]` | High priority | `REQ-001: [!] Critical feature` |
 | `[@user]` | Assignment | `REQ-002: [@alice] Implement API` |
 | `[#tag]` | Category | `REQ-003: [#security] Encrypt data` |
-| `[OVERRIDE]` | Replace parent | `REQ-001: [OVERRIDE] New behavior` |
-| `[NEW]` | Addition | `REQ-100: [NEW] Extra feature` |
 | `[✓]` | Complete | `REQ-004: [✓] Implemented` |
+| `[x]` | Done | `REQ-005: [x] Tested` |
+| `[ ]` | Pending | `REQ-006: [ ] In progress` |
+| `[?]` | Uncertain | `REQ-007: [?] Needs clarification` |
 
 ### File Naming Conventions
 
@@ -1778,6 +2034,31 @@ msl-validate spec.md --rules dry,testability
 # Fix common issues
 msl-validate spec.md --fix
 ```
+
+### REQ-ID Numbering Conventions
+
+| Strategy | Pattern | Use Case | Example |
+|----------|---------|----------|---------|
+| **Sequential** | REQ-001, REQ-002... | Simple specs | Basic requirements |
+| **Category-based** | 100s, 200s, 300s | Complex specs | MSL L2 uses this |
+| **Hierarchical** | REQ-001.1, REQ-001.2 | Sub-requirements | Nested features |
+| **Prefixed** | AUTH-001, API-002 | Multi-domain | Mixed components |
+
+### Inheritance Do's and Don'ts
+
+#### ✅ DO:
+- Use `extends` only for IS-A relationships
+- Document why you're inheriting
+- Keep inheritance depth ≤ 3 levels
+- Use [INHERIT], [OVERRIDE], [NEW] markers
+- Validate parent spec exists
+
+#### ❌ DON'T:
+- Use `extends` for organizational grouping
+- Create circular dependencies
+- Inherit across unrelated domains
+- Override without clear reason
+- Mix inheritance and governance carelessly
 
 ### Inheritance Checklist
 
