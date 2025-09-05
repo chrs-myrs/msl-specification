@@ -63,7 +63,6 @@ def test_parse_bidirectional_links():
     assert reqs[5]['code_links'][0]['line'] == '5'
     assert reqs[5]['code_links'][0]['direction'] == 'backward'
     
-    print("✓ Parse bidirectional links test passed")
 
 
 def test_composite_markers_with_code_links():
@@ -98,7 +97,6 @@ def test_composite_markers_with_code_links():
     assert reqs[2]['code_links'][0]['direction'] == 'backward'
     assert reqs[2]['markers']['gap'] == 'doc'
     
-    print("✓ Composite markers with code links test passed")
 
 
 def test_code_link_validation():
@@ -125,7 +123,6 @@ def test_code_link_validation():
     assert any("End line before start" in msg for msg in issue_messages)
     assert any("Empty file path" in msg for msg in issue_messages)
     
-    print("✓ Code link validation test passed")
 
 
 def test_code_scanner_python():
@@ -159,7 +156,6 @@ def validate_input(data):
         assert refs[2]['requirement_id'] == 'REQ-003'
         assert refs[3]['requirement_id'] == 'REQ-004'
     
-    print("✓ Code scanner Python test passed")
 
 
 def test_code_scanner_javascript():
@@ -194,7 +190,6 @@ const validate = (input) => {
         assert refs[2]['requirement_id'] == 'REQ-103'
         assert refs[3]['requirement_id'] == 'REQ-104'
     
-    print("✓ Code scanner JavaScript test passed")
 
 
 def test_reverse_link_generation():
@@ -247,7 +242,6 @@ def validate_password(password):
         assert len(reverse_links['REQ-002']['implementations']) == 2  # Referenced in two files
         assert len(reverse_links['REQ-003']['implementations']) == 1
     
-    print("✓ Reverse link generation test passed")
 
 
 def test_bidirectional_verification():
@@ -297,7 +291,6 @@ def logout():
         finally:
             os.chdir(original_cwd)
     
-    print("✓ Bidirectional verification test passed")
 
 
 def test_hierarchical_requirements_with_code_links():
@@ -332,21 +325,6 @@ def test_hierarchical_requirements_with_code_links():
     assert grandchild['code_links'][0]['file'] == 'tests/auth_test.py'
     assert grandchild['code_links'][0]['direction'] == 'backward'
     
-    print("✓ Hierarchical requirements with code links test passed")
 
 
-if __name__ == "__main__":
-    print("Running code links tests...")
-    print("=" * 50)
-    
-    test_parse_bidirectional_links()
-    test_composite_markers_with_code_links()
-    test_code_link_validation()
-    test_code_scanner_python()
-    test_code_scanner_javascript()
-    test_reverse_link_generation()
-    test_bidirectional_verification()
-    test_hierarchical_requirements_with_code_links()
-    
-    print("=" * 50)
-    print("✅ All code links tests passed!")
+# Tests are now run via pytest - no main block needed

@@ -24,7 +24,6 @@ def test_default_config():
     assert config.strict == False
     assert config.custom_validators == []
     
-    print("✓ Default config test passed")
 
 
 def test_config_from_dict():
@@ -45,7 +44,6 @@ def test_config_from_dict():
     assert config.require_markers == ['priority', 'owner']
     assert config.custom_validators == ['security_keywords_check']
     
-    print("✓ Config from dict test passed")
 
 
 def test_config_from_yaml():
@@ -75,7 +73,6 @@ validation:
     assert 'deprecated' in config.forbid_markers
     assert 'api_consistency_check' in config.custom_validators
     
-    print("✓ Config from YAML test passed")
 
 
 def test_mslrc_file_loading():
@@ -103,7 +100,6 @@ require_markers:
             assert config.min_requirements == 3
             assert 'security' in config.require_markers
             
-            print("✓ .mslrc file loading test passed")
         finally:
             os.chdir(original_cwd)
 
@@ -130,7 +126,6 @@ def test_custom_validators():
     security_issues = [i for i in issues if 'security_keywords_check' in i.message]
     assert len(security_issues) >= 2
     
-    print("✓ Custom validators test passed")
 
 
 def test_required_markers_validation():
@@ -156,7 +151,6 @@ def test_required_markers_validation():
     marker_issues = [i for i in issues if 'missing required markers' in i.message]
     assert len(marker_issues) >= 1
     
-    print("✓ Required markers validation test passed")
 
 
 def test_forbidden_markers_validation():
@@ -182,7 +176,6 @@ def test_forbidden_markers_validation():
     forbidden_issues = [i for i in issues if 'forbidden marker' in i.message]
     assert len(forbidden_issues) == 2
     
-    print("✓ Forbidden markers validation test passed")
 
 
 def test_id_format_validation():
@@ -209,7 +202,6 @@ def test_id_format_validation():
     id_issues = [i for i in issues if 'Invalid requirement ID format' in i.message]
     assert len(id_issues) == 2
     
-    print("✓ ID format validation test passed")
 
 
 def test_min_max_requirements():
@@ -247,7 +239,6 @@ def test_min_max_requirements():
     
     assert any('maximum allowed' in i.message for i in issues2)
     
-    print("✓ Min/max requirements test passed")
 
 
 def test_performance_validator():
@@ -275,7 +266,6 @@ def test_performance_validator():
     # The test should work but let's be flexible
     assert len(perf_issues) >= 1  # At least one performance issue
     
-    print("✓ Performance validator test passed")
 
 
 def test_config_in_frontmatter():
@@ -309,7 +299,6 @@ validation:
         # Should have warnings for missing ID and missing priority on second requirement
         assert any('missing required markers' in i.message for i in issues)
     
-    print("✓ Config in frontmatter test passed")
 
 
 def test_testability_validator():
@@ -336,25 +325,6 @@ def test_testability_validator():
     testability_issues = [i for i in issues if 'vague terms' in i.message]
     assert len(testability_issues) >= 2
     
-    print("✓ Testability validator test passed")
 
 
-if __name__ == "__main__":
-    print("Running validation configuration tests...")
-    print("=" * 50)
-    
-    test_default_config()
-    test_config_from_dict()
-    test_config_from_yaml()
-    test_mslrc_file_loading()
-    test_custom_validators()
-    test_required_markers_validation()
-    test_forbidden_markers_validation()
-    test_id_format_validation()
-    test_min_max_requirements()
-    test_performance_validator()
-    test_config_in_frontmatter()
-    test_testability_validator()
-    
-    print("=" * 50)
-    print("✅ All validation configuration tests passed!")
+# Tests are now run via pytest - no main block needed

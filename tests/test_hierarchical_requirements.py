@@ -49,7 +49,6 @@ def test_basic_hierarchy():
     assert oauth_children[1]["id"] == "REQ-001.2.2"
     assert oauth_children[1]["text"] == "GitHub OAuth"
     
-    print("✓ Basic hierarchy test passed")
 
 
 def test_auto_generated_ids():
@@ -72,7 +71,6 @@ def test_auto_generated_ids():
     assert reqs[0]["children"][1]["id"] == "REQ-001.2"
     assert reqs[0]["children"][1]["children"][0]["id"] == "REQ-001.2.1"
     
-    print("✓ Auto-generated IDs test passed")
 
 
 def test_mixed_hierarchy():
@@ -103,7 +101,6 @@ def test_mixed_hierarchy():
     assert len(reqs[2]["children"]) == 1
     assert len(reqs[2]["children"][0]["children"]) == 1
     
-    print("✓ Mixed hierarchy test passed")
 
 
 def test_hierarchy_with_markers():
@@ -135,7 +132,6 @@ def test_hierarchy_with_markers():
     assert reqs[0]["children"][1]["children"][0]["assignee"] == "team-backend"
     assert reqs[0]["children"][1]["children"][1]["markers"]["gap"] == "test"
     
-    print("✓ Hierarchy with markers test passed")
 
 
 def test_depth_validation():
@@ -160,7 +156,6 @@ def test_depth_validation():
     depth_warnings = [i for i in issues if "depth" in i.message.lower()]
     assert len(depth_warnings) > 0
     
-    print("✓ Depth validation test passed")
 
 
 def test_id_consistency_validation():
@@ -184,7 +179,6 @@ def test_id_consistency_validation():
     assert any("doesn't follow parent ID pattern" in msg for msg in issue_messages)
     assert any("Duplicate" in msg for msg in issue_messages)
     
-    print("✓ ID consistency validation test passed")
 
 
 def test_indentation_parsing():
@@ -213,7 +207,6 @@ def test_indentation_parsing():
     assert reqs[0]["children"][1]["depth"] == 1
     assert reqs[1]["depth"] == 0
     
-    print("✓ Indentation parsing test passed")
 
 
 def test_complex_real_world_hierarchy():
@@ -278,7 +271,6 @@ def test_complex_real_world_hierarchy():
     assert reqs[2]["status"] == "blocked"
     assert reqs[2]["markers"]["vendor"] == "stripe"
     
-    print("✓ Complex real-world hierarchy test passed")
 
 
 def test_flat_list_still_works():
@@ -304,22 +296,6 @@ def test_flat_list_still_works():
     
     assert reqs[3]["priority"] == "critical"
     
-    print("✓ Flat list compatibility test passed")
 
 
-if __name__ == "__main__":
-    print("Running hierarchical requirements tests...")
-    print("=" * 50)
-    
-    test_basic_hierarchy()
-    test_auto_generated_ids()
-    test_mixed_hierarchy()
-    test_hierarchy_with_markers()
-    test_depth_validation()
-    test_id_consistency_validation()
-    test_indentation_parsing()
-    test_complex_real_world_hierarchy()
-    test_flat_list_still_works()
-    
-    print("=" * 50)
-    print("✅ All hierarchical requirements tests passed!")
+# Tests are now run via pytest - no main block needed

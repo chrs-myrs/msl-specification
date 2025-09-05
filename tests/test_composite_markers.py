@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 """Test composite markers parsing and validation."""
 
-import sys
-from pathlib import Path
-
-# Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent / 'tools'))
-
-from lib.parser import MSLParser
-from lib.validator import MSLValidator, ValidationIssue
+import pytest
 
 
-def test_simple_composite_markers():
+@pytest.mark.parser
+def test_simple_composite_markers(msl_parser):
     """Test parsing simple composite markers."""
-    parser = MSLParser()
+    parser = msl_parser
     
     content = """# Test Spec
 ## Requirements
@@ -39,8 +33,6 @@ def test_simple_composite_markers():
     assert reqs[2]["markers"]["mvp"] == True
     assert reqs[2]["markers"]["tested"] == True
     assert reqs[2]["markers"]["deployed"] == True
-    
-    print("✓ Simple composite markers test passed")
 
 
 def test_metrics_markers():
@@ -71,7 +63,6 @@ def test_metrics_markers():
     assert reqs[2]["metrics"]["actual"] == "7d"
     assert reqs[2]["metrics"]["variance"] == "+2d"
     
-    print("✓ Metrics markers test passed")
 
 
 def test_priority_status_combinations():
@@ -98,7 +89,6 @@ def test_priority_status_combinations():
     assert reqs[2]["status"] == "testing"
     assert reqs[2]["markers"]["sprint"] == "15"
     
-    print("✓ Priority/status combinations test passed")
 
 
 def test_dependency_markers():
@@ -124,7 +114,6 @@ def test_dependency_markers():
     assert "after" in reqs[3]["markers"] and reqs[3]["markers"]["after"] == "REQ-003"
     assert "parallel" in reqs[3]["markers"] and reqs[3]["markers"]["parallel"] == "REQ-005"
     
-    print("✓ Dependency markers test passed")
 
 
 def test_validation_of_composite_markers():
@@ -152,7 +141,6 @@ def test_validation_of_composite_markers():
     assert any("Invalid stage" in msg for msg in issue_messages)
     assert any("Invalid gap type" in msg for msg in issue_messages)
     
-    print("✓ Validation test passed")
 
 
 def test_backward_compatibility():
@@ -175,7 +163,6 @@ def test_backward_compatibility():
     assert reqs[2]["assignee"] == "alice"
     assert reqs[3]["priority"] == "medium"  # default
     
-    print("✓ Backward compatibility test passed")
 
 
 def test_complex_real_world_example():
@@ -223,20 +210,6 @@ def test_complex_real_world_example():
     assert reqs[4]["markers"]["review"] == "pending"
     assert reqs[4]["assignee"] == "alice"
     
-    print("✓ Complex real-world example test passed")
 
 
-if __name__ == "__main__":
-    print("Running composite markers tests...")
-    print("=" * 50)
-    
-    test_simple_composite_markers()
-    test_metrics_markers()
-    test_priority_status_combinations()
-    test_dependency_markers()
-    test_validation_of_composite_markers()
-    test_backward_compatibility()
-    test_complex_real_world_example()
-    
-    print("=" * 50)
-    print("✅ All tests passed!")
+# Tests are now run via pytest - no main block needed
