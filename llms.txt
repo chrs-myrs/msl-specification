@@ -1,0 +1,54 @@
+# MSL - Markdown Specification Language
+
+MSL enables precise requirement specifications using plain markdown. Starting with simple lists, MSL progressively adds structure (IDs, frontmatter) and advanced features (inheritance, templates, validation) while remaining human-readable. Uniquely, MSL specifications are themselves written in MSL, proving the language's expressiveness and enabling self-validation.
+
+## Core Language Specifications (Read in Order)
+
+1. [Level 0 Foundation](specs/msl-l0-foundation.md) - Pure markdown with requirements lists
+2. [Level 1 Structure](specs/msl-l1-structure.md) - Adds YAML frontmatter and requirement IDs  
+3. [Level 2 Advanced](specs/msl-l2-advanced.md) - Complete language with BNF grammar, markers, and inheritance
+
+## Implementation Guide
+
+Complete implementation reference: [Implementation Reference](docs/implementation-reference.md)
+- Complete BNF/EBNF grammar for parsing
+- Python parser and validator implementation (<200 lines)
+- Quality metrics and DRY compliance algorithms
+- Runnable examples with error handling
+- Template processing and inheritance resolution
+
+## Quick Example
+
+```markdown
+# User Authentication Specification
+
+## Requirements
+- Users must authenticate with email and password
+- Sessions must expire after 30 minutes of inactivity
+- Failed login attempts must be rate-limited to 5 per minute
+```
+
+This Level 0 MSL is valid markdown that any developer can read. Add frontmatter for Level 1, markers for Level 2.
+
+## Topics
+
+Topics: specification, requirements, markdown, validation, inheritance, templates, msl, requirement-engineering, documentation, ai-specification, self-referential, grammar, parser, quality-metrics
+
+## Tools and Validation
+
+- [MSL Lint Tool](tools/cli/msl-lint) - Command-line validator for MSL documents
+- [MSL Grammar](specs/formalizations/msl-grammar.md) - Formal BNF/EBNF grammar specification
+- [Usage Standards](specs/standards/msl-usage-standards.md) - Best practices and quality guidelines
+
+## Why MSL?
+
+MSL bridges the gap between human intent and AI implementation. Unlike traditional specification formats, MSL:
+- Starts as simple markdown anyone can write
+- Progressively enhances with structure as needed  
+- Remains readable at every complexity level
+- Enables AI systems to understand and validate requirements precisely
+- Proves its own expressiveness through self-specification
+
+## Repository
+
+Version: 1.2.1 | Updated: 2025-01-05 | Repository: https://github.com/chrs-myrs/msl-specification
