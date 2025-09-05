@@ -199,6 +199,10 @@ class MSLValidator:
                             f"Requirement {req.get('id', i+1)} uses forbidden marker: {forbidden}"
                         ))
             
+            # Validate code links
+            if req.get("code_links"):
+                issues.extend(self._validate_code_links(req, i))
+            
             # Run custom validators
             for validator_name in self.config.custom_validators:
                 validator = CustomValidators.get(validator_name)
@@ -386,6 +390,82 @@ class MSLValidator:
         for child in requirement.get("children", []):
             if child.get("children"):
                 issues.extend(self._validate_hierarchy(child, index))
+        
+        return issues
+    
+    def _validate_code_links(self, requirement: Dict[str, Any], index: int) -> List[ValidationIssue]:
+        """Validate code links in requirements."""
+        issues = []
+        req_id = requirement.get("id", f"requirement {index + 1}")
+        
+        for link in requirement.get("code_links", []):
+            file_path = link.get("file", "")
+            
+            # Check if file path looks valid
+            if not file_path:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Empty file path in code link for {req_id}"
+                ))
+                continue
+            
+            # Validate file exists if configured
+            if self.config.validate_file_paths:
+                from pathlib import Path
+                
+                # Try to resolve file path relative to project root
+                path = Path(file_path)
+                if not path.is_absolute():
+                    # Try common source directories
+                    possible_paths = [
+                        Path(file_path),
+                        Path("src") / file_path,
+                        Path("lib") / file_path,
+                        Path("app") / file_path,
+                        Path("tests") / file_path,
+                    ]
+                    
+                    exists = any(p.exists() for p in possible_paths)
+                    if not exists and self.strict:
+                        issues.append(ValidationIssue(
+                            "warning",
+                            f"Code link file not found: {file_path} in {req_id}"
+                        ))
+            
+            # Validate line numbers are numeric
+            if "line" in link:
+                try:
+                    int(link["line"])
+                except ValueError:
+                    issues.append(ValidationIssue(
+                        "warning",
+                        f"Invalid line number '{link['line']}' in code link for {req_id}"
+                    ))
+            
+            if "start_line" in link:
+                try:
+                    start = int(link["start_line"])
+                    if "end_line" in link:
+                        end = int(link["end_line"])
+                        if end < start:
+                            issues.append(ValidationIssue(
+                                "warning",
+                                f"End line before start line in code link for {req_id}: {start}-{end}"
+                            ))
+                except ValueError:
+                    issues.append(ValidationIssue(
+                        "warning",
+                        f"Invalid line range in code link for {req_id}"
+                    ))
+            
+            # Check direction is valid
+            direction = link.get("direction", "bidirectional")
+            valid_directions = ["bidirectional", "forward", "backward"]
+            if direction not in valid_directions:
+                issues.append(ValidationIssue(
+                    "warning",
+                    f"Invalid link direction '{direction}' in {req_id}. Valid: {', '.join(valid_directions)}"
+                ))
         
         return issues
     

@@ -351,6 +351,179 @@ Use subsections for logical grouping:
 - REQ-302: API responses within 200ms for cached data
 ```
 
+## Bidirectional Code Links (v1.5.0+)
+
+Link requirements directly to their implementations in code with bidirectional traceability.
+
+### Link Syntax
+
+#### Bidirectional Links (↔)
+Link both ways between specification and code:
+```markdown
+- REQ-001: [↔ src/auth.js:45-67] Authentication implementation
+- REQ-002: [<-> lib/validator.py:100] Input validation logic
+```
+
+#### Forward Links (→)
+Link from specification to code:
+```markdown
+- REQ-003: [→ app/main.java:25] Entry point implementation
+- REQ-004: [-> tests/integration.test.js] Integration test coverage
+```
+
+#### Backward Links (←)
+Link from code back to specification:
+```markdown
+- REQ-005: [← config.yaml:10-20] Configuration documented here
+- REQ-006: [<- deploy.sh:5] Deployment script references
+```
+
+### Line Number Formats
+
+```markdown
+# Single line reference
+[↔ src/utils.py:42]
+
+# Line range reference
+[↔ src/api.js:100-150]
+
+# Whole file reference
+[↔ src/config.yaml]
+```
+
+### Code Comments
+
+Mark code implementations with MSL comments:
+
+**Python:**
+```python
+# MSL: REQ-001
+def authenticate(username, password):
+    """User authentication implementation."""
+    # Implementation here
+```
+
+**JavaScript:**
+```javascript
+// MSL: REQ-002
+function validateInput(data) {
+  /* MSL requirement implementation */
+  return data.length > 0;
+}
+```
+
+**Java:**
+```java
+// @implements REQ-003
+public class AuthManager {
+    /* MSL: REQ-004 */
+    public boolean login(String user, String pass) {
+        // Implementation
+    }
+}
+```
+
+### Composite Markers with Code Links
+
+Combine code links with other markers:
+
+```markdown
+## Requirements
+- REQ-001: [!|security|↔ auth/login.py:50-100] Secure login implementation
+- REQ-002: [stage:testing|→ tests/auth_test.js:25-50] Auth tests in progress
+- REQ-003: [@alice|← docs/api.md:100|gap:doc] API needs documentation
+```
+
+### Code Scanner
+
+Use the MSL code scanner to find all implementations:
+
+```python
+from lib.code_scanner import CodeScanner
+
+scanner = CodeScanner()
+
+# Find all implementations of a requirement
+impls = scanner.find_requirement_implementations("REQ-001", "./src")
+
+# Generate reverse link mapping
+links = scanner.generate_reverse_links("specs/auth.md", "./src")
+
+# Verify bidirectional consistency
+results = scanner.verify_bidirectional_links("specs/auth.md", "./")
+```
+
+### Best Practices
+
+1. **Use Bidirectional Links** for critical requirements that need full traceability
+2. **Use Forward Links** when documenting planned implementations
+3. **Use Backward Links** when code references external specifications
+4. **Include Line Numbers** for precise traceability to specific functions
+5. **Keep Links Updated** when refactoring code or moving files
+
+### Validation
+
+The validator checks code links for:
+- Valid file path format
+- Numeric line numbers
+- Logical line ranges (start < end)
+- File existence (when configured)
+
+Configure validation in `.mslrc`:
+```yaml
+# Link Validation
+validate_file_paths: true  # Check that linked files exist
+check_dead_links: false    # Don't check for broken links (expensive)
+```
+
+### Tool Support
+
+**CLI Commands:**
+```bash
+# Scan code for MSL references
+msl-scan ./src
+
+# Verify bidirectional links
+msl-verify specs/auth.md --code ./src
+
+# Generate link report
+msl-links --report specs/ src/
+```
+
+**IDE Integration:**
+- VS Code extension shows linked code on hover
+- Jump to implementation from requirement
+- Jump to requirement from code comment
+- Real-time link validation
+
+### Examples
+
+#### Complete Specification with Code Links
+
+```markdown
+# Authentication Module [MSL]
+
+## Requirements
+
+### Core Authentication
+- REQ-001: [↔ src/auth/core.py:45-120] User authentication via OAuth 2.0
+  - REQ-001.1: [→ src/auth/oauth.py:15-45] OAuth token generation
+  - REQ-001.2: [→ src/auth/oauth.py:50-75] Token refresh mechanism
+  - REQ-001.3: [← tests/auth_test.py:100-200] Token validation tests
+
+### Security Features
+- REQ-002: [!|security|↔ src/auth/security.py] Security controls
+  - REQ-002.1: [→ src/auth/security.py:25-40] Password hashing with bcrypt
+  - REQ-002.2: [→ src/auth/security.py:45-60] Rate limiting implementation
+  - REQ-002.3: [→ src/auth/security.py:65-90] Session timeout handling
+
+### API Endpoints
+- REQ-003: [→ src/api/auth.js:100-150] REST API authentication endpoints
+  - REQ-003.1: [→ src/api/auth.js:100-110] POST /auth/login
+  - REQ-003.2: [→ src/api/auth.js:115-125] POST /auth/logout
+  - REQ-003.3: [→ src/api/auth.js:130-140] POST /auth/refresh
+```
+
 ## Validation Configuration (v1.4.0+)
 
 Customize MSL validation rules for your project using configuration files or frontmatter.

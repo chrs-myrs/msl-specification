@@ -53,6 +53,16 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-116: [NEW] Maximum recommended hierarchy depth is 4 levels
 - REQ-117: [NEW] All markers and metadata apply independently at each hierarchy level
 
+### Bidirectional Code Links (v1.5.0+)
+
+- REQ-118: [NEW] System must parse bidirectional code link markers in format `[↔ file:line]` or `[<-> file:line]`
+- REQ-119: [NEW] System must support forward-only links with `[→ file:line]` or `[-> file:line]`
+- REQ-120: [NEW] System must support backward-only links with `[← file:line]` or `[<- file:line]`
+- REQ-121: [NEW] Code links must support single line references (file:45) and ranges (file:45-67)
+- REQ-122: [NEW] System must validate file paths in code links when configured
+- REQ-123: [NEW] Code scanner must extract MSL references from source code comments
+- REQ-124: [NEW] Code scanner must support common programming languages (Python, JS, Java, Go, etc.)
+
 ### Advanced Inheritance
 
 - REQ-201: [NEW] Child documents must support explicit inheritance control markers

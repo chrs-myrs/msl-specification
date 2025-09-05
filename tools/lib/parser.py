@@ -238,8 +238,11 @@ class MSLParser:
                 text = marker_match.group(2)
                 requirement["text"] = text
                 
-                # Parse markers (check for composite or key:value)
-                if '|' in marker_content or ':' in marker_content:
+                # Parse markers (check for composite, key:value, or code links)
+                if ('|' in marker_content or ':' in marker_content or 
+                    marker_content.startswith('↔') or marker_content.startswith('<->') or
+                    marker_content.startswith('→') or marker_content.startswith('->') or
+                    marker_content.startswith('←') or marker_content.startswith('<-')):
                     self._parse_composite_markers(marker_content, requirement)
                 else:
                     # Handle simple markers for backward compatibility
@@ -272,7 +275,19 @@ class MSLParser:
     
     def _parse_composite_markers(self, marker_content: str, requirement: Dict[str, Any]):
         """Parse composite markers separated by pipes."""
-        components = marker_content.split('|')
+        # Check if this is a code link first (before splitting)
+        if (marker_content.startswith('↔') or marker_content.startswith('<->') or
+            marker_content.startswith('→') or marker_content.startswith('->') or
+            marker_content.startswith('←') or marker_content.startswith('<-')):
+            # Treat entire content as a single code link component
+            if '|' in marker_content:
+                # Split but keep the first arrow part intact
+                first_pipe = marker_content.index('|')
+                components = [marker_content[:first_pipe].strip()] + marker_content[first_pipe+1:].split('|')
+            else:
+                components = [marker_content]
+        else:
+            components = marker_content.split('|')
         
         for component in components:
             component = component.strip()
@@ -281,8 +296,33 @@ class MSLParser:
             if not component:
                 continue
                 
+            # Check for code links first
+            if component.startswith('↔'):
+                # Bidirectional code link (unicode arrow)
+                link_text = component[1:].strip()
+                self._parse_code_link(requirement, link_text)
+            elif component.startswith('<->'):
+                # Bidirectional code link (ASCII)
+                link_text = component[3:].strip()
+                self._parse_code_link(requirement, link_text)
+            elif component.startswith('→'):
+                # Forward code link (unicode arrow)
+                link_text = component[1:].strip()
+                self._parse_code_link(requirement, link_text, direction='forward')
+            elif component.startswith('->'):
+                # Forward code link (ASCII)
+                link_text = component[2:].strip()
+                self._parse_code_link(requirement, link_text, direction='forward')
+            elif component.startswith('←'):
+                # Backward code link (unicode arrow)
+                link_text = component[1:].strip()
+                self._parse_code_link(requirement, link_text, direction='backward')
+            elif component.startswith('<-'):
+                # Backward code link (ASCII)
+                link_text = component[2:].strip()
+                self._parse_code_link(requirement, link_text, direction='backward')
             # Check for key:value pairs
-            if ':' in component:
+            elif ':' in component:
                 key, value = component.split(':', 1)
                 key = key.strip()
                 value = value.strip()
@@ -359,6 +399,47 @@ class MSLParser:
                 else:
                     # Store as generic marker
                     requirement["markers"][component] = True
+    
+    def _parse_code_link(self, requirement: Dict[str, Any], link_text: str, direction: str = 'bidirectional'):
+        """Parse code link and add to requirement."""
+        if "code_links" not in requirement:
+            requirement["code_links"] = []
+        
+        # Parse link format: file.ext:line or file.ext:start-end
+        parts = link_text.split(':')
+        if len(parts) >= 2:
+            file_path = parts[0].strip()
+            line_spec = ':'.join(parts[1:]).strip()
+            
+            # Parse line specification
+            if '-' in line_spec:
+                # Range format: 45-67
+                line_parts = line_spec.split('-')
+                start_line = line_parts[0].strip()
+                end_line = line_parts[1].strip() if len(line_parts) > 1 else start_line
+                
+                requirement["code_links"].append({
+                    "file": file_path,
+                    "start_line": start_line,
+                    "end_line": end_line,
+                    "direction": direction,
+                    "raw": link_text
+                })
+            else:
+                # Single line format: 45
+                requirement["code_links"].append({
+                    "file": file_path,
+                    "line": line_spec,
+                    "direction": direction,
+                    "raw": link_text
+                })
+        else:
+            # Just file path, no line numbers
+            requirement["code_links"].append({
+                "file": link_text.strip(),
+                "direction": direction,
+                "raw": link_text
+            })
 
 
 class MSLLevel:
