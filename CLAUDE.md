@@ -10,6 +10,31 @@ This repository contains the MSL (Markdown Specification Language) specification
 
 **Important:** Users don't "install" MSL - they just write markdown following MSL conventions.
 
+## 📚 Documentation Philosophy
+
+**Be conservative with documentation updates.** Less is often more when it comes to user-facing documentation.
+
+### Key Principles:
+- **Don't overwhelm users** - Too much documentation is worse than too little
+- **Simplify before adding** - First try to simplify existing docs rather than adding new sections
+- **Focus on the 90% use case** - Most users need basic features, not advanced concepts
+- **Hide complexity** - Move advanced topics (like metaspecs) to appendices or separate guides
+- **Test with real users** - If users are confused, the solution might be LESS documentation, not more
+
+### Smart Update Strategies:
+1. **Consolidate** - Combine related sections rather than creating new ones
+2. **Prioritize** - Put most important info first, bury rarely-needed concepts
+3. **Simplify** - Replace complex explanations with simple examples
+4. **Remove** - Delete outdated or confusing content rather than trying to fix it
+5. **Redirect** - Point advanced users to separate resources rather than cluttering main docs
+
+### Example: The Metaspec Problem
+Users were confused about metaspecs vs regular specs. Instead of adding more metaspec documentation:
+- De-emphasize metaspecs in the main guide
+- Make regular specs the clear default path
+- Move metaspec info to an advanced appendix
+- Add a simple "99% of users just need regular specs" note
+
 ## ⚠️ CRITICAL: Inheritance Rules
 
 **NEVER use `extends` unless there's a true "is-a" relationship!**
