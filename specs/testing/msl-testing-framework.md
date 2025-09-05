@@ -2,6 +2,8 @@
 msl: L1
 id: msl-testing-framework
 title: MSL Testing Framework Specification
+extends: testing-framework-metaspec
+compliance: standard
 status: active
 priority: high
 ---
@@ -10,7 +12,7 @@ priority: high
 
 ## Overview
 
-This specification defines the testing framework and quality assurance approach for the MSL ecosystem.
+This specification defines the testing framework and quality assurance approach for the MSL ecosystem. It conforms to the testing-framework-metaspec with standard compliance level, implementing all required sections and requirements for a complete testing framework specification.
 
 ## Requirements
 
