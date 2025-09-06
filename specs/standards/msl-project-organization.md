@@ -31,31 +31,32 @@ This standard defines how to organize MSL-based projects for maximum discoverabi
 
 ### Specification Directory Structure
 
-- Project specifications SHALL be organized in a `/specs` directory at project root
-- Specifications SHALL be grouped by functional area in subdirectories
+- Project specifications SHOULD be organized for easy discovery (see Organization Patterns below)
+- Specifications SHOULD be grouped by functional area or component
 - Each specification SHALL have a clear, descriptive filename using kebab-case
 - All specifications SHALL use the `.md` extension
 - Specification files SHALL NOT use spaces in filenames
 
 ### Recommended Specification Categories
 
-- `/specs/core/` SHALL contain fundamental project specifications
+When using centralized organization, consider these categories:
+- `core/` - Fundamental project specifications
   - Core business logic
   - Data models
   - System constraints
-- `/specs/features/` SHALL contain feature specifications
+- `features/` - Feature specifications
   - User-facing features
   - Feature requirements
   - Acceptance criteria
-- `/specs/architecture/` SHALL contain system design specifications
+- `architecture/` - System design specifications
   - System components
   - Integration points
   - Technical decisions
-- `/specs/apis/` SHALL contain interface specifications
+- `apis/` - Interface specifications
   - REST APIs
   - GraphQL schemas
   - Event contracts
-- `/specs/standards/` SHALL contain project-specific standards
+- `standards/` - Project-specific standards
   - Coding standards
   - Testing requirements
   - Documentation standards
@@ -63,19 +64,31 @@ This standard defines how to organize MSL-based projects for maximum discoverabi
 ### AI Agent Workflow
 
 - Agents SHALL create PURPOSE.md as the first file in any new project
-- Agents SHALL create the `/specs` directory structure after PURPOSE.md
-- Agents SHALL organize specifications according to these categories
+- Agents SHALL recognize and work with any organization pattern (centralized, colocated, or hybrid)
+- Agents SHOULD default to centralized `/specs` for new projects unless directed otherwise
+- Agents SHALL discover specifications regardless of their location in the project
 - Agents SHALL ensure all specifications are cross-referenced appropriately
 - Agents SHALL maintain a README.md that points to PURPOSE.md
 - Agents SHALL update PURPOSE.md when project scope changes
+- Agents SHOULD create or update INDEX.md when using colocated patterns for discoverability
 
 ### Specification Naming Conventions
 
-- Feature specs SHALL be named: `feature-name.md`
+- Feature specs SHALL be named: `feature-name.md` or `feature-name.spec.md`
 - API specs SHALL be named: `service-api.md` or `resource-api.md`
 - Architecture specs SHALL be named: `component-architecture.md`
 - Data model specs SHALL be named: `entity-model.md`
 - Standard specs SHALL be named: `project-standard-name.md`
+- Colocated specs MAY use `.spec.md` suffix for clarity (e.g., `auth.spec.md`)
+
+### Discoverability Requirements
+
+- Projects using colocated patterns SHALL maintain an INDEX.md listing all specification locations
+- Projects SHOULD use consistent patterns within the same codebase
+- README.md SHALL document which organization pattern the project uses
+- Specifications SHALL be discoverable by searching for `[MSL]` markers
+- Projects MAY use `.mslignore` file to exclude non-specification markdown files from discovery
+- AI agents SHALL check common locations: `/specs`, `/src/**/*.spec.md`, `/docs/specs`
 
 ### Cross-Referencing
 
@@ -106,23 +119,100 @@ This standard defines how to organize MSL-based projects for maximum discoverabi
 - Specifications SHALL NOT duplicate requirements across multiple files
 - Specifications SHALL NOT use proprietary formats or tools
 
+## Organization Patterns
+
+MSL supports multiple organization patterns. Choose based on your project's needs:
+
+### Pattern 1: Centralized (/specs)
+**Best for:** AI-first development, spec-first workflow, clear separation of concerns
+
+```
+project/
+├── PURPOSE.md
+├── specs/
+│   ├── core/
+│   ├── features/
+│   └── apis/
+└── src/
+```
+
+**Benefits:**
+- AI agents find all specs in one location
+- Clear separation of requirements from implementation
+- Easy to review all project requirements at once
+- Supports spec-first development workflow
+
+**Trade-offs:**
+- Requires discipline to keep specs updated with code changes
+- Developers may not see specs in their daily workflow
+
+### Pattern 2: Colocated (alongside code)
+**Best for:** Maintaining spec-code sync, developer workflow, component ownership
+
+```
+project/
+├── PURPOSE.md
+├── src/
+│   ├── auth/
+│   │   ├── auth.ts
+│   │   └── auth.spec.md
+│   └── payments/
+│       ├── payments.ts
+│       └── payments.spec.md
+└── README.md
+```
+
+**Benefits:**
+- Specs naturally updated when code changes
+- Developers see specs in their workflow
+- Clear component ownership
+- Proven pattern (similar to colocated tests)
+
+**Trade-offs:**
+- AI agents need to search multiple locations
+- Harder to see all requirements at once
+
+### Pattern 3: Hybrid
+**Best for:** Large projects, mixed teams, balancing both approaches
+
+```
+project/
+├── PURPOSE.md
+├── specs/              # System-level specs
+│   ├── architecture/
+│   └── standards/
+├── src/
+│   ├── auth/
+│   │   └── auth.spec.md    # Component specs
+│   └── payments/
+│       └── payments.spec.md
+└── docs/
+```
+
+**Benefits:**
+- System requirements centralized for easy review
+- Implementation details colocated for maintenance
+- Supports different types of specifications optimally
+
+**Trade-offs:**
+- Need clear guidelines on what goes where
+- Slightly more complex initial setup
+
+### Choosing a Pattern
+
+Consider these factors:
+- **Team size:** Small teams may prefer simplicity of colocation
+- **AI usage:** Heavy AI usage benefits from centralized specs
+- **Project type:** Libraries may prefer colocation, applications may prefer centralized
+- **Development workflow:** Spec-first favors centralized, iterative favors colocated
+
 ## Examples
 
-### Minimal Project Structure
+### Example 1: Centralized Pattern (Traditional)
 ```
 my-project/
 ├── PURPOSE.md          # Project purpose and constraints
-├── README.md          # Points to PURPOSE.md
-└── specs/
-    └── core/
-        └── main-feature.md
-```
-
-### Standard Project Structure
-```
-my-project/
-├── PURPOSE.md
-├── README.md
+├── README.md          # Points to PURPOSE.md, documents pattern used
 ├── specs/
 │   ├── INDEX.md       # Optional specification index
 │   ├── core/
@@ -133,26 +223,59 @@ my-project/
 │   │   └── reporting.md
 │   └── apis/
 │       └── rest-api.md
-└── src/               # Implementation (not part of MSL)
+└── src/               # Implementation
+    ├── auth/
+    │   └── auth.ts
+    └── reporting/
+        └── reporting.ts
 ```
 
-### Enterprise Project Structure
+### Example 2: Colocated Pattern (Component-based)
 ```
-my-project/
+my-library/
 ├── PURPOSE.md
-├── README.md
-├── specs/
-│   ├── INDEX.md
-│   ├── metaspecs/     # Project-specific governance
-│   │   └── api-metaspec.md
-│   ├── core/
-│   ├── features/
+├── README.md          # Documents colocated pattern
+├── INDEX.md           # Lists all spec locations
+├── src/
+│   ├── auth/
+│   │   ├── auth.ts
+│   │   ├── auth.spec.md      # Component specification
+│   │   └── auth.test.ts
+│   ├── database/
+│   │   ├── database.ts
+│   │   ├── database.spec.md  # Component specification
+│   │   └── database.test.ts
+│   └── api/
+│       ├── api.ts
+│       └── api.spec.md        # Component specification
+└── package.json
+```
+
+### Example 3: Hybrid Pattern (Mixed approach)
+```
+enterprise-app/
+├── PURPOSE.md
+├── README.md          # Documents hybrid pattern
+├── specs/             # System-level specifications
+│   ├── INDEX.md       # Maps all specifications
 │   ├── architecture/
-│   ├── apis/
-│   └── standards/
-│       ├── testing-standards.md
-│       └── security-standards.md
-└── [implementation directories]
+│   │   └── system-design.md
+│   ├── standards/
+│   │   ├── coding-standards.md
+│   │   └── security-standards.md
+│   └── metaspecs/
+│       └── api-metaspec.md
+├── src/
+│   ├── auth/
+│   │   ├── auth.ts
+│   │   └── auth.spec.md      # Component spec
+│   ├── payments/
+│   │   ├── payments.ts
+│   │   └── payments.spec.md  # Component spec
+│   └── shared/
+│       └── shared.spec.md    # Shared utilities spec
+└── docs/
+    └── api-docs.md
 ```
 
 ## Notes
