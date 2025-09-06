@@ -163,6 +163,39 @@ When modifying any of these, update both the specification and implementation to
 4. Run batch validator to check integration
 5. Commit when quality score ≥80
 
+## MSL Best Practices for This Repository
+
+This repository must exemplify the MSL standards it defines. Always ensure:
+
+### Project Organization Compliance
+- **PURPOSE.md at root**: ✓ This repo has PURPOSE.md at the project root (per msl-project-organization.md)
+- **Specs in /specs**: All specifications must be in the /specs directory with proper subdirectories
+- **Follow our own standards**: We must follow specs/standards/msl-project-organization.md
+
+### Specification Standards
+- **[MSL] marker**: Every specification title must end with [MSL] marker
+- **Proper frontmatter**: Use appropriate MSL level features (L0, L1, or L2)
+- **Testable requirements**: Requirements should be specific and measurable
+- **Quality scores**: Aim for ≥80/100 validation score on all specs
+
+### Dogfooding Principle
+- **Self-specification**: MSL specifies itself - this proves its completeness
+- **Use MSL features**: Use inheritance, markers, and templates where appropriate
+- **Validate regularly**: Run msl-validator on our own specifications
+- **Lead by example**: This repo should be the gold standard for MSL projects
+
+### Before Committing
+1. Check all specs have [MSL] in titles
+2. Verify PURPOSE.md exists at root
+3. Run validation on modified specs
+4. Ensure spec-to-implementation sync (docs match specs)
+5. Run pre-push completeness checker
+
+### Key Files to Maintain
+- `/PURPOSE.md` - Project purpose and limitations (root level)
+- `/specs/INDEX.md` - Navigation guide for AI agents
+- `/specs/standards/msl-project-organization.md` - The standard we follow
+
 ## References
 - MSL Repository: https://github.com/chrs-myrs/msl-specification
 - Core Specs: `/specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md`

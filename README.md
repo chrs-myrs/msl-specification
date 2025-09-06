@@ -158,6 +158,24 @@ Compliance team: Write security specifications
 - Self-validating system using its own features
 - [Learn about MSL's meta architecture →](docs/patterns/metaspec-patterns.md)
 
+## For AI Assistants
+
+### Quick Start for AI Agents
+If you're an AI assistant (Claude, ChatGPT, etc.) helping with an MSL project:
+
+1. **Start here**: Read [specs/INDEX.md](specs/INDEX.md) for navigation
+2. **Understand purpose**: Check [specs/msl-purpose-and-limitations.md](specs/msl-purpose-and-limitations.md)
+3. **Project setup**: Follow [specs/standards/msl-project-organization.md](specs/standards/msl-project-organization.md)
+4. **Create PURPOSE.md first**: Every project needs a PURPOSE specification
+5. **Use appropriate level**: L0 for simple, L1 for structured, L2 for complex
+
+### AI Agent Best Practices
+- Always create PURPOSE.md as the first file in new projects
+- Organize specifications in `/specs` directory structure
+- Start with the simplest MSL level that meets requirements
+- Use validation tools to ensure specification quality
+- Reference this repository via context7 MCP when available
+
 ## Documentation
 
 ### Getting Started
