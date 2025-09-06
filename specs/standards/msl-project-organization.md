@@ -29,6 +29,15 @@ This standard defines how to organize MSL-based projects for maximum discoverabi
 - PURPOSE.md SHALL list key stakeholders and their concerns
 - PURPOSE.md SHALL define success criteria for the project
 
+### Optional MSL-CONFIG.md
+
+- Projects MAY include an MSL-CONFIG.md file at the project root
+- MSL-CONFIG.md SHALL customize MSL usage for the specific project
+- MSL-CONFIG.md MAY specify default MSL level, organization pattern, and naming conventions
+- MSL-CONFIG.md MAY include project-specific templates and patterns
+- AI agents SHALL check for and cache MSL-CONFIG.md when present
+- See `/examples/MSL-CONFIG.md` for configuration examples
+
 ### Specification Directory Structure
 
 - Project specifications SHOULD be organized for easy discovery (see Organization Patterns below)
@@ -212,6 +221,7 @@ Consider these factors:
 ```
 my-project/
 ├── PURPOSE.md          # Project purpose and constraints
+├── MSL-CONFIG.md      # Optional: Project-specific MSL configuration
 ├── README.md          # Points to PURPOSE.md, documents pattern used
 ├── specs/
 │   ├── INDEX.md       # Optional specification index

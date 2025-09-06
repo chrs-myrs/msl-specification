@@ -4,9 +4,14 @@
 
 This index helps AI agents and developers navigate the MSL specification ecosystem. Start here to understand MSL's structure and find relevant specifications.
 
-## For AI Agents Starting New Projects
+## For AI Agents - Efficient Configuration
 
-### Required Reading Order
+### One-Time Setup (Cache for Session)
+1. **Fetch and cache**: [`/AGENTS.md`](../AGENTS.md) - Essential MSL knowledge (90% of what you need)
+2. **Check for**: Project-specific `MSL-CONFIG.md` (if it exists)
+3. **Result**: Minimal context use, fewer context7 lookups, consistent MSL usage
+
+### First-Time Project Setup
 1. **Read First**: [PURPOSE.md](../PURPOSE.md) - Understand what MSL is and isn't
 2. **Read Second**: [standards/msl-project-organization.md](standards/msl-project-organization.md) - Learn how to structure projects
 3. **Create**: PURPOSE.md for your specific project
