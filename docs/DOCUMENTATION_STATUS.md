@@ -3,7 +3,6 @@
 ## ✅ Completed
 
 1. **README.md** - Fully regenerated according to spec
-   - Meets all requirements from msl-docs-readme.md
    - Value proposition in first 3 lines
    - 30-second quickstart
    - Progressive complexity examples
@@ -49,13 +48,10 @@ The existing documentation in `/docs/guides/` should be reviewed and either:
 ## Specifications Used
 
 All documentation is generated according to specifications in `/specs/documentation/`:
-- msl-docs-root.md - System architecture
-- msl-docs-readme.md - README requirements
-- msl-docs-getting-started.md - Quickstart requirements
-- msl-docs-user-guide.md - User guide requirements
-- msl-docs-reference.md - Reference requirements
-- msl-docs-tutorials.md - Tutorial requirements
-- msl-docs-tools.md - Tools documentation
-- msl-docs-workflows.md - Workflow guides
-- msl-docs-why-msl.md - Value proposition
-- msl-docs-project.md - Project documentation
+- msl-docs-base.md - Common documentation requirements
+- msl-docs-getting-started.md - Quickstart requirements (extends base)
+- msl-docs-user-guide.md - User guide requirements (extends base)
+- msl-docs-reference.md - Reference requirements (extends base)
+- msl-docs-tutorials.md - Tutorial requirements (extends base)
+
+Note: Several specifications have been consolidated into the base or merged into existing specs to reduce duplication and follow DRY principles.

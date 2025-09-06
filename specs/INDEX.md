@@ -17,6 +17,13 @@ This index helps AI agents and developers navigate the MSL specification ecosyst
 - **Need structure?** → Use Level 1 (add frontmatter and IDs)
 - **Complex needs?** → Use Level 2 (markers, inheritance, templates)
 
+### A Note on Simplicity
+
+MSL works best when specifications start simple. Consider:
+- Most projects only need L0 (plain markdown with requirements)
+- High-level requirements often work better than detailed prescriptions
+- You can always add detail later if needed
+
 ## Core Language Specifications
 
 ### Foundation Levels
@@ -46,6 +53,7 @@ Metaspecs are specifications that govern other specifications. They prove MSL ca
 - [metaspecs/msl-core-metaspec.md](metaspecs/msl-core-metaspec.md) - Governs all MSL specifications
 - [metaspecs/msl-language-metaspec.md](metaspecs/msl-language-metaspec.md) - Governs language specs
 - [metaspecs/msl-validation-metaspec.md](metaspecs/msl-validation-metaspec.md) - Validation rules
+- [metaspecs/msl-documentation-metaspec.md](metaspecs/msl-documentation-metaspec.md) - Documentation governance
 - [metaspecs/testing-framework-metaspec.md](metaspecs/testing-framework-metaspec.md) - Testing standards
 
 ## Standards and Best Practices
@@ -56,18 +64,13 @@ Metaspecs are specifications that govern other specifications. They prove MSL ca
 
 ## Documentation Specifications
 
-These prove MSL can specify its own documentation:
+These prove MSL can specify its own documentation (simplified with inheritance):
 
-- [documentation/msl-docs-root.md](documentation/msl-docs-root.md) - Documentation structure
-- [documentation/msl-docs-user-guide.md](documentation/msl-docs-user-guide.md) - User guide spec
-- [documentation/msl-docs-getting-started.md](documentation/msl-docs-getting-started.md) - Quick start spec
-- [documentation/msl-docs-why-msl.md](documentation/msl-docs-why-msl.md) - Motivation spec
-- [documentation/msl-docs-reference.md](documentation/msl-docs-reference.md) - Reference spec
-- [documentation/msl-docs-tools.md](documentation/msl-docs-tools.md) - Tooling spec
-- [documentation/msl-docs-workflows.md](documentation/msl-docs-workflows.md) - Workflow spec
-- [documentation/msl-docs-tutorials.md](documentation/msl-docs-tutorials.md) - Tutorial spec
-- [documentation/msl-docs-project.md](documentation/msl-docs-project.md) - Project docs spec
-- [documentation/msl-docs-readme.md](documentation/msl-docs-readme.md) - README spec
+- [documentation/msl-docs-base.md](documentation/msl-docs-base.md) - Common documentation requirements
+- [documentation/msl-docs-getting-started.md](documentation/msl-docs-getting-started.md) - Quick start spec (extends base)
+- [documentation/msl-docs-user-guide.md](documentation/msl-docs-user-guide.md) - User guide spec (extends base)
+- [documentation/msl-docs-reference.md](documentation/msl-docs-reference.md) - Reference spec (extends base)
+- [documentation/msl-docs-tutorials.md](documentation/msl-docs-tutorials.md) - Tutorial spec (extends base)
 
 ## Application Specifications
 

@@ -277,5 +277,20 @@ Following these standards results in maintainable, reusable, and consistent spec
 - **80% similarity threshold**: Empirically determined to catch meaningful duplication
 - **80/100 minimum score**: Ensures production-ready quality while allowing minor issues
 
+### Simplicity Examples
+
+These examples show how less can be more in specifications:
+
+Instead of: "Documentation must include exactly 3 examples of 10-15 lines each"
+Consider: "Documentation should include clear examples"
+
+Instead of: "Response time must be 2.5 seconds ±100ms"
+Consider: "Response time should be acceptable to users"
+
+Instead of: "Error messages must display for 5 seconds in red 14px font"
+Consider: "Error messages should be clearly visible to users"
+
+The simpler versions leave room for context-appropriate decisions while still capturing the essential requirement.
+
 ---
 *Specification format: [MSL Level 2](https://github.com/chrs-myrs/msl-specification)*

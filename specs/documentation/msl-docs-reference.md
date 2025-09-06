@@ -1,11 +1,12 @@
 ---
 msl: L1
 id: msl-docs-reference
+extends: msl-docs-base
 tags: [documentation, reference, technical]
 priority: high
 status: active
+governed-by: msl-documentation-metaspec
 references:
-  - msl-docs-root: "Part of documentation system"
   - msl-l2-advanced: "Complete language to document"
 ---
 
@@ -17,59 +18,42 @@ This specification defines requirements for MSL technical reference documentatio
 
 ## Requirements
 
-### Content Structure
+### Comprehensive Coverage
 
-- REQ-001: [!] [NEW] Reference must be organized alphabetically and by category
-- REQ-002: [!] [NEW] Each entry must follow consistent template structure
-- REQ-003: [NEW] Entries must include syntax, semantics, and examples
-- REQ-004: [NEW] Cross-references must be bidirectional
-- REQ-005: [NEW] Each entry must be individually linkable
+- REQ-001: [!] [→ Reference](docs/reference.md) MUST document all MSL syntax elements and features
+- REQ-002: [!] MUST document all markers, frontmatter fields, and validation rules
+- REQ-003: MUST include complete inheritance and governance rules
+- REQ-004: MUST document error messages with solutions
 
-### Coverage Requirements
+### Consistent Structure
 
-- REQ-101: [!] [NEW] Must document 100% of MSL syntax elements
-- REQ-102: [!] [NEW] Must document all markers with semantic meanings
-- REQ-103: [!] [NEW] Must document all frontmatter fields and types
-- REQ-104: [NEW] Must include complete inheritance rules
-- REQ-105: [NEW] Must document all validation requirements
-- REQ-106: [NEW] Must include error messages and fixes
-
-### Entry Template
-
-- REQ-201: [!] [NEW] Each entry must include: name, syntax, description
-- REQ-202: [NEW] Complex entries must include: parameters, return values
-- REQ-203: [NEW] All entries must include: examples (valid and invalid)
-- REQ-204: [NEW] Entries must specify: MSL level (L0/L1/L2)
-- REQ-205: [NEW] Related entries must be cross-linked
+- REQ-101: [!] Reference MUST be organized for easy lookup (alphabetical/categorical)
+- REQ-102: [!] Each entry MUST follow a consistent template
+- REQ-103: Each entry MUST include syntax, description, and examples
+- REQ-104: Each entry MUST specify its MSL level (L0/L1/L2)
 
 ### Search and Navigation
 
-- REQ-301: [!] [NEW] Must support search by keyword, category, level
-- REQ-302: [NEW] Must provide quick reference index
-- REQ-303: [NEW] Must support "see also" navigation
-- REQ-304: [NEW] Must include comprehensive glossary
-- REQ-305: [NEW] Must provide syntax cheat sheet
+- REQ-201: [!] MUST support multiple navigation methods
+- REQ-202: MUST provide quick reference index
+- REQ-203: MUST include comprehensive glossary
 
 ### Machine Readability
 
-- REQ-401: [!] [NEW] Each entry must have structured metadata
-- REQ-402: [NEW] Syntax must be in formal notation (BNF/EBNF)
-- REQ-403: [NEW] Examples must be marked as executable
-- REQ-404: [NEW] Validation rules must be programmatically extractable
-- REQ-405: [NEW] Must support generation of syntax validators
+- REQ-301: [!] Syntax definitions MUST be formally specified when appropriate
+- REQ-302: Reference MUST support programmatic extraction of rules
 
 ## Validation Criteria
 
 Reference documentation is valid when:
-- All syntax elements are documented
-- All examples are valid MSL
-- Cross-references resolve correctly
-- Search returns relevant results
-- Formal syntax parses correctly
+- All MSL features are comprehensively documented
+- Examples demonstrate correct usage
+- Information is easily discoverable
+- Content serves both implementers and users
 
 ## Notes
 
-The reference documentation serves as the authoritative source for MSL language details. It must be comprehensive enough for tool implementers while remaining accessible for specification authors.
+The reference documentation serves as the authoritative source for MSL language details. It must be comprehensive enough for tool implementers while remaining accessible for specification authors. This specification inherits common documentation requirements from msl-docs-base and focuses on the unique aspects of technical reference documentation.
 
 ---
 *Specification format: [MSL Level 1](https://github.com/chrs-myrs/msl-specification)*

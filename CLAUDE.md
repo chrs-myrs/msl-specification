@@ -46,8 +46,8 @@ Before using `extends: parent-spec`, ask:
 
 **Common Mistakes to Avoid:**
 - ❌ DON'T: `extends: msl-l2-advanced` (unless creating a new MSL level)
-- ❌ DON'T: `extends: msl-docs-root` (doc specs are peers, not subtypes)
-- ❌ DON'T: Use extends for organizational hierarchy
+- ❌ DON'T: Use extends for organizational hierarchy without true "is-a" relationship
+- ❌ DON'T: Duplicate requirements that should be inherited
 
 **Correct Patterns:**
 - ✅ DO: Use `msl: L1` or `msl: L2` to declare which MSL features you use
@@ -58,6 +58,9 @@ Before using `extends: parent-spec`, ask:
 ```yaml
 # Valid: auth-api IS A rest-api
 extends: rest-api
+
+# Valid: tutorial docs IS A documentation type
+extends: msl-docs-base
 
 # Invalid: docs are not a type of language spec
 extends: msl-l2-advanced  # WRONG!

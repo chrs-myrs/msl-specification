@@ -60,6 +60,9 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-120: [NEW] ASCII alternatives `<->`, `->`, `<-` must be supported for compatibility
 - REQ-121: [NEW] Link directions are hints that tools may interpret: bidirectional (↔), forward (→), backward (←)
 - REQ-122: [NEW] Parsers should extract links without enforcing specific semantics
+- REQ-123: [NEW] Resource links may combine with markdown link syntax: `[→ description](path/to/file)`
+- REQ-124: [NEW] Arrow-prefixed markdown links indicate generated outputs: `[→ generated file](output.md)`
+- REQ-125: [NEW] Tools should extract file paths from both `[→ file]` and `[→ text](file)` formats
 
 ### Advanced Inheritance
 
@@ -341,6 +344,24 @@ variables:
 ## Requirements
 - REQ-001: Maximum ${max_connections} concurrent connections
 - REQ-002: Service name must be "${service_name}"
+```
+
+### Resource Links with Output Mapping
+
+```markdown
+## Requirements
+
+### Documentation Generation
+- REQ-101: [!] MUST generate [→ comprehensive user guide](docs/user-guide.md)
+- REQ-102: MUST include tutorials:
+  - [→ Getting started tutorial](tutorials/getting-started.md)
+  - [→ Advanced features tutorial](tutorials/advanced.md)
+- REQ-103: Tool configuration from [← config file](config.yaml)
+- REQ-104: API specification [↔ OpenAPI schema](api/openapi.yaml)
+
+### Traditional Resource Links (still supported)
+- REQ-201: Implementation references [→ auth.ts:45-67]
+- REQ-202: Follows pattern from [← design-patterns.md]
 ```
 
 ### Complete L2 Document

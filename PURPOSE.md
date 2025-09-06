@@ -43,6 +43,7 @@ This specification defines the core purpose of MSL (Markdown Specification Langu
 
 - Simplicity SHALL always enable flexibility
 - Progressive enhancement SHALL allow starting simple and adding complexity only when needed
+- Specifications work best when they trust implementers' judgment
 - Dogfooding SHALL demonstrate that MSL can specify anything, including itself
 - Specifications SHALL be AI-first but human-friendly
 - Markdown SHALL remain the foundation (no proprietary formats)

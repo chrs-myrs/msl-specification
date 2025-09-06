@@ -1,11 +1,12 @@
 ---
 msl: L1
 id: msl-docs-user-guide
+extends: msl-docs-base
 tags: [documentation, user-guide, comprehensive]
 priority: high
 status: active
+governed-by: msl-documentation-metaspec
 references:
-  - msl-docs-root: "Part of documentation system"
   - msl-l0-foundation: "Basic level to document"
   - msl-l1-structure: "Structural features to document"
   - msl-l2-advanced: "Advanced features to document"
@@ -19,64 +20,44 @@ This specification defines requirements for comprehensive MSL user documentation
 
 ## Requirements
 
-### Content Organization
+### Task-Oriented Organization
 
-- REQ-001: [!] [NEW] Guide must be organized by task, not by feature
-- REQ-002: [!] [NEW] Each section must be self-contained with clear scope
-- REQ-003: [NEW] Sections must follow user journey from basic to advanced
-- REQ-004: [NEW] Each section must declare prerequisites explicitly
-- REQ-005: [NEW] Cross-references must use consistent link format
+- REQ-001: [!] [→ Guide](docs/user-guide.md) MUST be organized by user tasks, not features
+- REQ-002: [!] Content MUST follow natural user journey from basic to advanced
+- REQ-003: Each section MUST be self-contained with clear scope
 
 ### Core Topics Coverage
 
-- REQ-101: [!] [NEW] Must cover writing first MSL specification
-- REQ-102: [!] [NEW] Must explain all three MSL levels with use cases
-- REQ-103: [!] [NEW] Must cover inheritance and extension patterns
-- REQ-104: [NEW] Must explain validation and quality metrics
-- REQ-105: [NEW] Must cover template usage and variables
-- REQ-106: [NEW] Must explain markers and their semantics
-- REQ-107: [!] [NEW] Must explain metaspecs and governance relationships
-- REQ-108: [NEW] Must highlight self-referential architecture in introduction
+- REQ-101: [!] MUST cover all three MSL levels (L0, L1, L2) with use cases
+- REQ-102: [!] MUST explain inheritance and the "is-a" relationship requirement
+- REQ-103: [!] MUST cover validation and quality metrics
+- REQ-104: MUST explain markers, templates, and other L2 features
+- REQ-105: MUST introduce metaspecs and their governance role
 
-### Best Practices
+### Best Practices and Patterns
 
-- REQ-201: [!] [NEW] Must include ≥2 "DO" and ≥2 "DON'T" examples per feature
-- REQ-202: [NEW] Must provide ≥5 specification design patterns with use cases
-- REQ-203: [NEW] Must explain MSL level selection with decision tree
-- REQ-204: [NEW] Must specify naming: lowercase-kebab-case.md convention
-- REQ-205: [NEW] Must include ≥10 common issues with solutions
+- REQ-201: [!] MUST include DO and DON'T examples for key features
+- REQ-202: MUST provide specification design patterns
+- REQ-203: MUST explain MSL level selection criteria
+- REQ-204: MUST include common issues and solutions
 
-### Examples and Scenarios
+### Multiple Learning Paths
 
-- REQ-301: [!] [NEW] Each feature must have ≥2 practical examples
-- REQ-302: [NEW] Must include real-world case studies
-- REQ-303: [NEW] Examples must show both specification and validation
-- REQ-304: [NEW] Must include anti-patterns and their corrections
-- REQ-305: [NEW] Examples must be drawn from different domains
-
-### Accessibility
-
-- REQ-401: [!] [NEW] Each topic must be readable in ≤15 minutes
-- REQ-402: [NEW] Must support 3 learning styles: visual (diagrams), textual, practical (examples)
-- REQ-403: [NEW] Must include glossary with ≥50 MSL terms defined
-- REQ-404: [NEW] Must provide ≥3 one-page quick reference cards
-- REQ-405: [NEW] Must provide 3 learning paths: beginner, intermediate, advanced
-
-## Sub-Specifications
-
-The user guide includes these detailed specifications:
-- `msl-docs-writing.md` - Writing MSL specifications
-- `msl-docs-validation.md` - Validation and quality assurance
-- `msl-docs-inheritance.md` - Inheritance and templates
+- REQ-301: [!] MUST support different user expertise levels
+- REQ-302: MUST include practical examples from various domains
+- REQ-303: MUST provide glossary of MSL terminology
 
 ## Validation Criteria
 
 User guide documentation is valid when:
-- All MSL features are documented
-- Each feature has working examples
-- Best practices are actionable
-- Navigation supports multiple paths
-- Content is task-oriented
+- All MSL features are documented comprehensively
+- Best practices are clear and actionable
+- Multiple learning paths are supported
+- Content helps users accomplish real tasks
+
+## Notes
+
+The user guide provides comprehensive coverage of MSL for users who need more than a quick start. It inherits common documentation requirements from msl-docs-base and focuses on the unique aspects of comprehensive, task-oriented documentation.
 
 ---
-*Specification format: [MSL Level 2](https://github.com/chrs-myrs/msl-specification)*
+*Specification format: [MSL Level 1](https://github.com/chrs-myrs/msl-specification)*
