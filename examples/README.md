@@ -27,6 +27,8 @@ Reusable patterns you can extend for common specification types.
 ### Real-World
 Complete examples from actual projects showing MSL in production use.
 
+- **LiveSpec**: Large-scale governance framework (51 specs) - https://github.com/chrs-myrs/livespec
+
 ## Running Examples
 
 Validate any example:

@@ -322,6 +322,16 @@ If MSL can:
 
 Then MSL can specify **any** software system. This isn't theoretical - it's proven by MSL's own implementation.
 
+### Real-World Scale: LiveSpec Framework
+
+LiveSpec takes self-specification further - it's a governance framework that uses MSL to define its own methodology:
+- **51 specifications** managing specification workflows
+- **Metaspec governance** constraining specification types
+- **Self-evolving** using its own defined processes
+- **Proven patterns** for traceability and framework development
+
+[Explore LiveSpec →](https://github.com/chrs-myrs/livespec)
+
 ## Common Concerns (AI-Focused)
 
 **"Will AI replace specifications?"**

@@ -28,6 +28,7 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 
 - REQ-101: [!] Requirements may include quick markers in square brackets at line start
 - REQ-102: [!] Priority markers must use exclamation `[!]` for critical/high priority
+- REQ-102a: [!] Priority markers `[!]` eliminate need for document-level priority frontmatter fields - priority is specified per-requirement where it matters
 - REQ-103: Status markers must support completion `[x]`, pending `[ ]`, uncertain `[?]`
 - REQ-104: Assignment markers must use at-symbol format `[@username]` for assignee
 - REQ-105: Tag markers must use hash format `[#tagname]` for categorization

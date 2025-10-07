@@ -186,6 +186,26 @@ adds:
 - REQ-003: [#audit] All security-relevant actions must generate audit logs
 ```
 
+### Governance Framework Extension (LiveSpec)
+
+LiveSpec demonstrates domain-specific extensions for governance frameworks:
+
+```yaml
+---
+criticality: CRITICAL
+failure_mode: Framework unsecured without proper governance
+constrained_by:
+  - .livespec/standard/metaspecs/behavior.spec.md
+derives_from:
+  - PURPOSE.md
+specifies: dist/prompts/4-evolve/4a-detect-drift.md
+---
+```
+
+**Pattern**: Document-level priority + traceability for 50+ policy specifications
+**Domain**: Methodology frameworks, standards bodies, compliance documentation
+**Reference**: https://github.com/chrs-myrs/livespec
+
 ## Extension Registry
 
 ### Registry Requirements
@@ -205,6 +225,7 @@ adds:
 - REQ-1303: [#anti-pattern] Extensions that break MSL semantic consistency
 - REQ-1304: [#anti-pattern] Extensions with poor documentation or unclear purpose
 - REQ-1305: [#anti-pattern] Extensions that create vendor lock-in or proprietary dependencies
+- REQ-1306: [#anti-pattern] Extensions that add frontmatter fields duplicating `[!]` marker functionality (use requirement-level markers instead)
 
 ## Notes
 

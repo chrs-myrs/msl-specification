@@ -115,17 +115,6 @@ Compliance team: Write security specifications
 ```
 [**→ Enterprise Adoption Guide**](docs/why-msl.md#for-enterprises)
 
-## What Developers Are Saying
-
-> "MSL turned my AI assistant from a clever autocomplete into a precise implementation partner. 10x is not an exaggeration."
-> — *Senior Developer, YC Startup*
-
-> "We gave the same MSL specs to 3 developers using different AIs. All three implementations were compatible. Game-changer."
-> — *Tech Lead, Fortune 500*
-
-> "MSL validation caught an AI hallucination that would have cost us weeks. Now it's part of our CI pipeline."
-> — *Platform Architect, Scale-up*
-
 ## Core Features
 
 ### 🤖 AI-Optimized
@@ -319,6 +308,17 @@ EOF
 2. Write specifications for your current project
 3. Let AI implement them
 4. Experience 10x productivity
+
+## MSL Ecosystem
+
+### LiveSpec - Specification Governance Framework
+[LiveSpec](https://github.com/chrs-myrs/livespec) uses MSL to manage its own methodology specifications. A governance framework with 51 MSL specifications demonstrating:
+- **Scale**: Complex self-referential specification systems
+- **Metaspecs**: Specs about specs (framework governance)
+- **Domain extensions**: Traceability patterns for governance frameworks
+- **Dogfooding**: Framework built using its own methodology
+
+A valuable reference for large specification suites and framework development.
 
 ## Community & Support
 
