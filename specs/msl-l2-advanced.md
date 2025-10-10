@@ -94,6 +94,46 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-405: [NEW] Custom frontmatter fields enable organization-specific metadata
 - REQ-406: Metadata in frontmatter provides defaults that markers can override per-requirement
 
+### Frontmatter Field Reference
+
+- REQ-407: [!] [NEW] All MSL frontmatter fields must follow YAML 1.2 specification syntax
+- REQ-408: [!] [NEW] Processors must preserve unknown frontmatter fields for forward compatibility
+- REQ-409: [NEW] Frontmatter fields are organized into three categories: relationship, identity, and management
+
+#### Relationship Fields
+
+- REQ-410: [!] [NEW] `extends:` field specifies IS-A inheritance relationship to parent specification (string)
+- REQ-411: [NEW] `governed-by:` field specifies metaspec or standard governance (string or array)
+- REQ-412: [NEW] `implements:` field links implementation files to their governing specifications (string)
+- REQ-413: [NEW] `specifies:` field lists files that this specification governs (string or array, inverse of implements)
+- REQ-414: [NEW] `references:` field lists related specifications without semantic relationship (array)
+- REQ-415: [NEW] Relationship fields enable bidirectional traceability between specifications and implementations
+
+#### Identity and Versioning Fields
+
+- REQ-420: [!] [INHERIT] `id:` field uniquely identifies the document within the specification set (string)
+- REQ-421: [NEW] `msl:` field declares which MSL level the document uses: L0, L1, or L2 (string)
+- REQ-422: [NEW] `type:` field specifies document type such as template, extension, or metaspec (string)
+- REQ-423: [NEW] `version:` field tracks document versioning using semantic versioning format (string)
+
+#### Management and Workflow Fields
+
+- REQ-430: [INHERIT] `priority:` field sets default priority: low, medium, high, critical (string)
+- REQ-431: [INHERIT] `status:` field tracks lifecycle: draft, active, complete, deprecated, uncertain, pending (string)
+- REQ-432: [INHERIT] `assignee:` field assigns ownership to individual or team (string)
+- REQ-433: [INHERIT] `tags:` field categorizes document with classification strings (array)
+- REQ-434: [INHERIT] `variables:` field defines template variable substitutions (object)
+- REQ-435: [NEW] Management fields provide document-level defaults that requirement-level markers can override
+
+#### Field Semantics and Usage
+
+- REQ-440: [!] [NEW] `extends:` creates true IS-A inheritance - child spec IS A specialized type of parent
+- REQ-441: [NEW] `governed-by:` indicates which metaspecs or standards constrain this specification
+- REQ-442: [NEW] `implements:` is used ONLY in non-spec markdown files pointing to their specification
+- REQ-443: [NEW] `specifies:` is used ONLY in spec files pointing to implementation files they govern
+- REQ-444: [NEW] `references:` documents related specs for context without inheritance or governance relationship
+- REQ-445: [NEW] Bidirectional linking pairs: implements ↔ specifies, extends ↔ extended-by (implicit)
+
 ### Marker Processing
 
 - REQ-501: [!] MSL processors must parse and interpret quick markers correctly
@@ -406,6 +446,67 @@ Core authentication service handling user login, session management, and authori
 ## Notes
 This service is critical infrastructure and must maintain 99.99% uptime.
 ```
+
+### Bidirectional Traceability with Relationship Fields
+
+**Specification file (specs/auth-spec.md):**
+```markdown
+---
+id: auth-spec
+governed-by: [security-metaspec, msl-usage-standards]
+specifies: [src/auth.ts, docs/auth-guide.md]
+references: [user-model-spec, session-spec]
+---
+
+# Authentication System Specification [MSL]
+
+## Requirements
+- REQ-001: System must authenticate users via email and password
+- REQ-002: Failed login attempts must be rate-limited
+```
+
+**Implementation file (src/auth.ts):**
+```typescript
+/**
+ * Authentication implementation
+ *
+ * @implements specs/auth-spec.md
+ */
+
+// Implementation code...
+```
+
+**Documentation file (docs/auth-guide.md):**
+```markdown
+---
+implements: specs/auth-spec.md
+---
+
+# Authentication Guide
+
+This guide explains how to use the authentication system...
+```
+
+**Metaspec file (specs/metaspecs/security-metaspec.md):**
+```markdown
+---
+id: security-metaspec
+type: metaspec
+specifies: [auth-spec, session-spec, encryption-spec]
+---
+
+# Security Metaspec [MSL]
+
+## Requirements
+- All security specs must include threat model
+- All security specs must define attack surface
+```
+
+This creates clear bidirectional relationships:
+- `auth-spec.md` ← governed-by ← `security-metaspec.md`
+- `auth-spec.md` ← implements ← `src/auth.ts`
+- `auth-spec.md` ← implements ← `docs/auth-guide.md`
+- `auth-spec.md` → specifies → `[src/auth.ts, docs/auth-guide.md]`
 
 ## Tool Implementation Guide
 

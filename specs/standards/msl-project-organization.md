@@ -106,6 +106,44 @@ When using centralized organization, consider these categories:
 - Child specifications SHALL declare parent specs using `extends:` in frontmatter
 - Related specifications SHALL be listed in a "## Related Specifications" section
 
+### Implementation Traceability
+
+- Non-specification markdown files that implement or are governed by MSL specifications SHOULD include frontmatter linking back to their governing specification
+- The frontmatter field SHALL be named `implements:` and contain the relative path to the governing specification
+- Implementation traceability applies to:
+  - Documentation files implementing documentation specifications
+  - Agent definition files implementing agent specifications
+  - Generated content files derived from specifications
+  - Configuration files governed by configuration specifications
+- Implementation traceability SHALL NOT be required for:
+  - Informal notes, brainstorming documents, or temporary files
+  - Ad-hoc README files not governed by a formal specification
+  - External documentation or third-party content
+- Specifications MAY use `specifies:` field to list files they govern (inverse of `implements:`)
+- Projects MAY use alternative field names if documented in MSL-CONFIG.md
+
+#### Traceability Benefits
+
+- Enables tooling to find all implementations of a specification
+- Makes spec-to-implementation relationships explicit and auditable
+- Helps maintain synchronization between specifications and their implementations
+- Supports impact analysis when specifications change
+- Improves project navigability for both humans and AI agents
+
+#### Traceability Example
+
+```markdown
+---
+implements: specs/documentation/user-guide-spec.md
+version: 1.2.0
+last-updated: 2025-01-15
+---
+
+# User Guide
+
+This guide implements the requirements specified in the user guide specification...
+```
+
 ### Versioning and Evolution
 
 - Major specification changes SHALL be tracked in version control
