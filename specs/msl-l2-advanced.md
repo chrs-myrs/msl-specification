@@ -107,6 +107,7 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-412: [NEW] `implements:` field links implementation files to their governing specifications (string)
 - REQ-413: [NEW] `specifies:` field lists files that this specification governs (string or array, inverse of implements)
 - REQ-414: [NEW] `references:` field lists related specifications without semantic relationship (array)
+- REQ-416: [NEW] `derives-from:` field declares source artefacts this document was generated or computed from (string or array)
 - REQ-415: [NEW] Relationship fields enable bidirectional traceability between specifications and implementations
 
 #### Identity and Versioning Fields
@@ -132,7 +133,10 @@ This is where **automation begins**. While L0 and L1 are designed for humans, L2
 - REQ-442: [NEW] `implements:` is used ONLY in non-spec markdown files pointing to their specification
 - REQ-443: [NEW] `specifies:` is used ONLY in spec files pointing to implementation files they govern
 - REQ-444: [NEW] `references:` documents related specs for context without inheritance or governance relationship
-- REQ-445: [NEW] Bidirectional linking pairs: implements ↔ specifies, extends ↔ extended-by (implicit)
+- REQ-446: [NEW] `derives-from:` declares source artefacts from which this document was generated — the source is authoritative, this document is a computed view
+- REQ-446a: [NEW] `derives-from:` is distinct from `implements:` — implements means "I fulfil this spec's requirements", derives-from means "I was computed from this source material"
+- REQ-446b: [NEW] Artefacts with `derives-from:` should be recomputable from their declared sources; if not, the relationship is misclassified
+- REQ-445: [NEW] Bidirectional linking pairs: implements ↔ specifies, extends ↔ extended-by (implicit), derives-from ↔ derived-by (implicit)
 
 ### Marker Processing
 
@@ -507,6 +511,40 @@ This creates clear bidirectional relationships:
 - `auth-spec.md` ← implements ← `src/auth.ts`
 - `auth-spec.md` ← implements ← `docs/auth-guide.md`
 - `auth-spec.md` → specifies → `[src/auth.ts, docs/auth-guide.md]`
+
+### Generation Chain with derives-from
+
+**Workspace specification (specs/workspace-spec.md):**
+```markdown
+---
+id: workspace-spec
+specifies: [CLAUDE.md, AGENTS.md]
+---
+
+# Workspace Configuration [MSL]
+
+## Requirements
+- REQ-001: Agent instructions must reflect project conventions
+- REQ-002: Agent definitions must match available tooling
+```
+
+**Generated governance file (CLAUDE.md):**
+```markdown
+---
+derives-from:
+  - specs/workspace-spec.md
+  - specs/workflow-spec.md
+  - specs/standards/coding-standards.md
+---
+
+# Project Instructions
+
+<!-- Generated from workspace specifications. Source is authoritative. -->
+```
+
+The `derives-from` relationship is distinct from `implements`:
+- `CLAUDE.md` **derives from** `workspace-spec.md` — it is computed from it
+- `src/auth.ts` **implements** `auth-spec.md` — it fulfils its requirements
 
 ## Tool Implementation Guide
 
