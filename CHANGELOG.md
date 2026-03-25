@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **`derives-from:` Relationship Field**: New L2 frontmatter field for declaring generation/computation provenance (REQ-416, REQ-446, REQ-446a, REQ-446b)
+  - Distinct from `implements:` — derives-from means "computed from source material", not "fulfils requirements"
+  - Updated bidirectional pairs (REQ-445) to include derives-from ↔ derived-by
+  - Added usage example in Traceability section
 - **Testing Framework**: Comprehensive pytest-based testing infrastructure
   - Pytest configuration with markers for test organization
   - Shared fixtures via conftest.py for common test setup
@@ -18,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Migrated all test files from standalone execution to pytest
 - Updated pre-commit configuration for MSL linting
+
+### Removed
+- Stale RELEASE_CHECKLIST.md (superseded by pre-push completeness checker agent)
 
 ## [1.5.0] - 2025-09-05 (Preview)
 
