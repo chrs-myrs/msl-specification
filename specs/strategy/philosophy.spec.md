@@ -1,6 +1,13 @@
 ---
+type: strategy
+category: strategy
+fidelity: decisions-only
+governed-by: []
 criticality: IMPORTANT
 failure_mode: Without shared philosophy, contributors add complexity that conflicts with MSL's core design intent, eroding its simplicity and accessibility
+derives-from:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
 ---
 
 # MSL Design Philosophy

@@ -1,6 +1,15 @@
 ---
+type: outcomes
+category: foundation
+fidelity: behavioral
+governed-by: []
 criticality: CRITICAL
 failure_mode: Without clear success criteria and user outcomes, MSL risks being built for the wrong audience or measured against the wrong goals
+derives-from:
+  - PURPOSE.md
+supports:
+  - specs/strategy/architecture.spec.md
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Outcomes and Success Criteria
