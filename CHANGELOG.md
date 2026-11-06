@@ -22,9 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Migrated all test files from standalone execution to pytest
 - Updated pre-commit configuration for MSL linting
+- **MSL agent guide moved** from `/AGENTS.md` to [`docs/agent-guide.md`](docs/agent-guide.md); `specs/INDEX.md`, `examples/MSL-CONFIG.md` and `llms.txt` now point to it
+- Adopted LiveSpec v5 (5.13.0) for repository governance: `project.yaml`, workspace specs in `specs/workspace/`, bridge specs in `specs/features/` and `specs/artifacts/`, `registries/`, and vendored validators in `scripts/livespec/`
+- `AGENTS.md` is now this repository's own agent context, generated from its specs; `CLAUDE.md` and `.livespec-version` removed
 
 ### Removed
 - Stale RELEASE_CHECKLIST.md (superseded by pre-push completeness checker agent)
+- Placeholder community channels (Discord, Twitter, example email, Stack Overflow) and dead links from README and `docs/contributing.md`
 
 ## [1.5.0] - 2025-09-05 (Preview)
 
