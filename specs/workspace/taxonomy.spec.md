@@ -11,7 +11,7 @@ derives-from:
   - PURPOSE.md
 ---
 
-# Project Taxonomy
+# Project Taxonomy [MSL]
 
 ## Requirements
 

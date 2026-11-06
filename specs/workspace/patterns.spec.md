@@ -29,6 +29,7 @@ Working rules for the MSL specification repository, which must exemplify the sta
   - At least 90% of requirements testable
   - Under 20% duplication; at most 4 inheritance levels
   - Every specification title ends with `[MSL]`
+    - Except conventions vendored from LiveSpec (`specs/workspace/standards/`), which stay as shipped
 
 - [!] `extends` is used only for a true "is-a" relationship in which every parent requirement applies
   - Never `extends: msl-l2-advanced` unless defining a new MSL level

@@ -12,7 +12,7 @@ derives-from:
   - PURPOSE.md
 ---
 
-# Context Architecture
+# Context Architecture [MSL]
 
 ## Requirements
 

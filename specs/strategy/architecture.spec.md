@@ -10,7 +10,7 @@ derives-from:
   - specs/foundation/constraints.spec.md
 ---
 
-# MSL Integration Architecture
+# MSL Integration Architecture [MSL]
 
 ## Requirements
 

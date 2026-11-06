@@ -10,7 +10,7 @@ derives-from:
   - specs/foundation/constraints.spec.md
 ---
 
-# MSL Design Philosophy
+# MSL Design Philosophy [MSL]
 
 ## Requirements
 

@@ -12,7 +12,7 @@ supports:
   - specs/strategy/philosophy.spec.md
 ---
 
-# MSL Outcomes and Success Criteria
+# MSL Outcomes and Success Criteria [MSL]
 
 ## Requirements
 

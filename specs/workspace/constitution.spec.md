@@ -11,7 +11,7 @@ derives-from:
   - PURPOSE.md
 ---
 
-# Workspace Constitution
+# Workspace Constitution [MSL]
 
 ## Requirements
 

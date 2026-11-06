@@ -12,7 +12,7 @@ supports:
   - specs/strategy/philosophy.spec.md
 ---
 
-# MSL Intentional Limitations
+# MSL Intentional Limitations [MSL]
 
 ## Requirements
 
