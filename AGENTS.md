@@ -1,257 +1,207 @@
-# MSL Agent Configuration [MSL]
+# MSL Specification Project - Claude Code Instructions
 
-## Summary
+## Project Overview
+This repository contains the MSL (Markdown Specification Language) specification. MSL is a specification format/language - NOT a software package to be installed. It's a way of writing markdown that both humans and AI can understand. The repository includes:
 
-This document provides essential MSL knowledge for AI agents. Cache this once per session to handle 90% of MSL operations without repeated context7 lookups. Check for project-specific `MSL-CONFIG.md` for overrides.
+1. **The MSL specification itself** (in `/specs/`) - defines the language
+2. **Documentation** (in `/docs/`) - how to use MSL
+3. **Optional validation tools** (in `/tools/`) - helpers for checking MSL files
+4. **Examples** (in `/examples/`) - sample MSL documents
 
-## Requirements
+**Important:** Users don't "install" MSL - they just write markdown following MSL conventions.
 
-### Agent Behavior
-- Agents SHALL cache this document for the entire session
-- Agents SHALL check for project-specific MSL-CONFIG.md files
-- Agents SHALL start with the simplest MSL level that meets needs
-- Agents SHALL fetch detailed specs only when triggered by specific needs
+## 📚 Documentation Philosophy
 
-## Quick Start Template (80% of Cases)
+**Be conservative with documentation updates.** Less is often more when it comes to user-facing documentation.
 
-```markdown
-# [Component/Feature Name] [MSL]
+### Key Principles:
+- **Don't overwhelm users** - Too much documentation is worse than too little
+- **Simplify before adding** - First try to simplify existing docs rather than adding new sections
+- **Focus on the 90% use case** - Most users need basic features, not advanced concepts
+- **Hide complexity** - Move advanced topics (like metaspecs) to appendices or separate guides
+- **Test with real users** - If users are confused, the solution might be LESS documentation, not more
 
-## Summary
+### Smart Update Strategies:
+1. **Consolidate** - Combine related sections rather than creating new ones
+2. **Prioritize** - Put most important info first, bury rarely-needed concepts
+3. **Simplify** - Replace complex explanations with simple examples
+4. **Remove** - Delete outdated or confusing content rather than trying to fix it
+5. **Redirect** - Point advanced users to separate resources rather than cluttering main docs
 
-[One clear sentence describing what this specifies]
+### Example: The Metaspec Problem
+Users were confused about metaspecs vs regular specs. Instead of adding more metaspec documentation:
+- De-emphasize metaspecs in the main guide
+- Make regular specs the clear default path
+- Move metaspec info to an advanced appendix
+- Add a simple "99% of users just need regular specs" note
 
-## Requirements
+## ⚠️ CRITICAL: Inheritance Rules
 
-- [Specific, testable requirement]
-- [Another requirement focused on WHAT, not HOW]
-- [Keep requirements high-level when possible]
+**NEVER use `extends` unless there's a true "is-a" relationship!**
+
+Before using `extends: parent-spec`, ask:
+1. Is this spec truly a specialized type of the parent?
+2. Can I naturally say "X IS A Y"?
+3. Would ALL parent requirements apply to this child?
+
+**Common Mistakes to Avoid:**
+- ❌ DON'T: `extends: msl-l2-advanced` (unless creating a new MSL level)
+- ❌ DON'T: Use extends for organizational hierarchy without true "is-a" relationship
+- ❌ DON'T: Duplicate requirements that should be inherited
+
+**Correct Patterns:**
+- ✅ DO: Use `msl: L1` or `msl: L2` to declare which MSL features you use
+- ✅ DO: Use `references:` for non-inheritance relationships
+- ✅ DO: Leave out `extends` entirely (most specs don't need it)
+
+**Valid Inheritance Examples:**
+```yaml
+# Valid: auth-api IS A rest-api
+extends: rest-api
+
+# Valid: tutorial docs IS A documentation type
+extends: msl-docs-base
+
+# Invalid: docs are not a type of language spec
+extends: msl-l2-advanced  # WRONG!
 ```
 
-That's it. Most specifications need nothing more than this L0 format.
-
-## Decision Tree
-
+## Project Structure
 ```
-Need to specify something?
-├─ Just requirements? → **Use L0** (markdown with ## Requirements)
-├─ Need metadata/IDs? → **Use L1** (add YAML frontmatter)
-└─ Need inheritance/templates? → **Use L2** (rarely needed)
-```
-
-**Remember:** Start with L0. You can always add complexity later if truly needed.
-
-## Essential Templates
-
-### L0: Basic Specification
-```markdown
-# Login System [MSL]
-
-## Summary
-
-Specification for user authentication and session management.
-
-## Requirements
-
-- Users can authenticate with email and password
-- Sessions expire after 30 minutes of inactivity
-- Failed attempts lock account after 5 tries
+msl-specification/
+├── specs/                      # MSL specifications
+│   ├── msl-l0-foundation.md   # Level 0: Basic markdown + requirements
+│   ├── msl-l1-structure.md    # Level 1: + Frontmatter & inheritance
+│   ├── msl-l2-advanced.md     # Level 2: + Advanced features
+│   ├── standards/              # Quality and extension standards
+│   └── applications/           # Tool and agent specifications
+├── .claude/agents/             # Claude Code agent definitions
+│   ├── msl-validator.md        # Individual spec validator
+│   └── msl-batch-validator.md  # Batch validation agent
+└── scripts/                    # Utility scripts
 ```
 
-### L1: Specification with Metadata
-```markdown
----
-id: user-authentication
-tags: [security, auth, core]
-priority: high
----
+## MSL Levels
+- **L0**: Basic markdown with `## Requirements` section
+- **L1**: L0 + YAML frontmatter, inheritance via `extends`
+- **L2**: L1 + markers, templates, formal semantics
 
-# User Authentication [MSL]
+## Key Concepts
+1. **Self-Specification**: MSL specifications are themselves valid MSL documents
+2. **Progressive Enhancement**: Each level builds on the previous
+3. **Validation**: Comprehensive quality metrics and architectural analysis
+4. **Inheritance**: Specifications can extend others with proper "is-a" relationships
 
-## Summary
+## Available Agents
 
-Core authentication system requirements with security constraints.
+### msl-validator
+Validates individual MSL specifications for:
+- Architectural quality and DRY compliance
+- Requirement testability (≥90% target)
+- Inheritance correctness (≤4 levels)
+- Quality score (0-100, ≥80 for production)
 
-## Requirements
+Usage: "Please validate this MSL specification"
 
-- REQ-001: System must support email/password authentication
-- REQ-002: System must implement 2FA for admin accounts
-- REQ-003: Password reset must use secure token with 1-hour expiry
+### msl-batch-validator  
+Validates entire specification sets:
+- Finds all MSL files recursively
+- Builds inheritance graphs
+- Generates aggregate reports
+- Identifies cross-specification issues
+
+Usage: "Run the batch validator on the specs folder"
+
+## Quality Standards
+All MSL specifications should:
+- Score ≥80/100 on validation
+- Have ≥90% testable requirements
+- Maintain <20% duplication (DRY)
+- Use ≤4 inheritance levels
+- Include [MSL] marker in title
+
+## Working with MSL
+
+### Creating Specifications
+1. Start with L0 for simple specs
+2. Add frontmatter for L1 features
+3. Use L2 only when advanced features needed
+4. Always include `## Requirements` section
+5. Make requirements testable with measurable criteria
+
+### Validating Specifications
+```bash
+# Validate single spec
+"Please validate specs/my-spec.md"
+
+# Batch validate
+"Run the MSL batch validator on specs/"
 ```
 
-### L1: API Specification
-```markdown
----
-id: rest-api
-tags: [api, rest, interface]
----
+### Common Tasks
+- **Add new spec**: Create .md file with Requirements section
+- **Extend existing**: Use `extends:` in frontmatter
+- **Check quality**: Run validation agent
+- **Review architecture**: Use batch validator
 
-# REST API Specification [MSL]
+## Important Notes
+1. **MSL is self-referential**: The language specifies itself
+2. **Validation is recursive**: Validators are specified in MSL
+3. **Quality matters**: All core specs score 88-95/100
+4. **Keep it simple**: Use lowest MSL level that meets needs
+5. **MSL uses metaspecs**: Core specs are governed by metaspecs written in MSL
 
-## Summary
+## Specification-Documentation Sync Requirements
+**IMPORTANT**: When updating MSL, always keep these in sync:
+- **Documentation specs** (`specs/documentation/*.md`) ↔️ **Actual docs** (`docs/*.md`)
+- **Agent specs** (`specs/applications/msl-validation-agent.md`) ↔️ **Agent definitions** (`.claude/agents/*.md`)  
+- **Tools spec** (`specs/applications/msl-tools-spec.md`) ↔️ **Tool implementations** (`tools/`)
 
-RESTful API requirements for the application backend.
+When modifying any of these, update both the specification and implementation together to maintain consistency.
 
-## Requirements
+## Development Workflow
+1. Write/modify specification
+2. Run validator to check quality
+3. Address any issues found
+4. Run batch validator to check integration
+5. Commit when quality score ≥80
 
-- REQ-001: API must follow REST principles
-- REQ-002: All endpoints must return JSON
-- REQ-003: Authentication via Bearer tokens
-- REQ-004: Rate limiting of 100 requests per minute
-```
+## MSL Best Practices for This Repository
 
-### L1: Component Specification (Colocated)
-```markdown
----
-id: payment-processor
-tags: [payments, component]
----
+This repository must exemplify the MSL standards it defines. Always ensure:
 
-# Payment Processor [MSL]
+### Project Organization Compliance
+- **PURPOSE.md at root**: ✓ This repo has PURPOSE.md at the project root (per msl-project-organization.md)
+- **Specs in /specs**: All specifications must be in the /specs directory with proper subdirectories
+- **Follow our own standards**: We must follow specs/standards/msl-project-organization.md
 
-## Summary
+### Specification Standards
+- **[MSL] marker**: Every specification title must end with [MSL] marker
+- **Proper frontmatter**: Use appropriate MSL level features (L0, L1, or L2)
+- **Testable requirements**: Requirements should be specific and measurable
+- **Quality scores**: Aim for ≥80/100 validation score on all specs
 
-Payment processing component handling transactions and refunds.
+### Dogfooding Principle
+- **Self-specification**: MSL specifies itself - this proves its completeness
+- **Use MSL features**: Use inheritance, markers, and templates where appropriate
+- **Validate regularly**: Run msl-validator on our own specifications
+- **Lead by example**: This repo should be the gold standard for MSL projects
 
-## Requirements
+### Before Committing
+1. Check all specs have [MSL] in titles
+2. Verify PURPOSE.md exists at root
+3. Run validation on modified specs
+4. Ensure spec-to-implementation sync (docs match specs)
+5. Run pre-push completeness checker
 
-- REQ-001: Support credit card and PayPal payments
-- REQ-002: Process refunds within 24 hours
-- REQ-003: Maintain PCI compliance
-```
+### Key Files to Maintain
+- `/PURPOSE.md` - Project purpose and limitations (root level)
+- `/specs/INDEX.md` - Navigation guide for AI agents
+- `/specs/standards/msl-project-organization.md` - The standard we follow
 
-## Organization Patterns
-
-### Pattern 1: Centralized (Default for new projects)
-```
-project/
-├── PURPOSE.md              # Always create first
-├── specs/
-│   ├── core/
-│   ├── features/
-│   └── apis/
-```
-
-### Pattern 2: Colocated (When specs should live with code)
-```
-project/
-├── PURPOSE.md
-├── src/
-│   ├── auth/
-│   │   ├── auth.ts
-│   │   └── auth.spec.md   # Specification next to implementation
-```
-
-### Pattern 3: Hybrid (Large projects)
-```
-project/
-├── PURPOSE.md
-├── specs/                  # System-level specs
-└── src/
-    └── components/
-        └── *.spec.md       # Component specs
-```
-
-## Key Principles to Remember
-
-1. **Start simple** - Add complexity only when it solves a real problem
-2. **High-level requirements** - Specify WHAT, not HOW
-3. **Trust implementers** - Don't over-prescribe details
-4. **Each requirement costs** - Every requirement adds maintenance burden
-5. **Avoid premature abstraction** - Don't use inheritance without true "is-a" relationship
-
-## Common Anti-Patterns to Avoid
-
-❌ **Over-specification**
-```markdown
-Bad:  "Button must be exactly 120px wide with #007bff color"
-Good: "Submit button must be clearly visible"
-```
-
-❌ **Wrong inheritance**
-```markdown
-Bad:  extends: msl-l2-advanced  # (unless creating new MSL level)
-Good: extends: rest-api-base     # (when your API IS A REST API)
-```
-
-❌ **Starting too complex**
-```markdown
-Bad:  Starting with L2, templates, and markers
-Good: Starting with L0, adding features as needed
-```
-
-## Validation Checklist (Without Full Validator)
-
-Before committing a specification, check:
-- [ ] Requirements are specific and testable
-- [ ] No duplicate requirements across specs
-- [ ] Using the simplest MSL level that works
-- [ ] Title includes [MSL] marker
-- [ ] Requirements focus on WHAT, not HOW
-- [ ] No unnecessary inheritance
-
-## When to Fetch Full Specifications
-
-Fetch detailed specs only when you need:
-
-| Need | Fetch | When |
-|------|-------|------|
-| Inheritance syntax | `msl-l2-advanced.md` | Using `extends:` or templates |
-| Validation rules | `msl-validation-agent.md` | Running formal validation |
-| Organization details | `msl-project-organization.md` | Setting up new project structure |
-| Quality standards | `msl-usage-standards.md` | Reviewing specification quality |
-| All features | `msl-l0/l1/l2-*.md` | Learning specific level details |
-
-## Project-Specific Configuration
-
-Projects can override defaults with `MSL-CONFIG.md`:
-
-```markdown
-# MSL Configuration for [Project Name]
-
-msl-level: L1              # Default level for this project
-organization: colocated    # Where specs live
-spec-suffix: .spec.md      # Naming convention
-
-## Custom Templates
-[Project-specific templates here]
-```
-
-## Quick Examples by Use Case
-
-### Specifying a New Feature
-```markdown
-# User Dashboard [MSL]
-
-## Requirements
-- Display user's recent activity
-- Show account statistics
-- Allow quick actions
-```
-
-### Specifying an API Endpoint
-```markdown
-# GET /users/{id} [MSL]
-
-## Requirements
-- Return user data as JSON
-- Require authentication
-- Include related resources via ?include parameter
-```
-
-### Specifying a Component
-```markdown
-# Data Validation Module [MSL]
-
-## Requirements
-- Validate against JSON schema
-- Return detailed error messages
-- Support custom validation rules
-```
-
-## Final Notes
-
-This document gives you working knowledge of MSL. For the full specification, see `/specs/`. Remember: MSL is just markdown with requirements - keep it simple, make it useful.
-
----
-*Agent configuration for [MSL Specification](https://github.com/chrs-myrs/msl-specification)*
+## References
+- MSL Repository: https://github.com/chrs-myrs/msl-specification
+- Core Specs: `/specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md`
+- Standards: `/specs/standards/msl-usage-standards.md`
+- Tools: `/specs/applications/msl-tools-spec.md`
+- Run the pre-push completeness checker prior to any git push
