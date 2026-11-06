@@ -8,6 +8,8 @@ failure_mode: Without integration requirements, MSL risks being built in isolati
 derives-from:
   - specs/foundation/outcomes.spec.md
   - specs/foundation/constraints.spec.md
+supports:
+  - specs/features/msl-tools.spec.md
 ---
 
 # MSL Integration Architecture [MSL]

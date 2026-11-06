@@ -63,6 +63,7 @@ derives-from:
   | standards/*.spec.md (vendored conventions) | *(none)* | No |
   | foundation/*.spec.md | AGENTS.md § Summary; § Constraints | No |
   | features/*.spec.md | AGENTS.md § Key Behaviors; § Reference Library | No |
+  | artifacts/*.spec.md | AGENTS.md § Reference Library | No |
   | strategy/*.spec.md | *(none)* unless AGENTS.md inlines it; then name the section | No |
   | interfaces/*.spec.md | *(none)* unless AGENTS.md describes the external system; then name the section | No |
 

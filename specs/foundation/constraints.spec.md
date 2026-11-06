@@ -8,6 +8,7 @@ failure_mode: Without these boundaries, MSL risks becoming a programming languag
 derives-from:
   - PURPOSE.md
 supports:
+  - specs/features/msl-tools.spec.md
   - specs/strategy/architecture.spec.md
   - specs/strategy/philosophy.spec.md
 ---

@@ -8,6 +8,8 @@ failure_mode: Without shared philosophy, contributors add complexity that confli
 derives-from:
   - specs/foundation/outcomes.spec.md
   - specs/foundation/constraints.spec.md
+supports:
+  - specs/features/msl-documentation.spec.md
 ---
 
 # MSL Design Philosophy [MSL]

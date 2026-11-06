@@ -8,6 +8,10 @@ failure_mode: Without clear success criteria and user outcomes, MSL risks being 
 derives-from:
   - PURPOSE.md
 supports:
+  - specs/artifacts/msl-agents.spec.md
+  - specs/artifacts/repo-scripts.spec.md
+  - specs/features/msl-documentation.spec.md
+  - specs/features/msl-tools.spec.md
   - specs/strategy/architecture.spec.md
   - specs/strategy/philosophy.spec.md
 ---
