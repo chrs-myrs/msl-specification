@@ -37,6 +37,7 @@ derives-from:
   4. specs/workspace/constitution.spec.md - Development principles
   5. specs/workspace/taxonomy.spec.md - Folder Organization Decision Tests
   6. Key Behaviors from specs/features/ relevant to daily work
+  7. specs/workspace/patterns.spec.md - Repository rules for MSL's own specs, docs, agents and tools
 
   Exclude:
   - Detailed implementation specs (reference, don't inline)
@@ -57,6 +58,7 @@ derives-from:
   | project.yaml (`livespec.version`, `context_compression`, `context_budget`) | Footer version; compression and budget shape the whole tree | Compression and budget changes are structural; a version change is not |
   | constitution.spec.md | AGENTS.md § Core Principles | No |
   | taxonomy.spec.md | AGENTS.md § Folder Organization Decision Tests | No |
+  | patterns.spec.md | AGENTS.md § Development Patterns and Workflows | No |
   | context-architecture.spec.md (this spec) | Tree shape itself: root ceiling, ctxt/ files, methodology sections, load triggers | Always structural |
   | standards/*.spec.md (vendored conventions) | *(none)* | No |
   | foundation/*.spec.md | AGENTS.md § Summary; § Constraints | No |
