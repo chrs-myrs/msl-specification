@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+# vendored-from: scripts/validate-constraints.sh
+# source-version: 5.13.0
+# source-hash: sha256:f3d6265548cd47f93ed4b999fd0bee8ffcfe6486de7e4ecd1ee4196c9e0fb916
+# validate-constraints.sh — Verify the assertions LiveSpec makes about itself
+#
+# Usage: bash scripts/validate-constraints.sh [--verbose] [--json]
+#   --json  machine-readable output (specs/interfaces/formats/validator-output.spec.md)
+# Exit 0: no errors (warnings permitted)
+# Exit 1: unresolved command, script or route
+# Exit 2: usage error
+#
+# Specifies: specs/artifacts/validators/validate-constraints.spec.md
+
+set -uo pipefail
+
+VERBOSE=false
+JSON=false
+for arg in "$@"; do
+    case "$arg" in
+        --verbose) VERBOSE=true ;;
+        --json)    JSON=true ;;
+        *) echo "Usage: $0 [--verbose] [--json]" >&2; exit 2 ;;
+    esac
+done
+
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)" || exit 2
+
+if $JSON; then
+    VO_HELPER="$(dirname "${BASH_SOURCE[0]}")/validator-output.sh"
+    [[ -f "$VO_HELPER" ]] || { echo "ERROR: --json needs $VO_HELPER" >&2; exit 2; }
+    # shellcheck source=validator-output.sh
+    source "$VO_HELPER"
+    vo_init validate-constraints
+fi
+
+if [[ -t 1 ]]; then
+    RED=$'\033[0;31m'; GREEN=$'\033[0;32m'; YELLOW=$'\033[0;33m'; RESET=$'\033[0m'
+else
+    RED=""; GREEN=""; YELLOW=""; RESET=""
+fi
+
+ERRORS=0
+WARNINGS=0
+
+# Documentation surfaces that make claims about what ships.
+# Migration documents describe a past state and legitimately name tooling from
+# the era they document. Excluded from existence checks, as guides already were:
+# "we used to run X" is not a claim that X exists now.
+migration_doc() {
+    case "$1" in
+        */guides/*|*migration*|*/migration/*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# Existence checks run broad: any surface asserting a command or tool exists.
+SCAN_PATHS=(README.md AGENTS.md CLAUDE.md commands skills agents ctxt references specs templates docs)
+EXISTING=()
+for p in "${SCAN_PATHS[@]}"; do [[ -e "$p" ]] && EXISTING+=("$p"); done
+
+# Retired-layout checks run narrow: only project-facing artefacts. Migration
+# guides and historical specs legitimately describe the layout being retired.
+LAYOUT_PATHS=(README.md AGENTS.md CLAUDE.md commands skills agents ctxt)
+LAYOUT_EXISTING=()
+for p in "${LAYOUT_PATHS[@]}"; do [[ -e "$p" ]] && LAYOUT_EXISTING+=("$p"); done
+
+# grep -r with no file operand searches the working directory, which would scan
+# vendored scripts and everything else. An empty surface must scan nothing.
+(( ${#EXISTING[@]} ))        || EXISTING=(/dev/null)
+(( ${#LAYOUT_EXISTING[@]} )) || LAYOUT_EXISTING=(/dev/null)
+
+# err|warnn <rule> <path> <subject> <message>: rule codes are part of the output contract
+err()  {
+    echo "${RED}ERROR${RESET}: $4"; ERRORS=$((ERRORS+1))
+    $JSON && vo_finding error "$1" "$2" "$3" "$4"
+}
+warnn() {
+    echo "${YELLOW}WARN${RESET}:  $4"; WARNINGS=$((WARNINGS+1))
+    $JSON && vo_finding warning "$1" "$2" "$3" "$4"
+}
+
+# err_in <rule> <subject> <message> <regex> <paths...>: one text line, and under
+# --json one finding per file matching <regex>, so a consumer sees where to fix.
+err_in() {
+    local rule="$1" subject="$2" msg="$3" re="$4" f
+    shift 4
+    echo "${RED}ERROR${RESET}: $msg"; ERRORS=$((ERRORS+1))
+    $JSON || return 0
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        migration_doc "$f" && continue
+        vo_finding error "$rule" "$f" "$subject" "$msg"
+    done < <(grep -rlE -e "$re" "$@" 2>/dev/null || true)
+}
+
+# --- Check 1: every referenced /livespec:<name> resolves ---
+# Deduplicate on the command NAME. An earlier version deduplicated on a sort
+# field that the match's own colon made constant, so only one reference per
+# file was ever checked.
+echo "Checking referenced commands..."
+while IFS= read -r name; do
+    [[ -z "$name" ]] && continue
+    # Commands ship in the plugin, not in consuming projects. Resolve locally
+    # first, then against the plugin. When neither is visible the claim cannot
+    # be verified, so say nothing rather than cry wolf in every project.
+    if [[ -f "commands/${name}.md" ]]; then
+        continue
+    elif [[ -n "${CLAUDE_PLUGIN_ROOT:-}" && -f "${CLAUDE_PLUGIN_ROOT}/commands/${name}.md" ]]; then
+        continue
+    elif [[ ! -d "commands" && -z "${CLAUDE_PLUGIN_ROOT:-}" ]]; then
+        continue
+    fi
+    err_in unknown-command "/livespec:${name}" "/livespec:${name} referenced but no such command exists" \
+        "/livespec:${name}([^a-z-]|\$)" "${EXISTING[@]}"
+    grep -rn -F "/livespec:${name}" "${EXISTING[@]}" 2>/dev/null | head -3 \
+        | sed 's/^/         /' | cut -c1-120
+done < <(for f in $(grep -rl -E '/livespec:[a-z-]+' "${EXISTING[@]}" 2>/dev/null); do
+             migration_doc "$f" && continue
+             grep -h -oE '/livespec:[a-z-]+' "$f" 2>/dev/null
+         done | cut -d: -f2 | sort -u || true)
+
+# --- Check 2: every referenced scripts/*.sh exists ---
+echo "Checking referenced scripts..."
+while IFS= read -r ref; do
+    [[ -z "$ref" ]] && continue
+    # A ${CLAUDE_PLUGIN_ROOT}/ prefix leaves a leading slash once the variable
+    # is stripped; the path is plugin-relative, so test it as such.
+    ref="${ref#/}"
+    if [[ ! -f "$ref" ]]; then
+        err_in missing-script "$ref" "$ref referenced in documentation but does not exist" \
+            "${ref//./\\.}" "${EXISTING[@]}"
+        if $VERBOSE; then
+            grep -rn -F "$ref" "${EXISTING[@]}" 2>/dev/null | head -3 | sed 's/^/         /'
+        fi
+    fi
+done < <(for f in $(grep -rl -E '(bash |\./|Run |sh )[a-zA-Z0-9_/-]+\.sh' "${EXISTING[@]}" 2>/dev/null); do
+             migration_doc "$f" && continue
+             grep -h -oE '(bash |\./|Run |sh )[a-zA-Z0-9_/-]+\.sh' "$f" 2>/dev/null
+         done | grep -oE '[a-zA-Z0-9_/-]+\.sh' \
+         | grep -vE '^(setup|install|build|deploy|run)\.sh$' | sort -u || true)
+
+# --- Check 3: command-to-skill routing integrity ---
+echo "Checking command routing..."
+for cmd in commands/*.md; do
+    [[ -e "$cmd" ]] || continue
+    target="$(grep -m1 '^routes-to:' "$cmd" | sed 's/^routes-to:[[:space:]]*//' | tr -d '"'"'"' ')"
+    if [[ -z "$target" ]]; then
+        err missing-route "$cmd" "" "$cmd has no routes-to: field"
+    elif [[ ! -f "$target" ]]; then
+        err broken-route "$cmd" "$target" "$cmd routes to $target which does not exist"
+    fi
+done
+
+# --- Check 4: references to retired distribution layouts ---
+echo "Checking for retired layout references..."
+while IFS= read -r hit; do
+    [[ -z "$hit" ]] && continue
+    retired=".livespec/"; [[ "$hit" == *.livespec-version* ]] && retired=".livespec-version"
+    warnn retired-layout "${hit%%:*}" "$retired" "retired layout referenced: ${hit}"
+done < <(grep -rn -E '\.livespec/|\.livespec-version' "${LAYOUT_EXISTING[@]}" 2>/dev/null \
+         | grep -v '^references/guides/' \
+         | grep -v 'CHANGELOG' \
+         | grep -v 'Assuming a `.livespec/` folder exists' \
+         | grep -v 'No `.livespec/` directory' \
+         | grep -v 'not a copied `dist/` folder' \
+         | cut -c1-140 || true)
+
+# --- Check 5: toolchain independence of project artefacts ---
+# Project context must be usable by an agent with no LiveSpec tooling installed.
+echo "Checking toolchain independence of project context..."
+PROJECT_CTX=()
+for p in AGENTS.md CLAUDE.md ctxt; do [[ -e "$p" ]] && PROJECT_CTX+=("$p"); done
+
+if (( ${#PROJECT_CTX[@]} > 0 )); then
+    while IFS= read -r hit; do
+        [[ -z "$hit" ]] && continue
+        err toolchain-root-reference "${hit%%:*}" "" "project context references the toolchain root: ${hit%%:*}"
+    done < <(grep -rln 'CLAUDE_PLUGIN_ROOT' "${PROJECT_CTX[@]}" 2>/dev/null || true)
+
+    # Every script the project context instructs must exist in the project,
+    # not merely in the plugin: the reader may not have the plugin. Inline code
+    # with no invocation prefix counts: the spec-first template inlined into
+    # every project names its gate as `scripts/livespec/check-requires-spec.sh`.
+    while IFS= read -r ref; do
+        [[ -z "$ref" ]] && continue
+        [[ -f "$ref" ]] || err_in unshipped-script "$ref" "project context instructs '$ref' which the project does not ship" \
+            "${ref//./\\.}" "${PROJECT_CTX[@]}"
+    done < <(grep -rh -oE '(bash |\./|Run |sh |`)scripts/[a-zA-Z0-9_/-]+\.sh' "${PROJECT_CTX[@]}" 2>/dev/null \
+             | grep -oE 'scripts/[a-zA-Z0-9_/-]+\.sh' | sort -u || true)
+
+    # Deliberately NOT checked: whether spec paths named in project context
+    # resolve. Generated context legitimately carries teaching examples
+    # (specs/features/auth.spec.md) in the same syntax as real references, so
+    # no mechanical rule separates assertion from illustration. A check that
+    # cannot tell them apart produces false errors and trains readers to
+    # ignore the validator.
+fi
+
+# --- Check 6: nothing the plugin ships is git-ignored ---
+# The plugin is installed from the repository, so an ignored file never ships.
+# An unanchored research/ rule kept templates/research/ out of every release.
+# Only meaningful where this project is the toolchain source.
+if [[ -f .claude-plugin/plugin.json ]] && git rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Checking shipped files are tracked..."
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        err ignored-shipped-file "$f" "" "$f is git-ignored, so the plugin does not ship it"
+    done < <(git ls-files --others --ignored --exclude-standard -- \
+                 templates references skills agents commands scripts examples 2>/dev/null || true)
+fi
+
+echo ""
+echo "Summary:"
+echo "  Errors:   $ERRORS"
+echo "  Warnings: $WARNINGS"
+echo ""
+
+if (( ERRORS > 0 )); then
+    echo "${RED}FAILED${RESET}: $ERRORS constraint violation(s)"
+    exit 1
+fi
+echo "${GREEN}PASSED${RESET}: all referenced commands, scripts and routes resolve"
+exit 0
