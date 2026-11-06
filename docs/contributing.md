@@ -312,25 +312,16 @@ docs(tutorials): improve inheritance examples
 ### Primary Channels
 1. **GitHub Issues** - Bug reports, features
 2. **GitHub Discussions** - Questions, ideas
-3. **Discord** - Real-time chat [Join](https://discord.gg/msl)
-
-### Additional Resources
-- **Email**: msl@example.com (maintainers)
-- **Twitter**: [@MSLSpec](https://twitter.com/mslspec)
-- **Stack Overflow**: Tag `msl-specification`
 
 ## Recognition
 
 Contributors are recognized in:
-- [CONTRIBUTORS.md](CONTRIBUTORS.md) - All contributors
 - Release notes - Per-release contributions
 - README credits - Significant contributions
 
 ## Questions?
 
-- Check the [FAQ](docs/faq.md)
 - Ask in [GitHub Discussions](https://github.com/chrs-myrs/msl-specification/discussions)
-- Join our [Discord](https://discord.gg/msl)
 
 ---
 
