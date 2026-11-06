@@ -7,7 +7,7 @@ This index helps AI agents and developers navigate the MSL specification ecosyst
 ## For AI Agents - Efficient Configuration
 
 ### One-Time Setup (Cache for Session)
-1. **Fetch and cache**: [`/AGENTS.md`](../AGENTS.md) - Essential MSL knowledge (90% of what you need)
+1. **Fetch and cache**: [`docs/agent-guide.md`](../docs/agent-guide.md) - Essential MSL knowledge (90% of what you need)
 2. **Check for**: Project-specific `MSL-CONFIG.md` (if it exists)
 3. **Result**: Minimal context use, fewer context7 lookups, consistent MSL usage
 

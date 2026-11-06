@@ -153,7 +153,7 @@ Compliance team: Write security specifications
 If you're an AI assistant (Claude, ChatGPT, etc.) helping with an MSL project:
 
 1. **Start here**: Read [specs/INDEX.md](specs/INDEX.md) for navigation
-2. **Understand purpose**: Check [specs/msl-purpose-and-limitations.md](specs/msl-purpose-and-limitations.md)
+2. **Understand purpose**: Check [PURPOSE.md](PURPOSE.md)
 3. **Project setup**: Follow [specs/standards/msl-project-organization.md](specs/standards/msl-project-organization.md)
 4. **Create PURPOSE.md first**: Every project needs a PURPOSE specification
 5. **Use appropriate level**: L0 for simple, L1 for structured, L2 for complex
@@ -323,7 +323,6 @@ A valuable reference for large specification suites and framework development.
 ## Community & Support
 
 - **GitHub**: [github.com/chrs-myrs/msl-specification](https://github.com/chrs-myrs/msl-specification)
-- **Discord**: [MSL Community](#) - Share AI workflows and patterns
 - **Examples**: [Real-world specifications](/examples)
 - **Contributing**: [How to contribute](docs/contributing.md)
 

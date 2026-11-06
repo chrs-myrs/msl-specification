@@ -1,0 +1,79 @@
+---
+type: workspace
+category: workspace
+fidelity: process
+criticality: IMPORTANT
+failure_mode: Without context architecture, agents receive inappropriate or bloated context, and every context rebuild runs in full because no change can be scoped
+governed-by: []
+applies_to:
+  - this_project
+  - agent_context_generation
+derives-from:
+  - PURPOSE.md
+---
+
+# Context Architecture [MSL]
+
+## Requirements
+
+- [!] This project's agent context tree has the shape declared here, following the context-tree convention (`specs/workspace/standards/context-tree.spec.md`)
+  - **Root ceiling**: 10KB
+  - **ctxt/ files**: none
+  - **Methodology sections**: none
+  - The root carries this project's constraints near the top
+  - **Regeneration**: `/livespec:audit context`
+
+  To grow the tree, edit this declaration: raise the ceiling; list ctxt/ files
+  (flat, plus `ctxt/domains/`, 4-10KB each) with the words that should load each
+  one; or name methodology sections from the five phases, phases vs layers,
+  multi-domain organisation and session completion.
+
+- [!] This project defines what content populates agent contexts to ensure focused, relevant guidance.
+
+  Always Include (root AGENTS.md, in this order):
+  1. PURPOSE.md - Summary
+  2. Constraints from specs/foundation/
+  3. Spec-first enforcement
+  4. specs/workspace/constitution.spec.md - Development principles
+  5. specs/workspace/taxonomy.spec.md - Folder Organization Decision Tests
+  6. Key Behaviors from specs/features/ relevant to daily work
+  7. specs/workspace/patterns.spec.md - Repository rules for MSL's own specs, docs, agents and tools
+
+  Exclude:
+  - Detailed implementation specs (reference, don't inline)
+  - Contract definitions (link to specs/interfaces/ instead)
+  - Historical/archived content
+  - Paths that exist only in the LiveSpec toolchain: generated context must work without it
+
+  Compression Level: as declared by `livespec.methodology.context_compression` in `project.yaml` (moderate when absent)
+
+- [!] Every source maps to the generated file(s) it feeds, so a change can be regenerated in scope rather than in full
+  - `/livespec:audit context` reads this map to classify a change as MINOR or FULL; without it every rebuild runs in full
+
+  **Spec → Generated File Map:**
+
+  | Source | Generated File(s) | Structural? |
+  |--------|-------------------|-------------|
+  | PURPOSE.md | AGENTS.md § Summary | No |
+  | project.yaml (`livespec.version`, `context_compression`, `context_budget`) | Footer version; compression and budget shape the whole tree | Compression and budget changes are structural; a version change is not |
+  | constitution.spec.md | AGENTS.md § Core Principles | No |
+  | taxonomy.spec.md | AGENTS.md § Folder Organization Decision Tests | No |
+  | patterns.spec.md | AGENTS.md § Development Patterns and Workflows | No |
+  | context-architecture.spec.md (this spec) | Tree shape itself: root ceiling, ctxt/ files, methodology sections, load triggers | Always structural |
+  | standards/*.spec.md (vendored conventions) | *(none)* | No |
+  | foundation/*.spec.md | AGENTS.md § Summary; § Constraints | No |
+  | features/*.spec.md | AGENTS.md § Key Behaviors; § Reference Library | No |
+  | artifacts/*.spec.md | AGENTS.md § Reference Library | No |
+  | strategy/*.spec.md | *(none)* unless AGENTS.md inlines it; then name the section | No |
+  | interfaces/*.spec.md | *(none)* unless AGENTS.md describes the external system; then name the section | No |
+
+  Every spec is a staleness source, so a spec missing from this map forces a full rebuild until it is listed. Add a row for every other workspace spec this project has. **Structural** means the change can add, remove or resize generated files beyond the mapped targets, so it forces a full rebuild. A source that feeds no generated file is listed with *(none)* as its target and does not force a full rebuild.
+
+## Validation
+
+- Root AGENTS.md within the declared ceiling, with this project's constraints near the top
+- ctxt/ holds exactly the declared files, and does not exist when none are declared
+- Only the declared methodology sections appear
+- Context generation reads this spec before building AGENTS.md
+- Excluded content not inlined (referenced only)
+- Every workspace spec appears as a source in the Spec → Generated File Map

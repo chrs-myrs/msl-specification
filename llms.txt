@@ -17,6 +17,10 @@ Complete implementation reference: [Implementation Reference](docs/implementatio
 - Runnable examples with error handling
 - Template processing and inheritance resolution
 
+## For AI Agents
+
+Session primer: [Agent Guide](docs/agent-guide.md) - templates, decision tree and anti-patterns that cover most MSL tasks. Check the project for an `MSL-CONFIG.md` that overrides defaults.
+
 ## Quick Example
 
 ```markdown

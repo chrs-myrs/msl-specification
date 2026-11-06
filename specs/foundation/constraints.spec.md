@@ -1,9 +1,19 @@
 ---
+type: constraints
+category: foundation
+fidelity: behavioral
+governed-by: []
 criticality: CRITICAL
 failure_mode: Without these boundaries, MSL risks becoming a programming language or tool-dependent format, losing its core value as a human-readable specification markup language
+derives-from:
+  - PURPOSE.md
+supports:
+  - specs/features/msl-tools.spec.md
+  - specs/strategy/architecture.spec.md
+  - specs/strategy/philosophy.spec.md
 ---
 
-# MSL Intentional Limitations
+# MSL Intentional Limitations [MSL]
 
 ## Requirements
 

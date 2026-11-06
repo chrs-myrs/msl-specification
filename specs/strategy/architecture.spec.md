@@ -1,9 +1,18 @@
 ---
+type: strategy
+category: strategy
+fidelity: decisions-only
+governed-by: []
 criticality: IMPORTANT
 failure_mode: Without integration requirements, MSL risks being built in isolation from the ecosystems where developers actually work
+derives-from:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+supports:
+  - specs/features/msl-tools.spec.md
 ---
 
-# MSL Integration Architecture
+# MSL Integration Architecture [MSL]
 
 ## Requirements
 
