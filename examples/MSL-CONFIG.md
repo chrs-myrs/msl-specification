@@ -143,7 +143,7 @@ When working in this project:
 
 This configuration helps AI agents work efficiently with MSL in this specific project. It overrides general MSL defaults with project-specific patterns while maintaining MSL principles.
 
-Agents should cache this file along with `/AGENTS.md` for optimal performance.
+Agents should cache this file along with the [MSL agent guide](../docs/agent-guide.md) for optimal performance.
 
 ---
 *MSL Configuration Example - Customize for your project needs*
