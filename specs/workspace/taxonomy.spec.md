@@ -24,6 +24,8 @@ derives-from:
   - specs/strategy/ - architectural decisions
   - specs/features/ - observable behaviors
   - specs/interfaces/ - API/data contracts
+  - specs/artifacts/ - agents, commands and validators
+  - MSL's own specs keep their published layout (`specs/msl-l*.md`, `applications/`, `documentation/`, `standards/`, `metaspecs/`, `testing/`, `context7-optimization/`) until their rename (registries/debt.md, DEBT-001)
 
 ## Validation
 - Files placed in correct folders
