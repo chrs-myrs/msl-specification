@@ -34,7 +34,6 @@ specifies:
   - README.md
   - CONTRIBUTING.md
   - specs/INDEX.md
-  - specs/README.md
 ---
 
 # MSL Documentation Base Specification [MSL]

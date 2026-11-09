@@ -16,8 +16,6 @@ satisfies:
   - specs/foundation/constraints.spec.md
 guided-by:
   - specs/strategy/philosophy.spec.md
-specifies:
-  - specs/msl-l2-advanced.md
 ---
 
 # MSL Level 2: Complete Language with Formal Specification [MSL]

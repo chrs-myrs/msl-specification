@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   | Old path | New path |
   |---|---|
-  | `specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md` | `specs/interfaces/msl-l*.spec.md` (the old paths remain as pointers) |
+  | `specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md` | `specs/interfaces/msl-l*.spec.md` |
   | `specs/standards/*.md` | `specs/interfaces/standards/*.spec.md` |
   | `specs/documentation/*.md` | `specs/features/documentation/*.spec.md` |
   | `specs/context7-optimization/msl-llms-txt-spec.md`, `msl-implementation-reference-spec.md` | `specs/features/context7-optimization/msl-llms-txt.spec.md`, `msl-implementation-reference.spec.md` |
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   | `specs/applications/msl-validation-agent.md`, `msl-batch-validator.md` | `specs/artifacts/*.spec.md` |
   | `specs/metaspecs/*.md` | `specs/workspace/metaspecs/*.md` |
   | `scripts/*-msl-spec.md` | `scripts/*.spec.md` |
+  | `specs/README.md` | merged into `specs/INDEX.md` |
 
 - The resolver in `tools/lib/` finds an `extends:` parent by its frontmatter `id` anywhere in the project, and a parent with no `id` by its file name (msl-tools REQ-507). Previously it found only parents named `{id}.md` at the project root, `specs/` or `templates/`, so most nested parents failed to resolve. Two behaviours change: a parent that declares an `id` is no longer found by its file name, and resolving an `id` that two documents share now fails, naming both
 

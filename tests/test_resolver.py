@@ -50,7 +50,7 @@ def test_parent_found_by_frontmatter_id_in_nested_folder(temp_dir):
 
 
 def test_frontmatter_id_wins_over_file_name(temp_dir):
-    # A pointer left at the old path shares the id's file name but declares no id
+    # A document with no id whose file name matches the id being resolved
     write(temp_dir / "specs" / "base-spec.md", "# Base (moved)\n\nSee interfaces/.\n")
     write(temp_dir / "specs" / "interfaces" / "base-spec.spec.md", PARENT)
     write(temp_dir / "specs" / "features" / "child.spec.md", CHILD)

@@ -49,7 +49,6 @@ Domain: software. Specs boundary: specifications only.
 - `specs/artifacts/` - agents, commands and validators
 - `specs/workspace/metaspecs/` - metaspecs governing this repository's own specs; plain `.md`, because MSL's `type: metaspec` is not a LiveSpec type (DEC-001)
 - A script's spec sits beside it as `scripts/<script>.spec.md`
-- `specs/msl-l0-foundation.md`, `msl-l1-structure.md` and `msl-l2-advanced.md` are pointers kept at published paths, not specs
 
 Outside every spec's `specifies:` by choice: PURPOSE.md, CHANGELOG.md, LICENSE, .gitignore, project.yaml and `registries/`.
 
@@ -61,7 +60,7 @@ Every spec names the files it governs in `specifies:`. Read the governing spec b
 
 | Paths | Governing spec |
 |-------|----------------|
-| `docs/` (guides, spec/, patterns/, workflows/, proposals/, contributing, tools, why-msl, roadmap, changelog, agent-guide), `examples/`, `README.md`, `CONTRIBUTING.md`, `specs/README.md` | `specs/features/documentation/msl-docs-base.spec.md` |
+| `docs/` (guides, spec/, patterns/, workflows/, proposals/, contributing, tools, why-msl, roadmap, changelog, agent-guide), `examples/`, `README.md`, `CONTRIBUTING.md`, `specs/INDEX.md` | `specs/features/documentation/msl-docs-base.spec.md` |
 | `docs/getting-started.md`, `docs/user-guide.md`, `docs/reference.md` and `docs/reference/`, `docs/tutorials/` | `specs/features/documentation/msl-docs-{getting-started,user-guide,reference,tutorials}.spec.md` |
 | `llms.txt`, `docs/implementation-reference.md` | `specs/features/context7-optimization/msl-llms-txt.spec.md`, `msl-implementation-reference.spec.md` |
 | `tools/`, `package.json`, `pyproject.toml`, `pytest.ini`, `requirements-dev.txt`, `.pre-commit-config.yaml` | `specs/features/msl-tools.spec.md` |
@@ -118,7 +117,7 @@ Moderate: strategic extraction, balanced inline and reference. Detailed implemen
 - Using `extends` for organisational hierarchy rather than "is-a".
 - Starting at L2 when L0 would do; adding documentation instead of simplifying it.
 - Specifying implementation (HOW) in requirements.
-- Giving a metaspec or other MSL-typed document a `.spec.md` name, or treating the pointer files at `specs/msl-l*.md` as specs.
+- Giving a metaspec or other MSL-typed document a `.spec.md` name.
 
 ## Reference Library
 
@@ -133,4 +132,4 @@ Moderate: strategic extraction, balanced inline and reference. Detailed implemen
 *Agent configuration for MSL Specification (LiveSpec v5.13.0)*
 *Generated from workspace specs*
 
-<!-- livespec-context-sources: sha256:bdf09b5d6fd82ad21142aeab679948d0e17886bc659a6e57b20fb8cb8d90a9a1 n=33 -->
+<!-- livespec-context-sources: sha256:b444faec93cd3dd310d504626f66759623952137d964d1b3aa38832442401057 n=33 -->

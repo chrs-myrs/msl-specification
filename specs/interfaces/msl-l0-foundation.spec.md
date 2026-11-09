@@ -13,8 +13,6 @@ satisfies:
   - specs/foundation/constraints.spec.md
 guided-by:
   - specs/strategy/philosophy.spec.md
-specifies:
-  - specs/msl-l0-foundation.md
 ---
 
 # MSL Level 0: Foundation [MSL]

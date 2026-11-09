@@ -93,7 +93,7 @@ npm install -g msl-tools
 ### Project Structure
 ```
 msl-specification/
-├── specs/           # MSL specifications (see specs/README.md)
+├── specs/           # MSL specifications (see specs/INDEX.md)
 │   ├── interfaces/ # Language levels and standards
 │   ├── features/   # Tools, documentation, testing specs
 │   ├── artifacts/  # Agent specs
