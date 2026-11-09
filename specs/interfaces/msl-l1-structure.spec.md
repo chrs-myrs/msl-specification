@@ -14,6 +14,8 @@ satisfies:
   - specs/foundation/constraints.spec.md
 guided-by:
   - specs/strategy/philosophy.spec.md
+specifies:
+  - specs/msl-l1-structure.md
 ---
 
 # MSL Level 1: Structured Specifications [MSL]
