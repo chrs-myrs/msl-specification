@@ -1,8 +1,12 @@
 """MSL Resolver - Resolve inheritance chains in MSL documents."""
 
+import re
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 from .parser import MSLParser
+
+FRONTMATTER_ID = re.compile(r"^id:\s*([^\s#]+)")
+SKIP_DIRS = {"node_modules", "var", "build", "dist", "generated", "__pycache__"}
 
 
 class MSLResolver:
@@ -12,6 +16,7 @@ class MSLResolver:
         self.base_path = Path(base_path)
         self.parser = MSLParser()
         self._cache = {}
+        self._id_index: Optional[Dict[str, Path]] = None
         
     def resolve(self, spec_id: str) -> Dict[str, Any]:
         """Resolve a specification with all its inheritance."""
@@ -32,19 +37,56 @@ class MSLResolver:
         
     def _load_spec(self, spec_id: str) -> Dict[str, Any]:
         """Load a specification by ID."""
-        # Try to find the spec file
-        possible_paths = [
-            self.base_path / f"{spec_id}.md",
-            self.base_path / f"{spec_id}.msl",
-            self.base_path / "specs" / f"{spec_id}.md",
-            self.base_path / "templates" / f"{spec_id}.md",
-        ]
-        
-        for path in possible_paths:
-            if path.exists():
-                return self.parser.parse_file(str(path))
-                
-        raise FileNotFoundError(f"Specification not found: {spec_id}")
+        path = self._find_spec(spec_id)
+        if path is None:
+            raise FileNotFoundError(f"Specification not found: {spec_id}")
+        return self.parser.parse_file(str(path))
+
+    def _find_spec(self, spec_id: str) -> Optional[Path]:
+        """Find a spec by frontmatter id anywhere under base_path, else by file name."""
+        if self._id_index is None:
+            self._id_index = self._index_ids()
+        if spec_id in self._id_index:
+            return self._id_index[spec_id]
+
+        # Documents without frontmatter have no id; their file name stands in
+        for folder in (self.base_path, self.base_path / "specs", self.base_path / "templates"):
+            for suffix in (".md", ".spec.md", ".msl"):
+                path = folder / f"{spec_id}{suffix}"
+                if path.exists() and self._frontmatter_id(path) is None:
+                    return path
+        return None
+
+    def _index_ids(self) -> Dict[str, Path]:
+        """Map each frontmatter id to its file; the first path in sorted order wins."""
+        index: Dict[str, Path] = {}
+        for path in sorted(self.base_path.rglob("*")):
+            rel_parts = path.relative_to(self.base_path).parts
+            if any(part.startswith(".") or part in SKIP_DIRS for part in rel_parts[:-1]):
+                continue
+            if path.suffix not in (".md", ".msl") or not path.is_file():
+                continue
+            spec_id = self._frontmatter_id(path)
+            if spec_id and spec_id not in index:
+                index[spec_id] = path
+        return index
+
+    @staticmethod
+    def _frontmatter_id(path: Path) -> Optional[str]:
+        """Return the id declared in a file's leading frontmatter, if any."""
+        try:
+            with open(path, encoding="utf-8") as handle:
+                if handle.readline().rstrip() != "---":
+                    return None
+                for line in handle:
+                    if line.rstrip() == "---":
+                        return None
+                    match = FRONTMATTER_ID.match(line)
+                    if match:
+                        return match.group(1).strip("'\"")
+        except (OSError, UnicodeDecodeError):
+            return None
+        return None
         
     def _merge_specs(self, parent: Dict[str, Any], child: Dict[str, Any]) -> Dict[str, Any]:
         """Merge parent and child specifications."""
