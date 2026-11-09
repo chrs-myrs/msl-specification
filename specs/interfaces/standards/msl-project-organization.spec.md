@@ -1,8 +1,16 @@
 ---
 id: msl-project-organization
-type: standard
+type: contract
 governed-by: msl-usage-standards
 tags: [standard, project, organization, best-practices]
+category: interfaces
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without an organisation standard, MSL projects scatter their specs so that neither people nor agents can find the spec for a behaviour
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Project Organization Standard [MSL]

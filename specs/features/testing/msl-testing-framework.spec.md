@@ -6,6 +6,19 @@ extends: testing-framework-metaspec
 compliance: standard
 status: active
 priority: high
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a testing framework spec, the tool tests drift from the requirements they are meant to prove
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+guided-by:
+  - specs/strategy/architecture.spec.md
+specifies:
+  - tests/
 ---
 
 # MSL Testing Framework [MSL]

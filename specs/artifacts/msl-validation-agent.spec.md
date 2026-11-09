@@ -9,13 +9,23 @@ references:
   - msl-usage-standards: "Quality standards this agent enforces (REQ-001-710)"
   - msl-extension-standards: "Extension design principles to validate (REQ-001-505)"
   - msl-l2-advanced: "MSL language definition being validated"
+type: agent
+category: artifacts
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governing spec, the validator agent scores specs against its own notion of quality rather than MSL's standards
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+specifies:
+  - .claude/agents/msl-validator.md
 ---
 
 # MSL Validation Agent Specification [MSL]
 
 ## Summary
 
-This specification defines a Claude Code agent that performs intelligent architectural validation of MSL specifications. The agent evaluates MSL documents against the quality standards defined in `msl-usage-standards.md` and `msl-extension-standards.md`, providing high-level architectural feedback beyond basic syntax validation.
+This specification defines a Claude Code agent that performs intelligent architectural validation of MSL specifications. The agent evaluates MSL documents against the quality standards defined in `msl-usage-standards.spec.md` and `msl-extension-standards.spec.md`, providing high-level architectural feedback beyond basic syntax validation.
 
 This agent demonstrates MSL's capability to specify intelligent software systems and serves as a practical example of using MSL to define AI agent behavior and requirements.
 

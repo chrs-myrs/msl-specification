@@ -4,6 +4,18 @@ id: msl-llms-txt
 tags: [context7, ai-optimization, llms-txt, discovery]
 priority: critical
 status: active
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governed llms.txt, AI agents and context7 index stale or wrong entry points into MSL
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/architecture.spec.md
+specifies:
+  - llms.txt
 ---
 
 # MSL llms.txt File Specification [MSL]
@@ -77,9 +89,9 @@ MSL enables precise requirement specifications using plain markdown, progressing
 
 ## Core Language Specifications (Read in Order)
 
-1. [Level 0 Foundation](specs/msl-l0-foundation.md) - Pure markdown with requirements
-2. [Level 1 Structure](specs/msl-l1-structure.md) - Adds IDs and frontmatter
-3. [Level 2 Advanced](specs/msl-l2-advanced.md) - Full features with formal grammar
+1. [Level 0 Foundation](specs/interfaces/msl-l0-foundation.spec.md) - Pure markdown with requirements
+2. [Level 1 Structure](specs/interfaces/msl-l1-structure.spec.md) - Adds IDs and frontmatter
+3. [Level 2 Advanced](specs/interfaces/msl-l2-advanced.spec.md) - Full features with formal grammar
 
 ## Implementation Guide
 

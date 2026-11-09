@@ -3,6 +3,16 @@ msl: L0
 id: msl-l0-foundation
 governed-by: [msl-core-metaspec, msl-language-metaspec]
 tags: [specification, level-0, foundation]
+type: contract
+category: interfaces
+fidelity: behavioral
+criticality: CRITICAL
+failure_mode: Without Level 0, authors have no minimal MSL document to start from and Levels 1 and 2 have no base to extend
+satisfies:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Level 0: Foundation [MSL]

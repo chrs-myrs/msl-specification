@@ -10,6 +10,17 @@ references:
   - msl-l0-foundation: "Starting point for tutorials"
   - msl-l1-structure: "Intermediate tutorial topics"
   - msl-l2-advanced: "Advanced tutorial topics"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a tutorials spec, tutorials skip steps or teach features out of order, and users cannot complete them
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
+specifies:
+  - docs/tutorials/
 ---
 
 # MSL Tutorials Documentation Specification [MSL]

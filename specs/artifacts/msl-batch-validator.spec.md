@@ -10,6 +10,16 @@ references:
   - msl-validation-agent: "Individual specification validator (REQ-001-1205)"
   - msl-usage-standards: "Quality standards to enforce (REQ-701-710)"
   - msl-tools-spec: "Common CLI patterns (REQ-1401-1407)"
+type: agent
+category: artifacts
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governing spec, batch validation reports cannot be compared across runs or trusted as an integration check
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+specifies:
+  - .claude/agents/msl-batch-validator.md
 ---
 
 # MSL Batch Validation Tool [MSL]
@@ -131,13 +141,13 @@ msl-batch-validate --quiet --threshold=80 || exit 1
 
 | Specification | Level | Score | Status |
 |--------------|-------|--------|---------|
-| msl-l0-foundation.md | L0 | 92/100 | ✅ Excellent |
-| msl-l1-structure.md | L1 | 92/100 | ✅ Excellent |
-| msl-l2-advanced.md | L2 | 95/100 | ✅ Excellent |
-| msl-usage-standards.md | L2 | 88/100 | ✅ Good |
-| msl-extension-standards.md | L2 | 90/100 | ✅ Excellent |
-| msl-tools-spec.md | L2 | 89/100 | ✅ Good |
-| msl-validation-agent.md | L2 | 91/100 | ✅ Excellent |
+| msl-l0-foundation.spec.md | L0 | 92/100 | ✅ Excellent |
+| msl-l1-structure.spec.md | L1 | 92/100 | ✅ Excellent |
+| msl-l2-advanced.spec.md | L2 | 95/100 | ✅ Excellent |
+| msl-usage-standards.spec.md | L2 | 88/100 | ✅ Good |
+| msl-extension-standards.spec.md | L2 | 90/100 | ✅ Excellent |
+| msl-tools.spec.md | L2 | 89/100 | ✅ Good |
+| msl-validation-agent.spec.md | L2 | 91/100 | ✅ Excellent |
 
 ## Inheritance Structure
 ```
@@ -150,9 +160,9 @@ msl-l0-foundation
 
 ## Top Recommendations
 
-1. **Clarify requirement testability** in msl-l0-foundation.md (High Impact)
-2. **Add validation requirements** to msl-l1-structure.md (Medium Impact)
-3. **Enhance error handling specs** in msl-tools-spec.md (Low Impact)
+1. **Clarify requirement testability** in msl-l0-foundation.spec.md (High Impact)
+2. **Add validation requirements** to msl-l1-structure.spec.md (Medium Impact)
+3. **Enhance error handling specs** in msl-tools.spec.md (Low Impact)
 
 ## No Critical Issues Found ✅
 

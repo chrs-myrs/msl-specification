@@ -6,6 +6,16 @@ tags: [standards, best-practices, quality, architecture]
 priority: critical
 status: active
 assignee: msl-core-team
+type: contract
+category: interfaces
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without usage standards, authors repeat requirements, misuse inheritance and over-specify, and validators have no quality bar to measure against
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Usage Standards [MSL]
@@ -232,9 +242,9 @@ These usage standards serve as the foundation for architectural validation and q
 ### Good Inheritance Structure
 
 ```markdown
-# Foundation: msl-l0-foundation.md (basic markdown)
-# Level 1: msl-l1-structure.md extends msl-l0-foundation (adds frontmatter)
-# Level 2: msl-l2-advanced.md extends msl-l1-structure (adds markers)
+# Foundation: msl-l0-foundation.spec.md (basic markdown)
+# Level 1: msl-l1-structure.spec.md extends msl-l0-foundation (adds frontmatter)
+# Level 2: msl-l2-advanced.spec.md extends msl-l1-structure (adds markers)
 # Extension: api-extension.md extends msl-l2-advanced (adds API features)
 # Application: user-api.md extends api-extension (specific API implementation)
 ```

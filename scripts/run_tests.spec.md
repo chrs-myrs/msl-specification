@@ -3,6 +3,16 @@ msl: L1
 id: run-tests-script
 title: MSL Test Runner Script Specification
 status: active
+type: command
+category: artifacts
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governing spec, the test runner can report success without having run the suite
+governed-by: []
+satisfies:
+  - specs/features/testing/msl-testing-framework.spec.md
+specifies:
+  - scripts/run_tests.sh
 ---
 
 # MSL Test Runner Script [MSL]

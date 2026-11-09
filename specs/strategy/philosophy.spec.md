@@ -9,7 +9,17 @@ derives-from:
   - specs/foundation/outcomes.spec.md
   - specs/foundation/constraints.spec.md
 supports:
-  - specs/features/msl-documentation.spec.md
+  - specs/features/documentation/msl-docs-base.spec.md
+  - specs/features/documentation/msl-docs-getting-started.spec.md
+  - specs/features/documentation/msl-docs-reference.spec.md
+  - specs/features/documentation/msl-docs-tutorials.spec.md
+  - specs/features/documentation/msl-docs-user-guide.spec.md
+  - specs/interfaces/msl-l0-foundation.spec.md
+  - specs/interfaces/msl-l1-structure.spec.md
+  - specs/interfaces/msl-l2-advanced.spec.md
+  - specs/interfaces/standards/msl-extension-standards.spec.md
+  - specs/interfaces/standards/msl-project-organization.spec.md
+  - specs/interfaces/standards/msl-usage-standards.spec.md
 ---
 
 # MSL Design Philosophy [MSL]

@@ -106,11 +106,11 @@ extends: msl-l2-advanced  # Docs are not a type of language spec
 
 ### Good: Simple Structure
 ```markdown
-msl-docs-base.md (common requirements)
-├── msl-docs-getting-started.md (extends base)
-├── msl-docs-user-guide.md (extends base)
-├── msl-docs-reference.md (extends base)
-└── msl-docs-tutorials.md (extends base)
+msl-docs-base.spec.md (common requirements)
+├── msl-docs-getting-started.spec.md (extends base)
+├── msl-docs-user-guide.spec.md (extends base)
+├── msl-docs-reference.spec.md (extends base)
+└── msl-docs-tutorials.spec.md (extends base)
 ```
 
 ## Notes

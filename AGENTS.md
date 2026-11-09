@@ -8,6 +8,17 @@ MSL (Markdown Specification Language) bridges human intent and AI implementation
 
 Success means: agents implement working code from MSL specs alone; humans understand specs without training; specs stay valid markdown on GitHub with no custom renderers; MSL specifies its own language, tools and docs; advanced features never break basic use.
 
+## Constraints
+
+MSL SHALL NOT:
+- define implementation details or algorithms (specs say WHAT, not HOW)
+- act as a programming or scripting language (no executable syntax or runtime semantics)
+- enforce runtime behaviour or validation (validation is a tooling concern)
+- require specific tools or IDEs (plain text editors must suffice)
+- mandate project structures (folder layout is a recommendation)
+
+MSL SHALL remain a pure specification markup language; markdown is the only required format dependency.
+
 ## CRITICAL: Spec-First Protocol
 
 Before creating ANY permanent file ("is it committed to git?"):
@@ -22,17 +33,6 @@ One spec may cover several files that serve the same observable purpose. No exce
 
 PURPOSE.md stays under 20 content lines (vision and success criteria only). Route everything else immediately: "must comply with X" to `specs/foundation/constraints.spec.md`; "users can do X" to `outcomes.spec.md`; "will use X tech" to `specs/strategy/architecture.spec.md`; "system does X" to `specs/features/`; "team follows X" to `specs/workspace/`. Check with `scripts/livespec/validate-purpose.sh`.
 
-## Constraints
-
-MSL SHALL NOT:
-- define implementation details or algorithms (specs say WHAT, not HOW)
-- act as a programming or scripting language (no executable syntax or runtime semantics)
-- enforce runtime behaviour or validation (validation is a tooling concern)
-- require specific tools or IDEs (plain text editors must suffice)
-- mandate project structures (folder layout is a recommendation)
-
-MSL SHALL remain a pure specification markup language; markdown is the only required format dependency.
-
 ## Core Principles
 
 - Specs are created before implementation: check `specs/features/` for the behaviour spec, and guide to spec creation if it is missing.
@@ -45,37 +45,43 @@ Domain: software. Specs boundary: specifications only.
 - `specs/foundation/` - outcomes and constraints
 - `specs/strategy/` - architectural decisions
 - `specs/features/` - observable behaviours
-- `specs/interfaces/` - API and data contracts
-- `specs/artifacts/` - specs for agents, commands and validators
+- `specs/interfaces/` - API and data contracts, including the MSL language levels and `standards/`
+- `specs/artifacts/` - agents, commands and validators
+- `specs/workspace/metaspecs/` - metaspecs governing this repository's own specs; plain `.md`, because MSL's `type: metaspec` is not a LiveSpec type (DEC-001)
+- A script's spec sits beside it as `scripts/<script>.spec.md`
 
-MSL's own specs keep their published layout until their rename (`registries/debt.md`, DEBT-001): `specs/msl-l*.md`, `applications/`, `documentation/`, `standards/`, `metaspecs/`, `testing/`, `context7-optimization/`. These are not misplaced files; leave them where they are.
+Outside every spec's `specifies:` by choice: PURPOSE.md, CHANGELOG.md, LICENSE, .gitignore, project.yaml and `registries/`.
 
 Test: does each file sit in exactly one obvious folder? If the location is ambiguous, re-examine the classification.
 
 ## Key Behaviors
 
-The repository's MSL specs are not `*.spec.md`, so four bridge specs connect the spec-first gate to them. Requirements live in the detailed MSL spec, never in the bridge; new requirements go into the detailed spec, never into a new `*.spec.md`.
+Every spec names the files it governs in `specifies:`. Read the governing spec before changing a path, and change both together.
 
-| Paths | Bridge spec | Detailed spec |
-|-------|-------------|---------------|
-| `docs/`, `examples/`, `README.md`, `CONTRIBUTING.md`, `llms.txt` | `specs/features/msl-documentation.spec.md` | `specs/documentation/`, `specs/context7-optimization/` |
-| `tools/`, `tests/` | `specs/features/msl-tools.spec.md` | `specs/applications/msl-tools-spec.md`, `specs/testing/msl-testing-framework.md` |
-| `.claude/agents/` | `specs/artifacts/msl-agents.spec.md` | `specs/applications/msl-validation-agent.md`, `msl-batch-validator.md` |
-| `scripts/run_tests.sh`, `scripts/cleanup_tests_for_pytest.py` | `specs/artifacts/repo-scripts.spec.md` | `scripts/*-msl-spec.md` beside each script |
+| Paths | Governing spec |
+|-------|----------------|
+| `docs/` (guides, spec/, patterns/, workflows/, proposals/, contributing, tools, why-msl, roadmap, changelog, agent-guide), `examples/`, `README.md`, `CONTRIBUTING.md`, `specs/INDEX.md` | `specs/features/documentation/msl-docs-base.spec.md` |
+| `docs/getting-started.md`, `docs/user-guide.md`, `docs/reference.md` and `docs/reference/`, `docs/tutorials/` | `specs/features/documentation/msl-docs-{getting-started,user-guide,reference,tutorials}.spec.md` |
+| `llms.txt`, `docs/implementation-reference.md` | `specs/features/context7-optimization/msl-llms-txt.spec.md`, `msl-implementation-reference.spec.md` |
+| `tools/`, `package.json`, `pyproject.toml`, `pytest.ini`, `requirements-dev.txt`, `.pre-commit-config.yaml` | `specs/features/msl-tools.spec.md` |
+| `tests/` | `specs/features/testing/msl-testing-framework.spec.md` |
+| `.claude/agents/msl-validator.md`, `msl-batch-validator.md`, `pre-push-completeness-checker.md` | `specs/artifacts/msl-validation-agent.spec.md`, `msl-batch-validator.spec.md`, `pre-push-completeness-checker.spec.md` |
+| `scripts/run_tests.sh`, `scripts/cleanup_tests_for_pytest.py` | `scripts/<script>.spec.md` beside each |
 
-- `README.md`, `CONTRIBUTING.md` and `examples/` have no detailed spec: follow the conservative documentation rule below; examples stay valid MSL at the level they demonstrate.
-- `docs/agent-guide.md` is itself an MSL document, governed by its own Requirements section. It is the public primer for agents outside this repo, not these instructions.
-- `pre-push-completeness-checker` has no detailed spec yet; `msl-agents.spec.md` governs it until one exists.
+- `docs/agent-guide.md` is the public primer for agents outside this repo, not these instructions.
 - Tools stay optional: no MSL document may need them to be read or written.
 - Validators vendored into `scripts/livespec/` are governed upstream by LiveSpec and are not specified here.
-- A new script gets its own MSL spec beside it and an entry in `repo-scripts.spec.md` `specifies:`.
+- A new script gets its own `<script>.spec.md` beside it.
 
-## Quick Start
+## Development Patterns and Workflows
 
-1. Read the governing spec for the path you are changing (table above).
-2. Change spec and counterpart together (see Development Patterns).
-3. Validate modified specs with `msl-validator`; run `msl-batch-validator` for integration.
-4. Run the pre-push completeness checker before any push.
+- Specs and what they govern change together: documentation specs with `docs/`, `llms.txt`, README and `examples/`; agent specs with `.claude/agents/`; the tools spec with `tools/`; the testing spec with `tests/`.
+- Quality bar before commit: validation score 80/100 or more (`msl-validator` per spec, `msl-batch-validator` for integration); at least 90% of requirements testable; under 20% duplication; at most 4 inheritance levels.
+- Every specification title ends with `[MSL]`, except conventions vendored from LiveSpec (`specs/workspace/standards/`), which stay as shipped.
+- Use `extends` only for a true "is-a" relationship where every parent requirement applies. Never `extends: msl-l2-advanced` unless defining a new MSL level. Use `msl: L1`/`L2` for features used and `references:` for other relationships.
+- Start at the lowest MSL level that meets the need.
+- User documentation stays conservative: consolidate, simplify or remove before adding; serve the common case; push advanced topics (such as metaspecs) to appendices.
+- Run the pre-push completeness checker before any push.
 
 ## MSL Format Quick Reference
 
@@ -92,23 +98,13 @@ The repository's MSL specs are not `*.spec.md`, so four bridge specs connect the
 - Sessions expire after 30 minutes of inactivity
 ```
 
-Language definitions: `specs/msl-l0-foundation.md`, `specs/msl-l1-structure.md`, `specs/msl-l2-advanced.md`.
-
-## Development Patterns and Workflows
-
-- Specs and what they govern change together: documentation specs with `docs/`; the agent specs with `.claude/agents/`; the tools spec with `tools/`.
-- Quality bar before commit: validation score 80/100 or more; at least 90% of requirements testable; under 20% duplication; at most 4 inheritance levels.
-- Every specification title ends with `[MSL]`, except conventions vendored from LiveSpec (`specs/workspace/standards/`), which stay as shipped.
-- Use `extends` only for a true "is-a" relationship where every parent requirement applies. Never `extends: msl-l2-advanced` unless defining a new MSL level. Use `msl: L1`/`L2` for features used and `references:` for other relationships.
-- Start at the lowest MSL level that meets the need.
-- User documentation stays conservative: consolidate, simplify or remove before adding; serve the common case; push advanced topics (such as metaspecs) to appendices.
-- Run the pre-push completeness checker before any push.
+Language definitions: `specs/interfaces/msl-l0-foundation.spec.md`, `msl-l1-structure.spec.md`, `msl-l2-advanced.spec.md`.
 
 ## Spec Dependencies
 
-- Foundation and workspace specs carry `derives-from: PURPOSE.md`; strategy specs derive from foundation specs.
-- Feature specs link upward with `satisfies` and `guided-by`; artifact specs link upward with `satisfies`.
-- In these governance specs `derives-from` means "based on" (DEC-001), not the narrower "computed from" of MSL L2. Language specs, docs and examples keep the L2 meaning.
+- Only governance specs (`specs/foundation/`, `specs/strategy/`, `specs/workspace/`) carry `derives-from`: foundation and workspace derive from `PURPOSE.md`, strategy from foundation.
+- MSL's own specs link upward through `satisfies:` and `guided-by:`.
+- Per DEC-001, in `*.spec.md` files `derives-from` means "based on" and `type:` is a LiveSpec type, where MSL L2 defines them differently. The MSL meanings still hold in the language specs' text, the docs and the examples.
 
 ## Context Compression
 
@@ -116,22 +112,24 @@ Moderate: strategic extraction, balanced inline and reference. Detailed implemen
 
 ## Common Anti-Patterns
 
-- Writing a new `*.spec.md` that repeats a requirement held in a detailed MSL spec.
-- Changing a spec without its counterpart (docs, agent, tool), or the reverse.
+- Changing a spec without the docs, agent, tool or tests it governs, or the reverse.
+- Creating a permanent file that no spec's `specifies:` lists.
 - Using `extends` for organisational hierarchy rather than "is-a".
 - Starting at L2 when L0 would do; adding documentation instead of simplifying it.
 - Specifying implementation (HOW) in requirements.
+- Giving a metaspec or other MSL-typed document a `.spec.md` name.
 
 ## Reference Library
 
-- `registries/decisions.md` - DEC-001 (meaning of `derives-from`)
-- `registries/debt.md` - DEBT-001 (MSL specs reach LiveSpec only through bridge specs; the bridges' `specifies:` must track moves)
-- `specs/INDEX.md` - navigation for agents; `specs/standards/msl-project-organization.md` - structure we follow
+- `registries/decisions.md` - DEC-001 (LiveSpec's meanings of `derives-from` and `type:` apply in `*.spec.md` files)
+- `specs/INDEX.md` - navigation for agents
+- `specs/interfaces/standards/` - usage, extension and project-organisation standards
+- `specs/workspace/metaspecs/` - metaspecs for language, core, documentation, validation and testing
+- `specs/features/` (tools, `documentation/`, `context7-optimization/`, `testing/`) and `specs/artifacts/` (agents)
 - `docs/agent-guide.md`, `docs/implementation-reference.md`, `llms.txt` - public agent-facing material
-- `specs/applications/` (tools and validators), `specs/documentation/`, `specs/testing/`, `specs/metaspecs/`
 
 ---
 *Agent configuration for MSL Specification (LiveSpec v5.13.0)*
 *Generated from workspace specs*
 
-<!-- livespec-context-sources: sha256:84a510d79e22626041e67a1f4206ce306e004018b6d67681060517970bf0c446 n=19 -->
+<!-- livespec-context-sources: sha256:b444faec93cd3dd310d504626f66759623952137d964d1b3aa38832442401057 n=33 -->

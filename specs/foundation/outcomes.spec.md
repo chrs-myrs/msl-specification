@@ -8,10 +8,24 @@ failure_mode: Without clear success criteria and user outcomes, MSL risks being 
 derives-from:
   - PURPOSE.md
 supports:
-  - specs/artifacts/msl-agents.spec.md
-  - specs/artifacts/repo-scripts.spec.md
-  - specs/features/msl-documentation.spec.md
+  - specs/artifacts/msl-batch-validator.spec.md
+  - specs/artifacts/msl-validation-agent.spec.md
+  - specs/artifacts/pre-push-completeness-checker.spec.md
+  - specs/features/context7-optimization/msl-implementation-reference.spec.md
+  - specs/features/context7-optimization/msl-llms-txt.spec.md
+  - specs/features/documentation/msl-docs-base.spec.md
+  - specs/features/documentation/msl-docs-getting-started.spec.md
+  - specs/features/documentation/msl-docs-reference.spec.md
+  - specs/features/documentation/msl-docs-tutorials.spec.md
+  - specs/features/documentation/msl-docs-user-guide.spec.md
   - specs/features/msl-tools.spec.md
+  - specs/features/testing/msl-testing-framework.spec.md
+  - specs/interfaces/msl-l0-foundation.spec.md
+  - specs/interfaces/msl-l1-structure.spec.md
+  - specs/interfaces/msl-l2-advanced.spec.md
+  - specs/interfaces/standards/msl-extension-standards.spec.md
+  - specs/interfaces/standards/msl-project-organization.spec.md
+  - specs/interfaces/standards/msl-usage-standards.spec.md
   - specs/strategy/architecture.spec.md
   - specs/strategy/philosophy.spec.md
 ---

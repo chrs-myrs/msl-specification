@@ -4,9 +4,9 @@ MSL enables precise requirement specifications using plain markdown. Starting wi
 
 ## Core Language Specifications (Read in Order)
 
-1. [Level 0 Foundation](specs/msl-l0-foundation.md) - Pure markdown with requirements lists
-2. [Level 1 Structure](specs/msl-l1-structure.md) - Adds YAML frontmatter and requirement IDs  
-3. [Level 2 Advanced](specs/msl-l2-advanced.md) - Complete language with BNF grammar, markers, and inheritance
+1. [Level 0 Foundation](specs/interfaces/msl-l0-foundation.spec.md) - Pure markdown with requirements lists
+2. [Level 1 Structure](specs/interfaces/msl-l1-structure.spec.md) - Adds YAML frontmatter and requirement IDs  
+3. [Level 2 Advanced](specs/interfaces/msl-l2-advanced.spec.md) - Complete language with BNF grammar, markers, and inheritance
 
 ## Implementation Guide
 
@@ -42,7 +42,7 @@ Topics: specification, requirements, markdown, validation, inheritance, template
 
 - [MSL Lint Tool](tools/cli/msl-lint) - Command-line validator for MSL documents
 - [MSL Grammar](specs/formalizations/msl-grammar.md) - Formal BNF/EBNF grammar specification
-- [Usage Standards](specs/standards/msl-usage-standards.md) - Best practices and quality guidelines
+- [Usage Standards](specs/interfaces/standards/msl-usage-standards.spec.md) - Best practices and quality guidelines
 
 ## Why MSL?
 

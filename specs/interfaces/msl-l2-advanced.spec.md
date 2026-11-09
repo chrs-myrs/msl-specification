@@ -6,6 +6,16 @@ governed-by: [msl-core-metaspec, msl-language-metaspec]
 tags: [specification, level-2, advanced, complete]
 priority: high
 status: active
+type: contract
+category: interfaces
+fidelity: full-detail
+criticality: CRITICAL
+failure_mode: Without Level 2, tool builders have no formal grammar or semantics to implement, and markers, inheritance and templates mean whatever each tool decides
+satisfies:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Level 2: Complete Language with Formal Specification [MSL]

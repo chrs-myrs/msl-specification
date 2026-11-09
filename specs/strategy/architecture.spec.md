@@ -9,7 +9,10 @@ derives-from:
   - specs/foundation/outcomes.spec.md
   - specs/foundation/constraints.spec.md
 supports:
+  - specs/features/context7-optimization/msl-implementation-reference.spec.md
+  - specs/features/context7-optimization/msl-llms-txt.spec.md
   - specs/features/msl-tools.spec.md
+  - specs/features/testing/msl-testing-framework.spec.md
 ---
 
 # MSL Integration Architecture [MSL]

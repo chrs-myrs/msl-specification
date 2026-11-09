@@ -10,6 +10,17 @@ references:
   - msl-l0-foundation: "Basic level to document"
   - msl-l1-structure: "Structural features to document"
   - msl-l2-advanced: "Advanced features to document"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a user guide spec, the guide's coverage of features and practices drifts from what MSL defines
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
+specifies:
+  - docs/user-guide.md
 ---
 
 # MSL User Guide Documentation Specification [MSL]

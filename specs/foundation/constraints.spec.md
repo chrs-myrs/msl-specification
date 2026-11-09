@@ -9,6 +9,10 @@ derives-from:
   - PURPOSE.md
 supports:
   - specs/features/msl-tools.spec.md
+  - specs/features/testing/msl-testing-framework.spec.md
+  - specs/interfaces/msl-l0-foundation.spec.md
+  - specs/interfaces/msl-l1-structure.spec.md
+  - specs/interfaces/msl-l2-advanced.spec.md
   - specs/strategy/architecture.spec.md
   - specs/strategy/philosophy.spec.md
 ---

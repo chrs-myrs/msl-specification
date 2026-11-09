@@ -18,13 +18,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Test runner script for simplified execution
   - Requirements-dev.txt for development dependencies
   - MSL specifications for all new scripts
+- Spec for the pre-push completeness checker agent, `specs/artifacts/pre-push-completeness-checker.spec.md`
 
 ### Changed
 - Migrated all test files from standalone execution to pytest
 - Updated pre-commit configuration for MSL linting
 - **MSL agent guide moved** from `/AGENTS.md` to [`docs/agent-guide.md`](docs/agent-guide.md); `specs/INDEX.md`, `examples/MSL-CONFIG.md` and `llms.txt` now point to it
-- Adopted LiveSpec v5 (5.13.0) for repository governance: `project.yaml`, workspace specs in `specs/workspace/`, bridge specs in `specs/features/` and `specs/artifacts/`, `registries/`, and vendored validators in `scripts/livespec/`
+- Adopted LiveSpec v5 (5.13.0) for repository governance: `project.yaml`, workspace specs in `specs/workspace/`, `registries/`, and vendored validators in `scripts/livespec/`
 - `AGENTS.md` is now this repository's own agent context, generated from its specs; `CLAUDE.md` and `.livespec-version` removed
+- **Spec paths moved; links to them break.** MSL's own specs are now `*.spec.md` files in LiveSpec category folders. Update any bookmark, link or context7 reference that uses an old path:
+
+  | Old path | New path |
+  |---|---|
+  | `specs/msl-l0-foundation.md`, `msl-l1-structure.md`, `msl-l2-advanced.md` | `specs/interfaces/msl-l*.spec.md` |
+  | `specs/standards/*.md` | `specs/interfaces/standards/*.spec.md` |
+  | `specs/documentation/*.md` | `specs/features/documentation/*.spec.md` |
+  | `specs/context7-optimization/msl-llms-txt-spec.md`, `msl-implementation-reference-spec.md` | `specs/features/context7-optimization/msl-llms-txt.spec.md`, `msl-implementation-reference.spec.md` |
+  | `specs/testing/msl-testing-framework.md` | `specs/features/testing/msl-testing-framework.spec.md` |
+  | `specs/applications/msl-tools-spec.md` | `specs/features/msl-tools.spec.md` |
+  | `specs/applications/msl-validation-agent.md`, `msl-batch-validator.md` | `specs/artifacts/*.spec.md` |
+  | `specs/metaspecs/*.md` | `specs/workspace/metaspecs/*.md` |
+  | `scripts/*-msl-spec.md` | `scripts/*.spec.md` |
+  | `specs/README.md` | merged into `specs/INDEX.md` |
+
+- The resolver in `tools/lib/` finds an `extends:` parent by its frontmatter `id` anywhere in the project, and a parent with no `id` by its file name (msl-tools REQ-507). Previously it found only parents named `{id}.md` at the project root, `specs/` or `templates/`, so most nested parents failed to resolve. Two behaviours change: a parent that declares an `id` is no longer found by its file name, and resolving an `id` that two documents share now fails, naming both
 
 ### Removed
 - Stale RELEASE_CHECKLIST.md (superseded by pre-push completeness checker agent)

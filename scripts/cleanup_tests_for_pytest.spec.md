@@ -3,6 +3,16 @@ msl: L1
 id: cleanup-tests-script
 title: Test Cleanup Script Specification
 status: active
+type: command
+category: artifacts
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governing spec, the cleanup script can remove or rewrite tests that the suite still needs
+governed-by: []
+satisfies:
+  - specs/features/testing/msl-testing-framework.spec.md
+specifies:
+  - scripts/cleanup_tests_for_pytest.py
 ---
 
 # Test Cleanup Script [MSL]

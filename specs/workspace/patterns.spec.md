@@ -9,6 +9,8 @@ applies_to:
   - this_project
 derives-from:
   - PURPOSE.md
+supports:
+  - specs/artifacts/pre-push-completeness-checker.spec.md
 ---
 
 # Repository Patterns [MSL]
@@ -20,9 +22,11 @@ Working rules for the MSL specification repository, which must exemplify the sta
 ## Requirements
 
 - [!] Specifications and what they govern change together
-  - Documentation specs (`specs/documentation/`) with `docs/`
-  - Agent spec (`specs/applications/msl-validation-agent.md`) with `.claude/agents/`
-  - Tools spec (`specs/applications/msl-tools-spec.md`) with `tools/`
+  - A spec names every file it governs in its `specifies:`
+  - Documentation specs (`specs/features/documentation/`, `specs/features/context7-optimization/`) with `docs/`, `llms.txt`, README and `examples/`
+  - Agent specs (`specs/artifacts/`) with `.claude/agents/`
+  - Tools spec (`specs/features/msl-tools.spec.md`) with `tools/`; testing framework spec (`specs/features/testing/`) with `tests/`
+  - A script's spec sits beside it as `<script>.spec.md`
 
 - [!] Specifications meet the quality bar before commit
   - Validation score of 80/100 or more (msl-validator per spec, msl-batch-validator for integration)

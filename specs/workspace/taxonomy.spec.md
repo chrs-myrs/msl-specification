@@ -23,9 +23,13 @@ derives-from:
   - specs/foundation/ - outcomes and constraints
   - specs/strategy/ - architectural decisions
   - specs/features/ - observable behaviors
-  - specs/interfaces/ - API/data contracts
+  - specs/interfaces/ - API/data contracts, including the MSL language levels and `standards/`
   - specs/artifacts/ - agents, commands and validators
-  - MSL's own specs keep their published layout (`specs/msl-l*.md`, `applications/`, `documentation/`, `standards/`, `metaspecs/`, `testing/`, `context7-optimization/`) until their rename (registries/debt.md, DEBT-001)
+  - specs/workspace/metaspecs/ - MSL metaspecs governing this repository's own specs; plain `.md`, because MSL's `type: metaspec` is not a LiveSpec type (registries/decisions.md, DEC-001)
+  - A script's spec sits beside the script as `<script>.spec.md`
+
+- [!] Files outside every spec's `specifies:` by choice
+  - PURPOSE.md, CHANGELOG.md, LICENSE, .gitignore, project.yaml and `registries/`
 
 ## Validation
 - Files placed in correct folders
