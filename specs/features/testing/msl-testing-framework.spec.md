@@ -19,9 +19,6 @@ guided-by:
   - specs/strategy/architecture.spec.md
 specifies:
   - tests/
-supports:
-  - scripts/cleanup_tests_for_pytest.spec.md
-  - scripts/run_tests.spec.md
 ---
 
 # MSL Testing Framework [MSL]
