@@ -64,9 +64,10 @@ This specification defines the common requirements that all MSL documentation mu
 
 - REQ-201: [!] Examples MUST be practical and relevant
 - REQ-202: Examples MUST be syntactically correct and executable
+  - A complete MSL document in `examples/` or the docs passes `msl-lint` at the level its `msl:` field declares, or at L0 when it has none
+  - Fragments, and examples labelled as incorrect usage, are exempt
 - REQ-203: Code blocks MUST use appropriate syntax highlighting
 - REQ-204: Examples SHOULD show both correct and incorrect usage
-- REQ-205: [NEW] Example MSL documents, in `examples/` and in the docs, MUST be valid MSL at the level they demonstrate
 
 ### Navigation and References
 

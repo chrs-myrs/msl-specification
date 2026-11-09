@@ -9,6 +9,8 @@ applies_to:
   - this_project
 derives-from:
   - PURPOSE.md
+supports:
+  - specs/artifacts/pre-push-completeness-checker.spec.md
 ---
 
 # Repository Patterns [MSL]

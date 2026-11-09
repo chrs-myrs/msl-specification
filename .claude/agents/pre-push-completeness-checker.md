@@ -12,7 +12,8 @@ You will systematically review the staged changes and working directory to verif
 
 **1. Documentation-Specification Alignment**
 - For every code file, check if there's a corresponding documentation file
-- For scripts (*.py, *.js, *.sh), verify that a spec's `specifies:` names each one (by convention `<script>.spec.md` beside the script)
+- For every added or moved permanent file (committed, outside var/, generated/, .archive/ and build/), verify that a spec's `specifies:` names it or a folder containing it; `scripts/livespec/check-requires-spec.sh <file>` answers this. A script's spec sits beside it as `<script>.spec.md`
+- Your requirements are in `specs/artifacts/pre-push-completeness-checker.spec.md`; apply its change classes when deciding how strict to be
 - Ensure documentation and specs are updated in tandem - if code changed, docs/specs must reflect those changes
 - Verify MSL specs capture functional requirements without implementation details
 - Flag any misalignment between documentation pairs
