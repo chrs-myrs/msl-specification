@@ -196,10 +196,10 @@ Fetch detailed specs only when you need:
 
 | Need | Fetch | When |
 |------|-------|------|
-| Inheritance syntax | `msl-l2-advanced.md` | Using `extends:` or templates |
-| Validation rules | `msl-validation-agent.md` | Running formal validation |
-| Organization details | `msl-project-organization.md` | Setting up new project structure |
-| Quality standards | `msl-usage-standards.md` | Reviewing specification quality |
+| Inheritance syntax | `specs/interfaces/msl-l2-advanced.spec.md` | Using `extends:` or templates |
+| Validation rules | `specs/artifacts/msl-validation-agent.spec.md` | Running formal validation |
+| Organization details | `specs/interfaces/standards/msl-project-organization.spec.md` | Setting up new project structure |
+| Quality standards | `specs/interfaces/standards/msl-usage-standards.spec.md` | Reviewing specification quality |
 | All features | `msl-l0/l1/l2-*.md` | Learning specific level details |
 
 ## Project-Specific Configuration

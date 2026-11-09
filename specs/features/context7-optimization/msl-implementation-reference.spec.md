@@ -4,6 +4,18 @@ id: msl-implementation-reference
 tags: [implementation, reference, grammar, validation, python]
 priority: critical
 status: active
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without an implementation reference, tool builders reconstruct the grammar and validation rules from prose and implement them inconsistently
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/architecture.spec.md
+specifies:
+  - docs/implementation-reference.md
 ---
 
 # MSL Implementation Reference Specification [MSL]
@@ -24,7 +36,7 @@ This specification defines requirements for a consolidated implementation refere
 
 ### Formal Grammar Section
 
-- REQ-101: [!] MUST include complete BNF grammar copied from msl-l2-advanced.md
+- REQ-101: [!] MUST include complete BNF grammar copied from msl-l2-advanced.spec.md
 - REQ-102: [!] MUST include EBNF notation for complex rules
 - REQ-103: MUST provide grammar for all three MSL levels (L0, L1, L2)
 - REQ-104: MUST include examples of valid and invalid syntax for each rule

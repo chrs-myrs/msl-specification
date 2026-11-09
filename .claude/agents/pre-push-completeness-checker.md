@@ -12,7 +12,7 @@ You will systematically review the staged changes and working directory to verif
 
 **1. Documentation-Specification Alignment**
 - For every code file, check if there's a corresponding documentation file
-- For scripts (*.py, *.js, *.sh), verify the existence of matching MSL specification files (*-msl-spec.md)
+- For scripts (*.py, *.js, *.sh), verify that a spec's `specifies:` names each one (by convention `<script>.spec.md` beside the script)
 - Ensure documentation and specs are updated in tandem - if code changed, docs/specs must reflect those changes
 - Verify MSL specs capture functional requirements without implementation details
 - Flag any misalignment between documentation pairs

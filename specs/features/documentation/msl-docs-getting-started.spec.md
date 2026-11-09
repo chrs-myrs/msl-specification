@@ -8,6 +8,17 @@ status: active
 governed-by: msl-documentation-metaspec
 references:
   - msl-l0-foundation: "First level to document"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a getting-started spec, the first page a new user reads can drift into advanced features and lose them before their first spec
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
+specifies:
+  - docs/getting-started.md
 ---
 
 # MSL Getting Started Documentation Specification [MSL]

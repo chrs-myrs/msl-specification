@@ -10,6 +10,8 @@ applies_to:
   - agent_context_generation
 derives-from:
   - PURPOSE.md
+specifies:
+  - AGENTS.md
 ---
 
 # Context Architecture [MSL]
@@ -62,10 +64,11 @@ derives-from:
   | context-architecture.spec.md (this spec) | Tree shape itself: root ceiling, ctxt/ files, methodology sections, load triggers | Always structural |
   | standards/*.spec.md (vendored conventions) | *(none)* | No |
   | foundation/*.spec.md | AGENTS.md § Summary; § Constraints | No |
-  | features/*.spec.md | AGENTS.md § Key Behaviors; § Reference Library | No |
+  | features/**/*.spec.md (tools, documentation/, context7-optimization/, testing/) | AGENTS.md § Key Behaviors; § Reference Library | No |
   | artifacts/*.spec.md | AGENTS.md § Reference Library | No |
   | strategy/*.spec.md | *(none)* unless AGENTS.md inlines it; then name the section | No |
-  | interfaces/*.spec.md | *(none)* unless AGENTS.md describes the external system; then name the section | No |
+  | interfaces/**/*.spec.md (MSL language levels, standards/) | AGENTS.md § MSL Format Quick Reference; § Reference Library | No |
+  | workspace/metaspecs/*.md | *(none)*: MSL documents, not LiveSpec specs | No |
 
   Every spec is a staleness source, so a spec missing from this map forces a full rebuild until it is listed. Add a row for every other workspace spec this project has. **Structural** means the change can add, remove or resize generated files beyond the mapped targets, so it forces a full rebuild. A source that feeds no generated file is listed with *(none)* as its target and does not force a full rebuild.
 

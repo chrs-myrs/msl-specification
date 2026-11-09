@@ -112,7 +112,7 @@ npm run validate
 npm run quality-check
 
 # Run specific validation
-msl-validate specs/core/msl-l2-advanced.md
+msl-validate specs/interfaces/msl-l2-advanced.spec.md
 ```
 
 ### Local Documentation

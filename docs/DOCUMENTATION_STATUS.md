@@ -47,11 +47,11 @@ The existing documentation in `/docs/guides/` should be reviewed and either:
 
 ## Specifications Used
 
-All documentation is generated according to specifications in `/specs/documentation/`:
-- msl-docs-base.md - Common documentation requirements
-- msl-docs-getting-started.md - Quickstart requirements (extends base)
-- msl-docs-user-guide.md - User guide requirements (extends base)
-- msl-docs-reference.md - Reference requirements (extends base)
-- msl-docs-tutorials.md - Tutorial requirements (extends base)
+All documentation is generated according to specifications in `/specs/features/documentation/`:
+- msl-docs-base.spec.md - Common documentation requirements
+- msl-docs-getting-started.spec.md - Quickstart requirements (extends base)
+- msl-docs-user-guide.spec.md - User guide requirements (extends base)
+- msl-docs-reference.spec.md - Reference requirements (extends base)
+- msl-docs-tutorials.spec.md - Tutorial requirements (extends base)
 
 Note: Several specifications have been consolidated into the base or merged into existing specs to reduce duplication and follow DRY principles.

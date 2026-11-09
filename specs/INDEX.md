@@ -13,7 +13,7 @@ This index helps AI agents and developers navigate the MSL specification ecosyst
 
 ### First-Time Project Setup
 1. **Read First**: [PURPOSE.md](../PURPOSE.md) - Understand what MSL is and isn't
-2. **Read Second**: [standards/msl-project-organization.md](standards/msl-project-organization.md) - Learn how to structure projects
+2. **Read Second**: [interfaces/standards/msl-project-organization.spec.md](interfaces/standards/msl-project-organization.spec.md) - Learn how to structure projects
 3. **Create**: PURPOSE.md for your specific project
 4. **Follow**: Organization standards for all subsequent specifications
 
@@ -32,17 +32,17 @@ MSL works best when specifications start simple. Consider:
 ## Core Language Specifications
 
 ### Foundation Levels
-- [msl-l0-foundation.md](msl-l0-foundation.md) - **Start here for basics**
+- [interfaces/msl-l0-foundation.spec.md](interfaces/msl-l0-foundation.spec.md) - **Start here for basics**
   - Plain markdown with `## Requirements` section
   - No special syntax needed
   - Perfect for simple specifications
   
-- [msl-l1-structure.md](msl-l1-structure.md) - **Add structure when needed**
+- [interfaces/msl-l1-structure.spec.md](interfaces/msl-l1-structure.spec.md) - **Add structure when needed**
   - Adds YAML frontmatter for metadata
   - Requirement IDs (REQ-001, REQ-002, etc.)
   - Document identification and versioning
   
-- [msl-l2-advanced.md](msl-l2-advanced.md) - **Advanced features (all optional)**
+- [interfaces/msl-l2-advanced.spec.md](interfaces/msl-l2-advanced.spec.md) - **Advanced features (all optional)**
   - Markers: [!], [@user], [#tag], [x]
   - Inheritance with `extends:`
   - Templates and variables
@@ -55,46 +55,47 @@ MSL works best when specifications start simple. Consider:
 
 Metaspecs are specifications that govern other specifications. They prove MSL can specify anything, including itself.
 
-- [metaspecs/msl-core-metaspec.md](metaspecs/msl-core-metaspec.md) - Governs all MSL specifications
-- [metaspecs/msl-language-metaspec.md](metaspecs/msl-language-metaspec.md) - Governs language specs
-- [metaspecs/msl-validation-metaspec.md](metaspecs/msl-validation-metaspec.md) - Validation rules
-- [metaspecs/msl-documentation-metaspec.md](metaspecs/msl-documentation-metaspec.md) - Documentation governance
-- [metaspecs/testing-framework-metaspec.md](metaspecs/testing-framework-metaspec.md) - Testing standards
+- [workspace/metaspecs/msl-core-metaspec.md](workspace/metaspecs/msl-core-metaspec.md) - Governs all MSL specifications
+- [workspace/metaspecs/msl-language-metaspec.md](workspace/metaspecs/msl-language-metaspec.md) - Governs language specs
+- [workspace/metaspecs/msl-validation-metaspec.md](workspace/metaspecs/msl-validation-metaspec.md) - Validation rules
+- [workspace/metaspecs/msl-documentation-metaspec.md](workspace/metaspecs/msl-documentation-metaspec.md) - Documentation governance
+- [workspace/metaspecs/testing-framework-metaspec.md](workspace/metaspecs/testing-framework-metaspec.md) - Testing standards
 
 ## Standards and Best Practices
 
-- [standards/msl-project-organization.md](standards/msl-project-organization.md) - **How to structure projects**
-- [standards/msl-usage-standards.md](standards/msl-usage-standards.md) - Usage patterns and conventions
-- [standards/msl-extension-standards.md](standards/msl-extension-standards.md) - How to extend MSL
+- [interfaces/standards/msl-project-organization.spec.md](interfaces/standards/msl-project-organization.spec.md) - **How to structure projects**
+- [interfaces/standards/msl-usage-standards.spec.md](interfaces/standards/msl-usage-standards.spec.md) - Usage patterns and conventions
+- [interfaces/standards/msl-extension-standards.spec.md](interfaces/standards/msl-extension-standards.spec.md) - How to extend MSL
 
 ## Documentation Specifications
 
 These prove MSL can specify its own documentation (simplified with inheritance):
 
-- [documentation/msl-docs-base.md](documentation/msl-docs-base.md) - Common documentation requirements
-- [documentation/msl-docs-getting-started.md](documentation/msl-docs-getting-started.md) - Quick start spec (extends base)
-- [documentation/msl-docs-user-guide.md](documentation/msl-docs-user-guide.md) - User guide spec (extends base)
-- [documentation/msl-docs-reference.md](documentation/msl-docs-reference.md) - Reference spec (extends base)
-- [documentation/msl-docs-tutorials.md](documentation/msl-docs-tutorials.md) - Tutorial spec (extends base)
+- [features/documentation/msl-docs-base.spec.md](features/documentation/msl-docs-base.spec.md) - Common documentation requirements
+- [features/documentation/msl-docs-getting-started.spec.md](features/documentation/msl-docs-getting-started.spec.md) - Quick start spec (extends base)
+- [features/documentation/msl-docs-user-guide.spec.md](features/documentation/msl-docs-user-guide.spec.md) - User guide spec (extends base)
+- [features/documentation/msl-docs-reference.spec.md](features/documentation/msl-docs-reference.spec.md) - Reference spec (extends base)
+- [features/documentation/msl-docs-tutorials.spec.md](features/documentation/msl-docs-tutorials.spec.md) - Tutorial spec (extends base)
 
 ## Application Specifications
 
 Specifications for MSL tools (implementations may be in separate repositories):
 
-- [applications/msl-validation-agent.md](applications/msl-validation-agent.md) - Validation tool spec
-- [applications/msl-batch-validator.md](applications/msl-batch-validator.md) - Batch validation spec
-- [applications/msl-tools-spec.md](applications/msl-tools-spec.md) - General tools spec
+- [artifacts/msl-validation-agent.spec.md](artifacts/msl-validation-agent.spec.md) - Validation tool spec
+- [artifacts/msl-batch-validator.spec.md](artifacts/msl-batch-validator.spec.md) - Batch validation spec
+- [features/msl-tools.spec.md](features/msl-tools.spec.md) - General tools spec
+- [artifacts/pre-push-completeness-checker.spec.md](artifacts/pre-push-completeness-checker.spec.md) - Pre-push completeness agent spec
 
 ## Testing Framework
 
-- [testing/msl-testing-framework.md](testing/msl-testing-framework.md) - Testing infrastructure spec
+- [features/testing/msl-testing-framework.spec.md](features/testing/msl-testing-framework.spec.md) - Testing infrastructure spec
 
 ## Context7 Optimization
 
 For AI agents using context7:
 
-- [context7-optimization/msl-llms-txt-spec.md](context7-optimization/msl-llms-txt-spec.md) - LLM optimization
-- [context7-optimization/msl-implementation-reference-spec.md](context7-optimization/msl-implementation-reference-spec.md) - Implementation guide
+- [features/context7-optimization/msl-llms-txt.spec.md](features/context7-optimization/msl-llms-txt.spec.md) - LLM optimization
+- [features/context7-optimization/msl-implementation-reference.spec.md](features/context7-optimization/msl-implementation-reference.spec.md) - Implementation guide
 
 ## Navigation Tips for AI Agents
 

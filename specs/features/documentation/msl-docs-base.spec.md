@@ -8,6 +8,33 @@ governed-by: msl-documentation-metaspec
 references:
   - msl-l2-advanced: "Language specification being documented"
   - msl-usage-standards: "Quality standards for documentation"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without shared documentation requirements, each guide sets its own structure and accuracy bar, and the docs stop agreeing with the language specs
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
+specifies:
+  - docs/DOCUMENTATION_STATUS.md
+  - docs/agent-guide.md
+  - docs/changelog.md
+  - docs/contributing.md
+  - docs/guides/
+  - docs/patterns/
+  - docs/proposals/
+  - docs/roadmap.md
+  - docs/spec/
+  - docs/tools.md
+  - docs/why-msl.md
+  - docs/workflows/
+  - examples/
+  - README.md
+  - CONTRIBUTING.md
+  - specs/INDEX.md
+  - specs/README.md
 ---
 
 # MSL Documentation Base Specification [MSL]
@@ -39,6 +66,7 @@ This specification defines the common requirements that all MSL documentation mu
 - REQ-202: Examples MUST be syntactically correct and executable
 - REQ-203: Code blocks MUST use appropriate syntax highlighting
 - REQ-204: Examples SHOULD show both correct and incorrect usage
+- REQ-205: [NEW] Example MSL documents, in `examples/` and in the docs, MUST be valid MSL at the level they demonstrate
 
 ### Navigation and References
 

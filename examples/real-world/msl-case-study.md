@@ -10,23 +10,22 @@ MSL consists of 26+ specification files organized hierarchically:
 
 ```
 specs/
-├── Core Language Specifications (The Foundation)
-│   ├── msl-l0-foundation.md     # 10 requirements
-│   ├── msl-l1-structure.md      # 25 requirements (extends L0)
-│   └── msl-l2-advanced.md       # 98 requirements (extends L1)
+├── interfaces/ (The Language)
+│   ├── msl-l0-foundation.spec.md     # 10 requirements
+│   ├── msl-l1-structure.spec.md      # 25 requirements (extends L0)
+│   ├── msl-l2-advanced.spec.md       # 98 requirements (extends L1)
+│   └── standards/
+│       ├── msl-usage-standards.spec.md     # Best practices
+│       └── msl-extension-standards.spec.md # How to extend MSL
 │
-├── Metaspecifications (The Governance)
-│   ├── msl-core-metaspec.md     # Governs all MSL specs
-│   ├── msl-language-metaspec.md # Language structure rules
+├── workspace/metaspecs/ (The Governance)
+│   ├── msl-core-metaspec.md          # Governs all MSL specs
+│   ├── msl-language-metaspec.md      # Language structure rules
 │   └── testing-framework-metaspec.md # Testing standards
 │
-├── Standards & Extensions
-│   ├── msl-usage-standards.md   # Best practices
-│   └── msl-extension-standards.md # How to extend MSL
-│
-└── Applications (Tools & Agents)
-    ├── msl-validation-agent.md  # Validator specification
-    └── msl-batch-validator.md   # Batch processor spec
+└── artifacts/ (Agents)
+    ├── msl-validation-agent.spec.md  # Validator specification
+    └── msl-batch-validator.spec.md   # Batch processor spec
 ```
 
 ## The Inheritance Hierarchy
@@ -146,7 +145,7 @@ governs: [all-msl-specifications]
 MSL includes specifications for its own tools:
 
 ```yaml
-# msl-validation-agent.md
+# msl-validation-agent.spec.md
 type: specification  # NOT a metaspec!
 extends: msl-agent-base
 ```
@@ -209,7 +208,7 @@ The validator, linter, and other tools have regular specifications, not metaspec
 
 2. **Validate the specs:**
    ```bash
-   msl-validate specs/msl-l2-advanced.md
+   msl-validate specs/interfaces/msl-l2-advanced.spec.md
    ```
 
 3. **Check quality scores:**
@@ -218,9 +217,9 @@ The validator, linter, and other tools have regular specifications, not metaspec
    ```
 
 4. **Trace inheritance:**
-   - Start with `msl-l0-foundation.md`
-   - Follow to `msl-l1-structure.md`
-   - End at `msl-l2-advanced.md`
+   - Start with `msl-l0-foundation.spec.md`
+   - Follow to `msl-l1-structure.spec.md`
+   - End at `msl-l2-advanced.spec.md`
 
 ## Conclusion
 

@@ -7,6 +7,24 @@ status: active
 assignee: msl-tools-team
 references:
   - msl-l2-advanced: "Complete MSL language definition with grammar and semantics"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a tools spec, msl-lint and msl-render drift from the language they process, and tool behaviour becomes the de facto definition of MSL
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+guided-by:
+  - specs/strategy/architecture.spec.md
+specifies:
+  - tools/
+  - package.json
+  - pyproject.toml
+  - pytest.ini
+  - requirements-dev.txt
+  - .pre-commit-config.yaml
 ---
 
 # MSL Tools Specification [MSL]
@@ -72,6 +90,8 @@ This specification serves as the implementation guide for MSL toolchain develope
 - REQ-504: [@msl-tools] Processors must validate parent document existence before inheritance processing
 - REQ-505: [@msl-tools] Processors must generate complete resolved specification from inheritance chain
 - REQ-506: [@msl-tools] Processors must handle missing parent documents with clear error messages
+- REQ-507: [@msl-tools] [NEW] Processors must find a parent by the `id` in its frontmatter, wherever the parent sits under the project root and whatever its file name
+  - A parent without frontmatter is found by its file name, `.md` or `.spec.md`
 
 ### Template Processing
 

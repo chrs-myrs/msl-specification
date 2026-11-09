@@ -213,7 +213,7 @@ The key insight: **Specification is fractal, but engineering is pragmatic.**
 ## Further Reading
 
 - Original experiment files in `/exploration/` (not committed)
-- Testing framework metaspec example in `/specs/metaspecs/`
+- Testing framework metaspec example in `/specs/workspace/metaspecs/`
 - MSL inheritance documentation in `/docs/reference.md`
 
 ## Quote

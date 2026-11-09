@@ -6,19 +6,31 @@ This directory contains the complete specification of Markdown Specification Lan
 
 ```
 specs/
-├── Core Language (Progressive Enhancement)
-│   ├── msl-l0-foundation.md      # Pure markdown with requirements
-│   ├── msl-l1-structure.md       # + Optional frontmatter & IDs (extends L0)
-│   └── msl-l2-advanced.md        # + Markers, templates, formal spec (extends L1)
+├── interfaces/                          # The language: a format contract
+│   ├── msl-l0-foundation.spec.md        # Pure markdown with requirements
+│   ├── msl-l1-structure.spec.md         # + Optional frontmatter & IDs (extends L0)
+│   ├── msl-l2-advanced.spec.md          # + Markers, templates, formal spec (extends L1)
+│   └── standards/                       # Quality & Design Standards
+│       ├── msl-usage-standards.spec.md      # DRY, inheritance, architecture principles
+│       ├── msl-extension-standards.spec.md  # Extension design guidelines
+│       └── msl-project-organization.spec.md # How to structure MSL projects
 │
-├── standards/                     # Quality & Design Standards  
-│   ├── msl-usage-standards.md    # DRY, inheritance, architecture principles
-│   └── msl-extension-standards.md # Extension design guidelines
+├── features/                            # MSL in Practice
+│   ├── msl-tools.spec.md                # Tool implementation requirements
+│   ├── documentation/                   # Requirements for docs/
+│   ├── context7-optimization/           # llms.txt and the implementation reference
+│   └── testing/                         # Test framework for tools/
 │
-└── applications/                  # MSL in Practice
-    ├── msl-tools-spec.md         # Tool implementation requirements
-    └── msl-validation-agent.md   # Intelligent validation agent
+├── artifacts/                           # Claude Code agents
+│   └── msl-validation-agent.spec.md     # Intelligent validation agent
+│
+├── workspace/metaspecs/                 # Metaspecs governing MSL's own specs
+├── foundation/, strategy/, workspace/   # LiveSpec governance for this repository
+│
+└── msl-l0-foundation.md, ...            # Pointers kept at the old published paths
 ```
+
+The folders follow [LiveSpec](https://github.com/chrs-myrs/livespec) categories. That layout is this repository's choice; MSL does not require it.
 
 ## 🎯 Architecture Overview
 
@@ -26,18 +38,18 @@ specs/
 
 MSL is defined through three levels of progressive enhancement:
 
-1. **[msl-l0-foundation.md](msl-l0-foundation.md)** - Just markdown with a Requirements section
+1. **[interfaces/msl-l0-foundation.spec.md](interfaces/msl-l0-foundation.spec.md)** - Just markdown with a Requirements section
    - Human-friendly, no tools needed
    - Perfect for simple specifications
    - Uses gentle "should" language
 
-2. **[msl-l1-structure.md](msl-l1-structure.md)** - Adds optional structure
+2. **[interfaces/msl-l1-structure.spec.md](interfaces/msl-l1-structure.spec.md)** - Adds optional structure
    - YAML frontmatter for metadata
    - REQ-IDs for requirement tracking
    - Basic inheritance with `extends`
    - Everything is optional - L0 docs are valid L1
 
-3. **[msl-l2-advanced.md](msl-l2-advanced.md)** - **Complete MSL specification**
+3. **[interfaces/msl-l2-advanced.spec.md](interfaces/msl-l2-advanced.spec.md)** - **Complete MSL specification**
    - Quick markers for status, priority, assignment
    - Advanced inheritance controls
    - Template system with variables
@@ -50,15 +62,15 @@ MSL is defined through three levels of progressive enhancement:
 
 Quality standards that extend L2 with guidelines:
 
-- **[standards/msl-usage-standards.md](standards/msl-usage-standards.md)** - DRY principles, inheritance patterns, quality metrics
-- **[standards/msl-extension-standards.md](standards/msl-extension-standards.md)** - How to create domain-specific MSL extensions
+- **[interfaces/standards/msl-usage-standards.spec.md](interfaces/standards/msl-usage-standards.spec.md)** - DRY principles, inheritance patterns, quality metrics
+- **[interfaces/standards/msl-extension-standards.spec.md](interfaces/standards/msl-extension-standards.spec.md)** - How to create domain-specific MSL extensions
 
 ### Applications
 
 Real-world MSL specifications that demonstrate the language:
 
-- **[applications/msl-tools-spec.md](applications/msl-tools-spec.md)** - Requirements for MSL processing tools
-- **[applications/msl-validation-agent.md](applications/msl-validation-agent.md)** - Intelligent agent for validating MSL quality
+- **[features/msl-tools.spec.md](features/msl-tools.spec.md)** - Requirements for MSL processing tools
+- **[artifacts/msl-validation-agent.spec.md](artifacts/msl-validation-agent.spec.md)** - Intelligent agent for validating MSL quality
 
 ## 🔄 Inheritance Relationships
 
@@ -154,7 +166,7 @@ These are encouraged but not required - the presence of a `## Requirements` sect
 
 ### For Tool Implementers
 
-1. Start with [msl-l2-advanced.md](msl-l2-advanced.md) - it contains:
+1. Start with [interfaces/msl-l2-advanced.spec.md](interfaces/msl-l2-advanced.spec.md) - it contains:
    - Complete feature requirements
    - Formal BNF grammar
    - Semantic definitions
@@ -165,7 +177,7 @@ These are encouraged but not required - the presence of a `## Requirements` sect
    - Add L1 (frontmatter, IDs)
    - Implement L2 (full features)
 
-3. Use [applications/msl-tools-spec.md](applications/msl-tools-spec.md) for tool requirements
+3. Use [features/msl-tools.spec.md](features/msl-tools.spec.md) for tool requirements
 
 ## 🔍 Validation
 

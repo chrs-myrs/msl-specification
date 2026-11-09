@@ -8,6 +8,18 @@ status: active
 governed-by: msl-documentation-metaspec
 references:
   - msl-l2-advanced: "Complete language to document"
+type: behavior
+category: features
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a reference spec, the reference documentation omits or misstates syntax and semantics that users look up
+satisfies:
+  - specs/foundation/outcomes.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
+specifies:
+  - docs/reference.md
+  - docs/reference/
 ---
 
 # MSL Reference Documentation Specification [MSL]

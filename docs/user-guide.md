@@ -873,7 +873,7 @@ extends: app-core
 MSL uses inheritance to build progressively complex levels. Here's the actual inheritance chain:
 
 ```markdown
-# msl-l0-foundation.md (Base - No inheritance)
+# msl-l0-foundation.spec.md (Base - No inheritance)
 ---
 msl: L0
 id: msl-l0-foundation
@@ -883,7 +883,7 @@ id: msl-l0-foundation
 - REQ-002: Must contain ## Requirements section
 # ... 8 more basic requirements
 
-# msl-l1-structure.md (Inherits from L0)
+# msl-l1-structure.spec.md (Inherits from L0)
 ---
 msl: L1
 id: msl-l1-structure
@@ -895,7 +895,7 @@ extends: msl-l0-foundation  # IS-A Level 0 spec
 - REQ-102: [NEW] Requirement IDs in format REQ-NNN
 # ... 15 additional requirements
 
-# msl-l2-advanced.md (Inherits from L1)
+# msl-l2-advanced.spec.md (Inherits from L1)
 ---
 msl: L2
 id: msl-l2-advanced

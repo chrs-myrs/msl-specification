@@ -9,6 +9,16 @@ references:
   - msl-usage-standards: "Quality standards this agent enforces (REQ-001-710)"
   - msl-extension-standards: "Extension design principles to validate (REQ-001-505)"
   - msl-l2-advanced: "MSL language definition being validated"
+type: agent
+category: artifacts
+fidelity: behavioral
+criticality: IMPORTANT
+failure_mode: Without a governing spec, the validator agent scores specs against its own notion of quality rather than MSL's standards
+governed-by: []
+satisfies:
+  - specs/foundation/outcomes.spec.md
+specifies:
+  - .claude/agents/msl-validator.md
 ---
 
 # MSL Validation Agent Specification [MSL]

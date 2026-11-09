@@ -4,6 +4,16 @@ id: msl-l1-structure
 extends: msl-l0-foundation
 governed-by: [msl-core-metaspec, msl-language-metaspec]
 tags: [specification, level-1]
+type: contract
+category: interfaces
+fidelity: behavioral
+criticality: CRITICAL
+failure_mode: Without Level 1, specs cannot carry identity, metadata or requirement IDs, so nothing can trace, extend or reference them reliably
+satisfies:
+  - specs/foundation/outcomes.spec.md
+  - specs/foundation/constraints.spec.md
+guided-by:
+  - specs/strategy/philosophy.spec.md
 ---
 
 # MSL Level 1: Structured Specifications [MSL]
