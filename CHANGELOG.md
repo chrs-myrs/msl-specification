@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   | `specs/metaspecs/*.md` | `specs/workspace/metaspecs/*.md` |
   | `scripts/*-msl-spec.md` | `scripts/*.spec.md` |
 
-- The resolver in `tools/lib/` finds an `extends:` parent by its frontmatter `id` anywhere in the project (msl-tools REQ-507); previously it found only parents named `{id}.md` at the project root, `specs/` or `templates/`, so most nested parents failed to resolve
+- The resolver in `tools/lib/` finds an `extends:` parent by its frontmatter `id` anywhere in the project, and a parent with no `id` by its file name (msl-tools REQ-507). Previously it found only parents named `{id}.md` at the project root, `specs/` or `templates/`, so most nested parents failed to resolve. Two behaviours change: a parent that declares an `id` is no longer found by its file name, and resolving an `id` that two documents share now fails, naming both
 
 ### Removed
 - Stale RELEASE_CHECKLIST.md (superseded by pre-push completeness checker agent)

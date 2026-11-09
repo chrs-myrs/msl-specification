@@ -61,7 +61,7 @@ def test_frontmatter_id_wins_over_file_name(temp_dir):
 
 
 def test_parent_without_frontmatter_found_by_file_name(temp_dir):
-    write(temp_dir / "specs" / "base-spec.spec.md", "# Base [MSL]\n\n## Requirements\n\n- REQ-001: Parent requirement\n")
+    write(temp_dir / "specs" / "interfaces" / "base-spec.spec.md", "# Base [MSL]\n\n## Requirements\n\n- REQ-001: Parent requirement\n")
     write(temp_dir / "specs" / "features" / "child.spec.md", CHILD)
 
     resolved = MSLResolver(str(temp_dir)).resolve("child-spec")
@@ -83,3 +83,14 @@ def test_duplicate_id_fails_naming_both_documents(temp_dir):
 
     with pytest.raises(ValueError, match=r"base-spec.*one\.spec\.md.*two\.md|base-spec.*two\.md.*one\.spec\.md"):
         MSLResolver(str(temp_dir)).resolve("child-spec")
+
+
+def test_copies_under_skipped_folders_are_not_duplicates(temp_dir):
+    write(temp_dir / "specs" / "interfaces" / "base-spec.spec.md", PARENT)
+    write(temp_dir / "var" / "scratch" / "base-spec.spec.md", PARENT)
+    write(temp_dir / ".archive" / "base-spec.spec.md", PARENT)
+    write(temp_dir / "specs" / "features" / "child.spec.md", CHILD)
+
+    resolved = MSLResolver(str(temp_dir)).resolve("child-spec")
+
+    assert "REQ-001" in requirement_ids(resolved)

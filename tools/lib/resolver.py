@@ -1,7 +1,8 @@
 """MSL Resolver - Resolve inheritance chains in MSL documents."""
 
+import os
 import re
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 from pathlib import Path
 from .parser import MSLParser
 
@@ -17,6 +18,7 @@ class MSLResolver:
         self.parser = MSLParser()
         self._cache = {}
         self._id_index: Optional[Dict[str, List[Path]]] = None
+        self._implicit_index: Dict[str, List[Path]] = {}
         
     def resolve(self, spec_id: str) -> Dict[str, Any]:
         """Resolve a specification with all its inheritance."""
@@ -43,37 +45,43 @@ class MSLResolver:
         return self.parser.parse_file(str(path))
 
     def _find_spec(self, spec_id: str) -> Optional[Path]:
-        """Find a spec by frontmatter id anywhere under base_path, else by file name."""
+        """Find a spec by explicit id anywhere under base_path, else by implicit id (file name)."""
         if self._id_index is None:
-            self._id_index = self._index_ids()
-        paths = self._id_index.get(spec_id, [])
-        if len(paths) > 1:
-            listed = ", ".join(str(path) for path in paths)
-            raise ValueError(f"Specification id {spec_id} is declared by more than one document: {listed}")
-        if paths:
-            return paths[0]
-
-        # Documents without frontmatter have no id; their file name stands in
-        for folder in (self.base_path, self.base_path / "specs", self.base_path / "templates"):
-            for suffix in (".md", ".spec.md", ".msl"):
-                path = folder / f"{spec_id}{suffix}"
-                if path.exists() and self._frontmatter_id(path) is None:
-                    return path
+            self._id_index, self._implicit_index = self._index_ids()
+        # An explicit id takes precedence over a file name that matches it
+        for index in (self._id_index, self._implicit_index):
+            paths = index.get(spec_id, [])
+            if len(paths) > 1:
+                listed = ", ".join(str(path) for path in paths)
+                raise ValueError(f"Specification id {spec_id} is declared by more than one document: {listed}")
+            if paths:
+                return paths[0]
         return None
 
-    def _index_ids(self) -> Dict[str, List[Path]]:
-        """Map each frontmatter id to every file that declares it."""
-        index: Dict[str, List[Path]] = {}
-        for path in sorted(self.base_path.rglob("*")):
-            rel_parts = path.relative_to(self.base_path).parts
-            if any(part.startswith(".") or part in SKIP_DIRS for part in rel_parts[:-1]):
-                continue
-            if path.suffix not in (".md", ".msl") or not path.is_file():
-                continue
-            spec_id = self._frontmatter_id(path)
-            if spec_id:
-                index.setdefault(spec_id, []).append(path)
-        return index
+    def _index_ids(self) -> Tuple[Dict[str, List[Path]], Dict[str, List[Path]]]:
+        """Map explicit frontmatter ids, and implicit ids of documents without one, to their files."""
+        explicit: Dict[str, List[Path]] = {}
+        implicit: Dict[str, List[Path]] = {}
+        for root, dirs, files in os.walk(self.base_path):
+            dirs[:] = sorted(d for d in dirs if not d.startswith(".") and d not in SKIP_DIRS)
+            for name in sorted(files):
+                if not name.endswith((".md", ".msl")):
+                    continue
+                path = Path(root) / name
+                spec_id = self._frontmatter_id(path)
+                if spec_id:
+                    explicit.setdefault(spec_id, []).append(path)
+                else:
+                    implicit.setdefault(self._implicit_id(name), []).append(path)
+        return explicit, implicit
+
+    @staticmethod
+    def _implicit_id(name: str) -> str:
+        """A document's file name without its extension, counting .spec.md as one extension."""
+        for suffix in (".spec.md", ".md", ".msl"):
+            if name.endswith(suffix):
+                return name[: -len(suffix)]
+        return name
 
     @staticmethod
     def _frontmatter_id(path: Path) -> Optional[str]:
