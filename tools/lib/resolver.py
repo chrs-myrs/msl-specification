@@ -16,7 +16,7 @@ class MSLResolver:
         self.base_path = Path(base_path)
         self.parser = MSLParser()
         self._cache = {}
-        self._id_index: Optional[Dict[str, Path]] = None
+        self._id_index: Optional[Dict[str, List[Path]]] = None
         
     def resolve(self, spec_id: str) -> Dict[str, Any]:
         """Resolve a specification with all its inheritance."""
@@ -46,8 +46,12 @@ class MSLResolver:
         """Find a spec by frontmatter id anywhere under base_path, else by file name."""
         if self._id_index is None:
             self._id_index = self._index_ids()
-        if spec_id in self._id_index:
-            return self._id_index[spec_id]
+        paths = self._id_index.get(spec_id, [])
+        if len(paths) > 1:
+            listed = ", ".join(str(path) for path in paths)
+            raise ValueError(f"Specification id {spec_id} is declared by more than one document: {listed}")
+        if paths:
+            return paths[0]
 
         # Documents without frontmatter have no id; their file name stands in
         for folder in (self.base_path, self.base_path / "specs", self.base_path / "templates"):
@@ -57,9 +61,9 @@ class MSLResolver:
                     return path
         return None
 
-    def _index_ids(self) -> Dict[str, Path]:
-        """Map each frontmatter id to its file; the first path in sorted order wins."""
-        index: Dict[str, Path] = {}
+    def _index_ids(self) -> Dict[str, List[Path]]:
+        """Map each frontmatter id to every file that declares it."""
+        index: Dict[str, List[Path]] = {}
         for path in sorted(self.base_path.rglob("*")):
             rel_parts = path.relative_to(self.base_path).parts
             if any(part.startswith(".") or part in SKIP_DIRS for part in rel_parts[:-1]):
@@ -67,8 +71,8 @@ class MSLResolver:
             if path.suffix not in (".md", ".msl") or not path.is_file():
                 continue
             spec_id = self._frontmatter_id(path)
-            if spec_id and spec_id not in index:
-                index[spec_id] = path
+            if spec_id:
+                index.setdefault(spec_id, []).append(path)
         return index
 
     @staticmethod

@@ -74,3 +74,12 @@ def test_missing_parent_names_the_id(temp_dir):
 
     with pytest.raises(FileNotFoundError, match="base-spec"):
         MSLResolver(str(temp_dir)).resolve("child-spec")
+
+
+def test_duplicate_id_fails_naming_both_documents(temp_dir):
+    write(temp_dir / "specs" / "interfaces" / "one.spec.md", PARENT)
+    write(temp_dir / "examples" / "two.md", PARENT)
+    write(temp_dir / "specs" / "features" / "child.spec.md", CHILD)
+
+    with pytest.raises(ValueError, match=r"base-spec.*one\.spec\.md.*two\.md|base-spec.*two\.md.*one\.spec\.md"):
+        MSLResolver(str(temp_dir)).resolve("child-spec")

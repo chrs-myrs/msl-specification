@@ -90,8 +90,9 @@ This specification serves as the implementation guide for MSL toolchain develope
 - REQ-504: [@msl-tools] Processors must validate parent document existence before inheritance processing
 - REQ-505: [@msl-tools] Processors must generate complete resolved specification from inheritance chain
 - REQ-506: [@msl-tools] Processors must handle missing parent documents with clear error messages
-- REQ-507: [@msl-tools] [NEW] Processors must find a parent by the `id` in its frontmatter, wherever the parent sits under the project root and whatever its file name
-  - A parent without frontmatter is found by its file name, `.md` or `.spec.md`
+- REQ-507: [@msl-tools] Processors must find a parent by the `id` in its frontmatter, wherever the parent sits under the directory given as the project root and whatever its file name
+  - A parent with no `id` is found by its file name, `.md` or `.spec.md`
+  - When two documents declare the same `id`, resolving that `id` fails with an error naming both
 
 ### Template Processing
 
