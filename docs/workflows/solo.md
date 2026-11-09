@@ -244,8 +244,7 @@ vim specs/microservices.md
 # Validate plan
 msl-validate specs/microservices.md
 
-# Execute refactor
-./refactor-to-microservices.sh
+# Execute refactor with your usual tooling
 
 # Verify result matches spec
 msl-validate --check-implementation specs/microservices.md src/
