@@ -2125,7 +2125,7 @@ governed-by: pci-compliance-standards  # Must follow PCI rules
 - **Compliance requirements**: Ensuring specs meet regulatory standards
 - **Framework development**: Defining structure for plugin specifications
 
-For detailed metaspec documentation, see the [MSL specification repository](https://github.com/chrs-myrs/msl-specification/tree/master/specs/standards).
+For detailed metaspec documentation, see the [MSL specification repository](https://github.com/chrs-myrs/msl-specification/tree/master/specs/workspace/metaspecs).
 
 ### Self-Referential Architecture
 

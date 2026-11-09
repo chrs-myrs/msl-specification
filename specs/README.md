@@ -22,7 +22,9 @@ specs/
 │   └── testing/                         # Test framework for tools/
 │
 ├── artifacts/                           # Claude Code agents
-│   └── msl-validation-agent.spec.md     # Intelligent validation agent
+│   ├── msl-validation-agent.spec.md     # Intelligent validation agent
+│   ├── msl-batch-validator.spec.md      # Batch validation across a spec tree
+│   └── pre-push-completeness-checker.spec.md # Completeness check before a push
 │
 ├── workspace/metaspecs/                 # Metaspecs governing MSL's own specs
 ├── foundation/, strategy/, workspace/   # LiveSpec governance for this repository
@@ -81,9 +83,9 @@ msl-l1-structure (+ optional structure)
     ↓ extends  
 msl-l2-advanced (+ advanced features + formal spec = COMPLETE MSL)
     ↓ extended by
-standards/* (quality guidelines)
+interfaces/standards/* (quality guidelines)
 
-applications/* use MSL but don't extend the language
+features/* and artifacts/* use MSL but don't extend the language
 ```
 
 ## ✅ Key Design Principles

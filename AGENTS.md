@@ -130,7 +130,7 @@ Moderate: strategic extraction, balanced inline and reference. Detailed implemen
 - `docs/agent-guide.md`, `docs/implementation-reference.md`, `llms.txt` - public agent-facing material
 
 ---
-*Agent configuration for MSL Specification v5.13.0*
+*Agent configuration for MSL Specification (LiveSpec v5.13.0)*
 *Generated from workspace specs*
 
-<!-- livespec-context-sources: sha256:5700c62e3b699f6b633f05990c87abd1491e2d946c72c16bbce851402fbab3bd n=33 -->
+<!-- livespec-context-sources: sha256:bdf09b5d6fd82ad21142aeab679948d0e17886bc659a6e57b20fb8cb8d90a9a1 n=33 -->

@@ -248,7 +248,7 @@ These standards ensure that the MSL extension ecosystem remains healthy, interop
 - **Quality Validation**: Use `msl-validation-agent` to validate extension quality (≥80/100 required)
 - **Architecture Standards**: Follow `msl-usage-standards.REQ-201-209` for architectural principles
 - **Documentation Standards**: Comply with `msl-usage-standards.REQ-601-609` for documentation
-- **Example Extensions**: See `applications/` directory for well-designed extension examples
+- **Example Extensions**: See `rest-api-extension` and `security-extension` in this spec for well-designed extension examples
 
 ### Rationale for Key Thresholds
 

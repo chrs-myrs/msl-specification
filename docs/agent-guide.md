@@ -200,7 +200,7 @@ Fetch detailed specs only when you need:
 | Validation rules | `specs/artifacts/msl-validation-agent.spec.md` | Running formal validation |
 | Organization details | `specs/interfaces/standards/msl-project-organization.spec.md` | Setting up new project structure |
 | Quality standards | `specs/interfaces/standards/msl-usage-standards.spec.md` | Reviewing specification quality |
-| All features | `msl-l0/l1/l2-*.md` | Learning specific level details |
+| All features | `specs/interfaces/msl-l*.spec.md` | Learning specific level details |
 
 ## Project-Specific Configuration
 

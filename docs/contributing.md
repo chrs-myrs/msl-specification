@@ -93,10 +93,11 @@ npm install -g msl-tools
 ### Project Structure
 ```
 msl-specification/
-├── specs/           # MSL specifications
-│   ├── core/       # Core language specs
-│   ├── applications/ # Tool specifications
-│   └── documentation/ # Doc specifications
+├── specs/           # MSL specifications (see specs/README.md)
+│   ├── interfaces/ # Language levels and standards
+│   ├── features/   # Tools, documentation, testing specs
+│   ├── artifacts/  # Agent specs
+│   └── workspace/  # Repository governance and metaspecs
 ├── docs/           # User documentation
 ├── examples/       # Example specifications
 ├── .claude/        # Claude Code agents
